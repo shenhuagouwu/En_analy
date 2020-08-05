@@ -1,0 +1,52 @@
+@charset "UTF-8"; 
+@import 'core/_setting';
+@import 'core/_css3';
+@import 'core/_mixin';
+@import 'core/_reset';
+.clearfix:after{content:"."; display:block; height:0; clear:both; visibility:hidden; font-size:0px; }
+//隐藏浏览器自带滚动条 
+::-webkit-scrollbar{display:none;}
+//面包屑导航
+.el-breadcrumb{
+  float: left;
+  overflow: hidden;
+  padding:0px 0px 0px 0px;
+  font-size: 16px;
+  line-height: 40px;
+  .icon{
+    float: left;
+    color: #0277d5;
+    margin-right: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 15px;
+  }
+}
+.searchtime{
+  float: right;
+  .el-date-editor .el-range-separator{width: auto;}  
+  .searchbtn {
+    float: right;
+    background: #21262e;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 5px 15px;
+    height:40px;
+    line-height: 30px;
+    margin-left: 15px;
+    cursor: pointer;
+    &:hover {
+      background: #f13331;
+    }
+  }
+}
+//======点击弹出遮罩
+.mask{
+  position: absolute;
+  background: rgba(0,0,0,0.5);
+  left:0px;
+  bottom:0px;
+  right:0px;
+  top:0px;
+}
