@@ -151,8 +151,8 @@
               </div>
             </el-col>
           </el-row>
-          <el-row :gutter="20" v-if="Submenu[2].isOn||Submenu[9].isOn">
-            <el-col :span="10" v-if="Submenu[2].isOn">
+          <el-row :gutter="20" v-if="Submenu[1].isOn||Submenu[2].isOn">
+            <el-col :span="10" v-if="Submenu[1].isOn">
               <div class="grid-content bg-purple-light">
                   <div class="piecharttit">
                        <strong>时段</strong>
@@ -164,7 +164,7 @@
                   <div class="piechartbox"><colum-chart :columchartData="pieTimeParagraphData" v-if="pieTimeParagraphData.length>0" style="height:300px"></colum-chart></div>
               </div>
             </el-col>
-            <el-col :span="14" v-if="Submenu[9].isOn">
+            <el-col :span="14" v-if="Submenu[2].isOn">
               <div class="grid-content bg-purple-light">
                   <div class="piecharttit">
                        <strong>页面受众特</strong>
@@ -173,8 +173,8 @@
               </div>
             </el-col>
           </el-row>
-          <el-row :gutter="20" v-if="Submenu[1].isOn||Submenu[6].isOn||Submenu[7].isOn">
-            <el-col :span="9" v-if="Submenu[6].isOn">
+          <el-row :gutter="20" v-if="Submenu[5].isOn||Submenu[3].isOn||Submenu[4].isOn">
+            <el-col :span="9" v-if="Submenu[3].isOn">
               <div class="grid-content bg-purple-light">
                   <p class="piecharttit">来源词</p>
                   <ul class="sources">
@@ -188,7 +188,7 @@
                   </ul>
               </div>
             </el-col>
-            <el-col :span="9" v-if="Submenu[7].isOn">
+            <el-col :span="9" v-if="Submenu[4].isOn">
               <div class="grid-content bg-purple-light">
                   <p class="piecharttit">客户搜索词</p>
                   <ul class="sources">
@@ -202,7 +202,7 @@
                   </ul>
               </div>
             </el-col>
-            <el-col :span="6" v-if="Submenu[1].isOn">
+            <el-col :span="6" v-if="Submenu[5].isOn">
               <div class="grid-content bg-purple-light">
                   <div class="piecharttit">
                        <strong>来源设备</strong>
@@ -211,7 +211,7 @@
               </div>
             </el-col>
           </el-row>
-          <el-row :gutter="20" v-if="Submenu[8].isOn">
+          <el-row :gutter="20" v-if="Submenu[6].isOn">
               <el-col :span="8" v-for="(item,index) in pieSourcePageData">
                 <div class="grid-content bg-purple-light">
                     <p class="piecharttit">{{item[0].pinpai}}来源页面</p>
@@ -317,19 +317,10 @@ export default {
           type:'组员',
           isOn:false
         },{
-          type:'来源设备',
-          isOn:false,
-        },{
           type:'时段',
           isOn:false,
         },{
-          type:'需求级别',
-          isOn:false,
-        },{
-          type:'首次级别',
-          isOn:false,
-        },{
-          type:'客户意向级别',
+          type:'受众特征',
           isOn:false,
         },{
           type:'来源词',
@@ -338,10 +329,10 @@ export default {
           type:'客户搜索词',
           isOn:false,
         },{
-          type:'来源页面',
+          type:'来源设备',
           isOn:false,
         },{
-          type:'受众特征',
+          type:'来源页面',
           isOn:false,
         }],
       }

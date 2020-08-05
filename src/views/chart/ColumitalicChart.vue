@@ -33,7 +33,7 @@ export default {
       const chart = new G2.Chart({
         container: this.id,
         width: elWidthValue,
-        autoFit: false,
+        autoFit: true,
         height: elHeightValue
       });
       chart.data(this.arrlist);

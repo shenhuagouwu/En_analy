@@ -30,27 +30,11 @@ export default {
           pid: 0,
           children:[
             {
-                id:3,
-                type:'enPersona',
-                name:'个人数据',
-                isOn:true,
-                url:"/Enpromotion/enPersona",
-                pid:0,
-            },
-            {
-                id:3,
+                id:1,
                 type:'enCost',
                 name:'花费统计',
                 isOn:true,
                 url:"/Enpromotion/encostRecord",
-                pid:0,
-            },
-            {
-                id:3,
-                type:'enSearch',
-                name:'搜索统计',
-                isOn:true,
-                url:"/Enpromotion/ensearchRecord",
                 pid:0,
             }
           ]

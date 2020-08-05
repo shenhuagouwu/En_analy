@@ -31,19 +31,9 @@ const routes = [
                         name: 'enalldataPage',
                     },
                     {
-                        path: '/Enpromotion/enPersona',
-                        component: () => import('@/views/Enpromotion/enPersona'),
-                        name: 'enPersonaPage',
-                    },
-                    {
                         path: '/Enpromotion/encostRecord',
                         component: () => import('@/views/Enpromotion/encostRecord'),
                         name: 'encostRecordPage',
-                    },
-                    {
-                        path: '/Enpromotion/ensearchRecord',
-                        component: () => import('@/views/Enpromotion/ensearchRecord'),
-                        name: 'ensearchRecordPage',
                     }
                 ]
             },

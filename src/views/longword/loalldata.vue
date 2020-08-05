@@ -224,7 +224,14 @@ export default {
     //接收传递的时间
     listenTime:function(TDate){
       var $this=this;
-      $this.timeDate=TDate;
+      if(TDate.starttime==''&&TDate.endtime==''){
+        $this.timeDate.starttime='';
+        $this.timeDate.endtime='';
+      }else{
+        $this.timeDate.starttime=TDate.starttime + '-01';
+        var endtimeVal =TDate.endtime.split("-");
+        $this.timeDate.endtime=TDate.endtime + '-' +new Date(endtimeVal[0],endtimeVal[1],0).getDate();
+      }
     },
   }
 }

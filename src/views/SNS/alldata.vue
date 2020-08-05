@@ -14,7 +14,7 @@
           <el-row :gutter="20">
             <el-col :span="3" v-for="(item,index) in personal" :key="index">
               <dl class="grid-content bg-purple-light perclass" v-on:click="handleClick(item.name)">
-                  <dt>{{item.name}}<span>{{item.count}}</span></dt>
+                  <dt><i class="el-icon-user-solid"></i>{{item.name}}<span>{{item.count}}</span></dt>
                   <dd><el-progress :show-text="false" :percentage="Math.floor(item.count/item.total * 10000)/100"></el-progress></dd>
               </dl>
             </el-col>
@@ -340,7 +340,14 @@ export default {
     //接收传递的时间
     listenTime:function(TDate){
       var $this=this;
-      $this.timeDate=TDate;
+      if(TDate.starttime==''&&TDate.endtime==''){
+        $this.timeDate.starttime='';
+        $this.timeDate.endtime='';
+      }else{
+        $this.timeDate.starttime=TDate.starttime + '-01';
+        var endtimeVal =TDate.endtime.split("-");
+        $this.timeDate.endtime=TDate.endtime + '-' +new Date(endtimeVal[0],endtimeVal[1],0).getDate();
+      }
     },
     //点击姓名缓存
     handleClick:function(value){
@@ -419,17 +426,24 @@ export default {
         clear: both;
         display: block;
         text-align: left;
-        padding:20px;
+        padding:12px 20px 20px 20px;
         cursor: pointer;
         dt{
           text-align: left;
-          font-size:14px;
+          font-size: 14px;
+          color: #647698;
+          font-weight: bold;
+          i{
+            float: left;
+            font-size: 16px;
+            color: #647698;
+            margin-right: 7px;
+            margin-top: 7px;
+          }
           span{
             float: right;
-            font-weight: bold;
-            font-size:20px;
             color: #0277d5;
-            font-size:20px;
+            font-size: 14px;
           }
         }
         dd{
