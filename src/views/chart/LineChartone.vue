@@ -22,7 +22,10 @@ export default {
   data() {
     return {
       chart: null,
-      newlist: this.linechartData,
+      newlist:[],
+      Recordlist:[],
+      minRecord:'',
+      maxRecord:'',
       id: Math.random()
         .toString(36)
         .substr(2) //动态生成ID,便于多次引用
@@ -30,25 +33,40 @@ export default {
   },
   // 生命周期 - 载入后, Vue 实例挂载到实际的 DOM 操作完成，一般在该过程进行 Ajax 交互
   mounted() {
-    this.initComponent();
+    var $this=this;
+    var arrCount=[];
+    $this.linechartData.forEach(function(item){
+        arrCount.push(item.count);
+    });
+    $this.Recordlist=$this.CustomSort(arrCount);
+    var len=$this.Recordlist.length;
+    $this.maxRecord=$this.Recordlist[0]+50;
+    $this.minRecord=$this.Recordlist[len-1];
+    if($this.minRecord<50){
+      $this.minRecord=0;
+    }
+    $this.newlist=$this.linechartData;
+    $this.initComponent();
   },
   // 方法集合
   methods: {
     initComponent() {
-      const elWidthValue = this.$el.clientWidth;
-      const elHeightValue = this.$el.clientHeight;
+      var $this=this;
+      const elWidthValue = $this.$el.clientWidth;
+      const elHeightValue = $this.$el.clientHeight;
       // 此函数为个人习惯,喜欢创建一个初始化的函数
       const chart = new G2.Chart({
-        container: this.id,
+        container: $this.id,
         width: elWidthValue,
         autoFit: true,
         height: elHeightValue
       });
-      chart.source(this.newlist);
+      chart.source($this.newlist);
       chart.scale("count", {
-        min: 0,
         nice: true,
-        tickInterval:50
+        tickInterval:50,
+        max:$this.maxRecord,
+        min:$this.minRecord
       });
       chart.tooltip({
         showMarkers: true, // 展示 tooltip markers
@@ -63,8 +81,23 @@ export default {
         .position("time*count")
         .color("name")
         .shape('dash');
-      this.chart = chart;
-      this.chart.render();
+      $this.chart = chart;
+      $this.chart.render();
+    },
+    //排序函数
+    CustomSort:function(SortData){
+        var SortD=SortData;
+        var t='';
+        for(var i=0;i<SortD.length;i++){
+          for(var j=0;j<SortD.length;j++){
+            if(SortD[i]>SortD[j]){
+                t = SortD[i];
+                SortD[i] = SortD[j];
+                SortD[j] = t;
+            }
+          };
+        };
+        return SortData;
     }
   }
 };

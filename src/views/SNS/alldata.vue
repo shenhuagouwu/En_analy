@@ -43,7 +43,7 @@
             <el-col :span="24">
               <div class="grid-content bg-purple-light">
                   <p class="piecharttit">三组询盘对比</p>
-                  <div class="piechartbox"><line-chart :linechartData="lineEncomparedData" v-if="lineEncomparedData.length>0" style="height:300px"></line-chart></div>
+                  <div class="piechartbox"><line-chartone :linechartData="lineEncomparedData" v-if="lineEncomparedData.length>0" style="height:300px"></line-chartone></div>
               </div>
             </el-col>
           </el-row>
@@ -55,7 +55,7 @@
 <script>
 import { mapGetters } from "vuex";
 import PieChart from "../chart/PieChart";
-import LineChart from "../chart/LineChart";
+import LineChartone from "../chart/LineChartone";
 import SearchTime from "../public/searchTime";
 import ModalDialog from "./components/Modaldialog";
 export default {
@@ -87,7 +87,7 @@ export default {
   },
   components: {
     PieChart,
-    LineChart,
+    LineChartone,
     SearchTime,
     ModalDialog
   },
@@ -294,6 +294,7 @@ export default {
       $this.pieChannelData=arrlist;
     },
     EncomparedLineChart:function(EncomparedData){
+      console.log(EncomparedData,'EncomparedData');
       var $this=this;
       var dataobj = EncomparedData; //原始对象
       var arrlist = [];
@@ -303,18 +304,13 @@ export default {
             count:0,
             time:'',
           }
-          if(item.zubie==""||item.zubie==undefined||item.zubie==null){
-            arrlistObj.name='其它'
-            arrlistObj.count=item.count;
-            arrlistObj.time=item.date;
-          }else{
-            arrlistObj.name='组别' + item.zubie;
-            arrlistObj.count=item.count;
-            arrlistObj.time=item.date;
-          }
+          arrlistObj.name='组别' + item.zubie;
+          arrlistObj.count=item.count;
+          arrlistObj.time=item.date;
           arrlist.push(arrlistObj);
       });
       $this.lineEncomparedData=arrlist;
+      console.log($this.lineEncomparedData);
     },
     //时间插件
     TimePlug:function(TimeData){
@@ -330,6 +326,11 @@ export default {
     //点击查询事件
     handleQueryBtn:function(){
       var $this = this;
+      $this.personal=[];
+      $this.pieCountrieData=[];
+      $this.pieContinentData=[];
+      $this.pieChannelData=[];
+      $this.lineEncomparedData=[];
       $this.TimePlug($this.timeDate);
       $this.getCountrieInfo();     //国家
       $this.getContinentInfo();    //大洲

@@ -22,7 +22,10 @@ export default {
   data() {
     return {
       chart: null,
-      newlist: this.linechartData,
+      newlist:[],
+      Recordlist:[],
+      minRecord:'',
+      maxRecord:'',
       id: Math.random()
         .toString(36)
         .substr(2) //动态生成ID,便于多次引用
@@ -30,21 +33,45 @@ export default {
   },
   // 生命周期 - 载入后, Vue 实例挂载到实际的 DOM 操作完成，一般在该过程进行 Ajax 交互
   mounted() {
-    this.initComponent();
+    var $this=this;
+    var arrCount=[];
+    $this.linechartData.forEach(function(item){
+        arrCount.push(item.percent);
+    });
+    $this.Recordlist=$this.CustomSort(arrCount);
+    var len=$this.Recordlist.length;
+    $this.maxRecord=$this.Recordlist[0]/1000+1;
+    $this.minRecord=$this.Recordlist[len-1]/1000;
+    if($this.minRecord<1){
+      $this.minRecord=0;
+    }
+    var arrlist=[];
+    $this.linechartData.forEach(function(item,index){
+        var arrObj={
+            percent:0,
+            time:'',
+        };
+        arrObj.percent=item.percent/1000;
+        arrObj.time=item.time;
+        arrlist.push(arrObj);
+    });
+    $this.newlist=arrlist;
+    $this.initComponent();
   },
   // 方法集合
   methods: {
     initComponent() {
-      const elWidthValue = this.$el.clientWidth;
-      const elHeightValue = this.$el.clientHeight;
+      var $this=this;
+      const elWidthValue = $this.$el.clientWidth;
+      const elHeightValue = $this.$el.clientHeight;
       // 此函数为个人习惯,喜欢创建一个初始化的函数
       const chart = new G2.Chart({
-        container: this.id,
+        container: $this.id,
         width: elWidthValue,
         autoFit: true,
         height: elHeightValue
       });
-      chart.source(this.newlist);
+      chart.source($this.newlist);
       chart.scale({
         time: {
           type: 'time',
@@ -52,18 +79,18 @@ export default {
           mask: 'M/DD'
         },
         percent:{
-          tickInterval:10,
-          max: 50,
-          min: 0
+          tickInterval:1,
+          max:$this.maxRecord,
+          min:$this.minRecord
         }
       });
-      chart.axis('percent', {
-        label: {
-          formatter: (val) => {
-            return val + ' %';
-          },
-        },
-      });        
+      // chart.axis('percent', {
+      //   label: {
+      //     formatter: (val) => {
+      //       return val + ' %';
+      //     },
+      //   },
+      // });        
       chart.tooltip({
         showCrosshairs: true, // 展示 Tooltip 辅助线
         showTitle: false,
@@ -72,9 +99,24 @@ export default {
 
       chart.line().position('time*percent').label('percent');
       chart.point().position('time*percent');
-      this.chart = chart;
-      this.chart.render();
-    }
+      $this.chart = chart;
+      $this.chart.render();
+    },
+    //排序函数
+    CustomSort:function(SortData){
+        var SortD=SortData;
+        var t='';
+        for(var i=0;i<SortD.length;i++){
+          for(var j=0;j<SortD.length;j++){
+            if(SortD[i]>SortD[j]){
+                t = SortD[i];
+                SortD[i] = SortD[j];
+                SortD[j] = t;
+            }
+          };
+        };
+        return SortData;
+    },
   }
 };
 </script>

@@ -40,9 +40,9 @@ export default {
     });
     $this.Recordlist=$this.CustomSort(arrCount);
     var len=$this.Recordlist.length;
-    $this.maxRecord=$this.Recordlist[0]+5;
+    $this.maxRecord=$this.Recordlist[0];
     $this.minRecord=$this.Recordlist[len-1];
-    if($this.minRecord<5){
+    if($this.minRecord<10){
       $this.minRecord=0;
     }
     $this.newlist=$this.linechartData;
@@ -62,30 +62,15 @@ export default {
         height: elHeightValue
       });
       chart.source($this.newlist);
-      chart.scale({
-        time: {
-          type: 'time',
-          tickCount: 8,
-          mask: 'M/DD'
-        },
-        count:{
-          nice: true,
-          tickInterval:5,
-          max:$this.maxRecord,
-          min:$this.minRecord
-        }
+      chart.scale("count", {
+        nice: true,
+        tickInterval:10,
+        max:$this.maxRecord,
+        min:$this.minRecord
       });
-      chart.axis('count', {
-        label: {
-          formatter: (val) => {
-            return val + ' 元';
-          },
-        },
-      });  
       chart.tooltip({
         showMarkers: true, // 展示 tooltip markers
         shared: true,
-        showTitle: false,
         showCrosshairs: true
       });
       chart
@@ -113,7 +98,7 @@ export default {
           };
         };
         return SortData;
-    },
+    }
   }
 };
 </script>

@@ -216,6 +216,9 @@ export default {
     //点击查询事件
     handleQueryBtn:function(){
       var $this = this;
+      $this.pieDomainNaData=[];
+      $this.piesuffixData=[];
+      $this.pieThemeData=[];
       $this.TimePlug($this.timeDate);
       $this.getDomainNaInfo();     //域名询盘
       $this.getsuffixInfo();    //后缀询盘

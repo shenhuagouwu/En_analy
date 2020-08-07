@@ -36,7 +36,7 @@
           <el-col :span="24">
             <div class="grid-content bg-purple-light">
                  <p class="piecharttit">三组询盘对比</p>
-                 <div class="piechartbox"><line-chart :linechartData="lineEncomparedData" v-if="lineEncomparedData.length>0" style="height:290px"></line-chart></div>
+                 <div class="piechartbox"><line-charttwo :linechartData="lineEncomparedData" v-if="lineEncomparedData.length>0" style="height:290px"></line-charttwo></div>
             </div>
           </el-col>
         </el-row>
@@ -49,7 +49,7 @@
 <script>
 import { mapGetters } from "vuex";
 import PieChart from "../chart/PieChart";
-import LineChart from "../chart/LineChart";
+import LineCharttwo from "../chart/LineCharttwo";
 import SearchTime from "../public/searchTime";
 import ModalDialog from "./components/Modaldialog";
 export default {
@@ -81,7 +81,7 @@ export default {
   },
   components: {
     PieChart,
-    LineChart,
+    LineCharttwo,
     SearchTime,
     ModalDialog
   },
@@ -295,6 +295,10 @@ export default {
     //点击查询事件
     handleQueryBtn:function(){
       var $this = this;
+      $this.pieCountrieData=[];
+      $this.pieContinentData=[];
+      $this.pieChannelData=[];
+      $this.lineEncomparedData=[];
       $this.TimePlug($this.timeDate);
       $this.getCountrieInfo();     //国家
       $this.getContinentInfo();    //大洲

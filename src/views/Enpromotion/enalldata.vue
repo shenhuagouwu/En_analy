@@ -69,7 +69,6 @@
             <el-col :span="12">
               <div class="grid-content bg-purple-light">
                   <p class="piecharttit">品牌对比
-                    <i class="el-icon-more icon"></i>
                       <span class="iconbtn">
                           <i @click="inBrandnum=0" :class="{active:inBrandnum==0}">趋势图</i>
                           <i @click="inBrandnum=1" :class="{active:inBrandnum==1}">对比图</i>
@@ -855,23 +854,11 @@ export default {
         var $this=this;
         var EnData=Atrend;
         var arrlist = [];
-        var otherObj={
-          name:'其它',
-          count:0,
-          total:0,
-          percent:0,
-        };
         EnData.forEach(function(item,index){
-          if(index<=8){
+          if(index<=5){
             arrlist.push(item);
-          }else{
-            otherObj.count += item.count;
-            otherObj.total = item.total;
-            otherObj.percent += item.percent;
-            otherObj.percent=Math.floor(otherObj.percent * 100)/100;
           }
         });
-        arrlist.push(otherObj);
         $this.pieSourceCountriesData=arrlist;
       },
       //排序函数
