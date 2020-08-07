@@ -43,7 +43,6 @@ export default {
       if($this.valType.indexOf("来源页面")>=0){
         $this.showLI=true;
       }
-      console.log($this.DialogWordlist,'$this.DialogWordlist');
     },
     methods:{
       handleClose:function(){

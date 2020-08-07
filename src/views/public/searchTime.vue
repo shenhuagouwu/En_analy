@@ -50,12 +50,10 @@ export default {
   beforeMount() {
     var $this = this;
     $this.getTimeInfo($this.subtime);
-    //console.log($this.timeDate,"00");
   },
   watch: {
     subtime: function(val) {
       this.getTimeInfo(val);
-      //console.log(this.timeDate,"11");
     }
   },
   methods:{
@@ -69,7 +67,6 @@ export default {
         $this.timeDate.endtime="";
       }
       $this.$emit('childTimeData',$this.timeDate);
-      //console.log($this.timeDate,"22");
     }
   }
 }

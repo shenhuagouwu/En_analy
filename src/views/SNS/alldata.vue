@@ -206,7 +206,6 @@ export default {
                 item.total=totalNum;
             });
             $this.personal=arrlist;
-            //console.log($this.personal,"$this.personal");
           }
         }
       );
@@ -294,7 +293,6 @@ export default {
       $this.pieChannelData=arrlist;
     },
     EncomparedLineChart:function(EncomparedData){
-      console.log(EncomparedData,'EncomparedData');
       var $this=this;
       var dataobj = EncomparedData; //原始对象
       var arrlist = [];
@@ -304,13 +302,12 @@ export default {
             count:0,
             time:'',
           }
-          arrlistObj.name='组别' + item.zubie;
+          arrlistObj.name='英文' + item.zubie + '组';
           arrlistObj.count=item.count;
           arrlistObj.time=item.date;
           arrlist.push(arrlistObj);
       });
       $this.lineEncomparedData=arrlist;
-      console.log($this.lineEncomparedData);
     },
     //时间插件
     TimePlug:function(TimeData){

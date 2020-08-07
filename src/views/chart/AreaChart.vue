@@ -23,7 +23,6 @@ export default {
   },
   mounted() {
     this.initComponent();
-    //console.log(this.areachartData,'000')
   },
   methods: {
     initComponent() {

@@ -510,7 +510,6 @@ export default {
           var $this = this; 
           $this.$api.get("http://172.16.10.128:8031/index/tg_zuyuan?starttime=" + $this.startDaytime + "&endtime=" + $this.endDaytime,null,function(res) {
                if(res){
-                // console.log(res,'组员');
                 var arrTeam = [];
                 res.data.forEach(function(item){
                    var arrObj={
@@ -654,7 +653,6 @@ export default {
           var $this = this; 
           $this.$api.get("http://172.16.10.128:8031/index/tg_laiyuanpage?starttime=" + $this.startDaytime + "&endtime=" + $this.endDaytime,null,function(res) {
                if(res){
-                 console.log(res,'来源页面');
                   var arrPage = [];
                   var arrHx = [];
                   var arrFt = [];
@@ -699,7 +697,6 @@ export default {
                     arrPagelist.push(arrPageitemlist);
                   });
                   $this.pieSourcePageData=arrPagelist;
-                  console.log($this.pieSourcePageData,"pieSourcePageData");
                }
             }
           );

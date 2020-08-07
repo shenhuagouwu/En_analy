@@ -106,7 +106,6 @@ export default {
           var $this = this;
           $this.$api.get("http://172.16.10.128:8031/index/tg_huafei?starttime=" + $this.starttime + "&endtime=" + $this.endtime,null,function(res) {
             if(res){
-                //console.log(res,"cost_res")
                 // 总花费每天/月变化趋势
                 if(res.data.day_zhuafei.length>0){
                     var arr_zhuafei=[];
@@ -132,7 +131,6 @@ export default {
                     $this.MonthCost($this.DayCost);
                 }
                 // 性价比每天/月变化趋势（性价比：有效询盘数/总花费）
-                //console.log(res.data.day_xj,"day_xj")
                 if(res.data.day_xj.length>0){
                     var arr_day_xj=[];
                     res.data.day_xj.forEach(function(item){
@@ -153,10 +151,8 @@ export default {
                         arr_day_xj.push(arrObj);
                     });
                     $this.DayCostPerformance=arr_day_xj;
-                    //console.log($this.DayCostPerformance,"day_xj")
                 }
                 // 单个搜索询盘成本变化趋势（搜索渠道询盘总数/搜索点击次数）
-                //console.log(res.data.list,"res.data.list")
                 if(res.data.list.length>0){
                     var arr_list=[];
                     res.data.list.forEach(function(item){
@@ -169,7 +165,6 @@ export default {
                         arr_list.push(arrObj);
                     });
                     $this.DayCostNumber=arr_list;
-                   //console.log($this.DayCostNumber,"$this.DayCostNumber")
                 }
                 // 搜索单次点击费用变化趋势
                 if(res.data.day_seach_click.length>0){
@@ -192,7 +187,6 @@ export default {
                         arr_day_seach_click.push(arrObj);
                     });
                     $this.DayCostNumberTrend=arr_day_seach_click;
-                    //console.log($this.DayCostNumberTrend,"$this.DayCostNumberTrend")
                 }
                 // 搜索点击率变化趋势（点击次数/展示次数）
             }

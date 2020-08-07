@@ -96,7 +96,6 @@ export default {
   methods: {
     getCountrieInfo:function(){
       var $this = this;
-      //console.log($this.perName,"perName"); 
       $this.$api.get("http://172.16.10.128:8031/index/sns_geren_area?name=" + $this.perName + "&starttime=" + $this.starttime + "&endtime=" + $this.endtime,null,function(res) {
           if (res) {
             var arrlist=[];
