@@ -293,7 +293,7 @@ module.exports = {
         overlay:true,
         hot:true,
         inline:true,
-        //proxy:config.dev.proxyTable,
+        proxy:config.dev.proxyTable,
         after() {
             open(`http://${ip}:${this.port}`)
             .then(() => {

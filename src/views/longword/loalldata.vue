@@ -72,7 +72,7 @@ export default {
   methods: {
     getDomainNaInfo:function(){
       var $this = this;      
-      $this.$api.get("http://172.16.10.128:8031/index/ym_changwei?starttime=" + $this.starttime + "&endtime=" + $this.endtime,null,function(res) {
+      $this.$api.get("/index/ym_changwei?starttime=" + $this.starttime + "&endtime=" + $this.endtime,null,function(res) {
           if (res) {
             var arrlist=[];
             res.data.forEach(function(item,index){
@@ -98,7 +98,7 @@ export default {
     },
     getsuffixInfo:function(){
       var $this = this;      
-      $this.$api.get("http://172.16.10.128:8031/index/houzhui_changwei?starttime=" + $this.starttime + "&endtime=" + $this.endtime,null,function(res) {
+      $this.$api.get("/index/houzhui_changwei?starttime=" + $this.starttime + "&endtime=" + $this.endtime,null,function(res) {
           if (res) {
             var arrlist=[];
             res.data.forEach(function(item,index){
@@ -118,7 +118,7 @@ export default {
     },
     getThemeInfo:function(){
       var $this = this;
-      $this.$api.get("http://172.16.10.128:8031/index/zhuti_changwei?starttime=" + $this.starttime + "&endtime=" + $this.endtime,null,function(res) {
+      $this.$api.get("/index/zhuti_changwei?starttime=" + $this.starttime + "&endtime=" + $this.endtime,null,function(res) {
           if (res) {
             var arrlist=[];
             res.data.forEach(function(item,index){
@@ -205,7 +205,7 @@ export default {
     //时间插件
     TimePlug:function(TimeData){
       var $this = this;
-      if(TimeData==''){
+      if(TimeData.starttime==''&&TimeData.endtime==''){
           $this.starttime='';
           $this.endtime='';
       }else{

@@ -104,7 +104,7 @@ export default {
     methods: {
       CostRecord:function(){
           var $this = this;
-          $this.$api.get("http://172.16.10.128:8031/index/tg_huafei?starttime=" + $this.starttime + "&endtime=" + $this.endtime,null,function(res) {
+          $this.$api.get("/index/tg_huafei?starttime=" + $this.starttime + "&endtime=" + $this.endtime,null,function(res) {
             if(res){
                 // 总花费每天/月变化趋势
                 if(res.data.day_zhuafei.length>0){

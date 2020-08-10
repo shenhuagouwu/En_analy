@@ -59,7 +59,7 @@ export default {
   methods:{
     getTimeInfo:function(tDA){
       var $this = this;
-      if ($this.subtime != "") {
+      if ($this.subtime != ""&&$this.subtime != null) {
         $this.timeDate.starttime=moment(tDA[0]).format("YYYY-MM");
         $this.timeDate.endtime=moment(tDA[1]).format("YYYY-MM");
       }else{

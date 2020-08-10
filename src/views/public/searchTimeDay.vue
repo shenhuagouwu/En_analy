@@ -63,7 +63,7 @@ export default {
   methods:{
     getTimeInfo:function(tDA){
       var $this = this;
-      if ($this.subDayTime != "") {
+      if ($this.subDayTime != ""&&$this.subDayTime != null) {
         $this.timeDayDate.startDaytime=moment(tDA[0]).format("YYYY-MM-DD");
         $this.timeDayDate.endDaytime=moment(tDA[1]).format("YYYY-MM-DD");
       }else{

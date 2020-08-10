@@ -9,7 +9,7 @@
 <template>    
     <div class="adminmaintop">
         <p class="adminmaintoplogo"><span><img src="../../assets/images/logo.png" alt=""></span>英文推广数据分析系统</p>
-        <p class="adminmaintopfr">你好，聂亚兵&nbsp;&nbsp;|&nbsp;&nbsp;权限：美工&nbsp;&nbsp;|&nbsp;&nbsp;<span>退出</span>&nbsp;&nbsp;当前服务器时间: 2020-07-10 13:59</p>
+        <!-- <p class="adminmaintopfr">你好，聂亚兵&nbsp;&nbsp;|&nbsp;&nbsp;权限：美工&nbsp;&nbsp;|&nbsp;&nbsp;<span>退出</span>&nbsp;&nbsp;当前服务器时间: 2020-07-10 13:59</p> -->
     </div>
 </template>
 <script>

@@ -96,7 +96,7 @@ export default {
   methods: {
     getCountrieInfo:function(){
       var $this = this;
-      $this.$api.get("http://172.16.10.128:8031/index/sns_geren_area?name=" + $this.perName + "&starttime=" + $this.starttime + "&endtime=" + $this.endtime,null,function(res) {
+      $this.$api.get("/index/sns_geren_area?name=" + $this.perName + "&starttime=" + $this.starttime + "&endtime=" + $this.endtime,null,function(res) {
           if (res) {
             var arrlist=[];
             var chinaObj={
@@ -135,7 +135,7 @@ export default {
     },
     getContinentInfo:function(){
       var $this = this;     
-      $this.$api.get("http://172.16.10.128:8031/index/sns_geren_continent?name=" + $this.perName + "&starttime=" + $this.starttime + "&endtime=" + $this.endtime,null,function(res) {
+      $this.$api.get("/index/sns_geren_continent?name=" + $this.perName + "&starttime=" + $this.starttime + "&endtime=" + $this.endtime,null,function(res) {
           if (res) {
             var arrlist=[];
             res.data.forEach(function(item,index){
@@ -159,7 +159,7 @@ export default {
     },
     getChannelInfo:function(){
       var $this = this;
-      $this.$api.get("http://172.16.10.128:8031/index/sns_geren_qudao?name=" + $this.perName + "&starttime=" + $this.starttime + "&endtime=" + $this.endtime,null,function(res) {
+      $this.$api.get("/index/sns_geren_qudao?name=" + $this.perName + "&starttime=" + $this.starttime + "&endtime=" + $this.endtime,null,function(res) {
           if (res) {
             var arrlist=[];
             res.data.forEach(function(item,index){
@@ -183,7 +183,7 @@ export default {
     },
     getEncomparedInfo:function(){
       var $this = this;
-      $this.$api.get("http://172.16.10.128:8031/index/sns_geren?starttime=" + $this.starttime + "&endtime=" + $this.endtime,null,function(res) {
+      $this.$api.get("/index/sns_geren?starttime=" + $this.starttime + "&endtime=" + $this.endtime,null,function(res) {
           if (res) {
             $this.Encompared=res.data;
             $this.EncomparedLineChart($this.Encompared);
@@ -283,7 +283,7 @@ export default {
     //时间插件
     TimePlug:function(TimeData){
       var $this = this;
-      if(TimeData==''){
+      if(TimeData.starttime==''&&TimeData.endtime==''){
           $this.starttime='';
           $this.endtime='';
       }else{

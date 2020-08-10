@@ -362,7 +362,7 @@ export default {
     methods: {
       EnallData:function(){
           var $this = this; 
-          $this.$api.get("http://172.16.10.128:8031/index/tg_zu_duibi",null,function(res) {
+          $this.$api.get("/index/tg_zu_duibi",null,function(res) {
               if (res) {
                 $this.A_trendWeek=res.data.a1;
                 if($this.A_trendWeek.length>0){
@@ -508,7 +508,7 @@ export default {
       },
       getTeamMemberInfo:function(){
           var $this = this; 
-          $this.$api.get("http://172.16.10.128:8031/index/tg_zuyuan?starttime=" + $this.startDaytime + "&endtime=" + $this.endDaytime,null,function(res) {
+          $this.$api.get("/index/tg_zuyuan?starttime=" + $this.startDaytime + "&endtime=" + $this.endDaytime,null,function(res) {
                if(res){
                 var arrTeam = [];
                 res.data.forEach(function(item){
@@ -548,7 +548,7 @@ export default {
       },
       getSourceDeviceInfo:function(){
           var $this = this; 
-          $this.$api.get("http://172.16.10.128:8031/index/tg_laiyuan",null,function(res) {
+          $this.$api.get("/index/tg_laiyuan",null,function(res) {
                if(res){
                 var arrproAcclist = [];
                 res.data.forEach(function(item){
@@ -574,7 +574,7 @@ export default {
       },
       getTimeParagraphInfo:function(){
           var $this = this; 
-          $this.$api.get("http://172.16.10.128:8031/index/tg_shiduan?starttime=" + $this.startDaytime + "&endtime=" + $this.endDaytime,null,function(res) {
+          $this.$api.get("/index/tg_shiduan?starttime=" + $this.startDaytime + "&endtime=" + $this.endDaytime,null,function(res) {
                if(res){
                 var arrTeam = [];
                 res.data.forEach(function(item){
@@ -597,7 +597,7 @@ export default {
       //来源词 sourceterm
       getSourceTermInfo:function(){
           var $this = this; 
-          $this.$api.get("http://172.16.10.128:8031/index/tg_laiyuanword",null,function(res) {
+          $this.$api.get("/index/tg_laiyuanword",null,function(res) {
                if(res){
                   var arrTeam = [];
                   res.data.forEach(function(item){
@@ -624,7 +624,7 @@ export default {
       //客户搜索词 searchword
       getSearchWordInfo:function(){
           var $this = this; 
-          $this.$api.get("http://172.16.10.128:8031/index/tg_searchword",null,function(res) {
+          $this.$api.get("/index/tg_searchword",null,function(res) {
                if(res){
                   var arrTeam = [];
                   res.data.forEach(function(item){
@@ -651,7 +651,7 @@ export default {
       //来源页面 sourcepage
       getSourcePageInfo:function(){
           var $this = this; 
-          $this.$api.get("http://172.16.10.128:8031/index/tg_laiyuanpage?starttime=" + $this.startDaytime + "&endtime=" + $this.endDaytime,null,function(res) {
+          $this.$api.get("/index/tg_laiyuanpage?starttime=" + $this.startDaytime + "&endtime=" + $this.endDaytime,null,function(res) {
                if(res){
                   var arrPage = [];
                   var arrHx = [];
@@ -704,7 +704,7 @@ export default {
       //页面受众特征 Audience character
       getAudienceCharacterInfo:function(){
           var $this = this; 
-          $this.$api.get("http://172.16.10.128:8031/index/tg_shouzhong",null,function(res) {
+          $this.$api.get("/index/tg_shouzhong",null,function(res) {
                if(res){
                   var arrTeam = [];
                   res.data.forEach(function(item){
