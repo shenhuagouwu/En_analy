@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import floatObj from "@/assets/js/floatObj";
 import Vue from "vue";
 const G2 = require("@antv/g2"); // 1. 引入g2plot
 Vue.prototype.$G2 = G2; // 2. 将g2plot挂载到vue中
@@ -44,7 +43,7 @@ export default {
 
       chart.scale("percent", {
         formatter: val => {
-          val = Math.floor(floatObj.multiply(val,10000))/100 + "%";
+          val = val/100 + "%";
           return val;
         }
       });
@@ -53,7 +52,7 @@ export default {
         showMarkers: false,
       });
       chart.legend('name', {
-        position: 'right',
+        position: 'bottom',
         custom: true,
         items: this.arrlist.map((obj, index) => {
           return {
@@ -68,18 +67,16 @@ export default {
             },                                              // marker 配置
           };
         }),
-        itemValue: {
-          style: {
-            fill: '#999',
-          },                                                                 // 配置 itemValue 样式
-          formatter: val => `${Math.floor(floatObj.multiply(val,10000))/100}%`                // 格式化 itemValue 内容
-        },
       }),
       chart
         .interval()
         .position("percent")
         .color("name")
-        .label()
+        .label('percent', {
+          content: (data) => {
+            return `${data.name}: ${data.percent/100}%`;
+          },
+        })
         .adjust("stack")      
       chart.interaction('element-single-selected');
       this.chart = chart;

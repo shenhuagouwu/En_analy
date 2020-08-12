@@ -209,7 +209,7 @@ module.exports = {
                 }],
                 enforce: "pre", // 编译前检查
                 //exclude: [path.resolve(__dirname, 'src/assets/js/swiper.js'),path.resolve(__dirname, 'src/assets/js/jquery.SuperSlide.2.1.1.js')],
-                exclude: [/node_modules/,path.resolve(__dirname, 'src/assets/js/flexible.js')], // 不检测的文件
+                exclude: [/node_modules/,path.resolve(__dirname, 'src/assets/js/flexible.js'),path.resolve(__dirname, 'src/assets/js/floatObj.js'),path.resolve(__dirname, 'src/assets/js/toFixed.js')], // 不检测的文件
                 include: [path.resolve(__dirname, 'src')], // 指定检查的目录
             },
             {

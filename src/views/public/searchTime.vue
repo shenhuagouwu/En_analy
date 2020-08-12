@@ -61,7 +61,13 @@ export default {
       var $this = this;
       if ($this.subtime != ""&&$this.subtime != null) {
         $this.timeDate.starttime=moment(tDA[0]).format("YYYY-MM");
-        $this.timeDate.endtime=moment(tDA[1]).format("YYYY-MM");
+        var year = tDA[1].getFullYear();
+        var month = tDA[1].getMonth() + 2;
+        if (month > 12) {
+          month = month - 12;
+          year = year + 1;
+        }
+        $this.timeDate.endtime=year + ',' + month
       }else{
         $this.timeDate.starttime="";
         $this.timeDate.endtime="";

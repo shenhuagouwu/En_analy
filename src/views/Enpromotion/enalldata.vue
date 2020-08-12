@@ -10,10 +10,10 @@
           <el-row :gutter="20">
             <el-col :span="6">
               <div class="grid-content bg-purple-light">
-                  <p class="piecharttit">一组本周趋势</p>
+                  <p class="piecharttit">一组七天询盘趋势</p>
                   <dl class="weeknum">
                       <dd>
-                          <strong>本周总询盘</strong>
+                          <strong>7日总询盘</strong>
                           <span>{{A_trendAccount.count}}</span>
                       </dd>
                       <dt>
@@ -26,22 +26,22 @@
             </el-col>
             <el-col :span="6">
               <div class="grid-content bg-purple-light">
-                  <p class="piecharttit">一组本周占比</p>
+                  <p class="piecharttit">一组七天询盘占比</p>
                   <dl class="piechartbox ringbox">
                       <dt><ring-chart :ringchartData="pieA_AccountWeekData" v-if="pieA_AccountWeekData.length>0" style="height:150px"></ring-chart></dt>
                       <dd>
                           <span>{{A_AccountWeek.total}}</span>
-                          <strong>本周总询盘</strong>
+                          <strong>7日总询盘</strong>
                       </dd>               
                   </dl>
               </div>
             </el-col>
             <el-col :span="6">
               <div class="grid-content bg-purple-light">
-                  <p class="piecharttit">三组本周趋势</p>
+                  <p class="piecharttit">三组七天询盘趋势</p>
                   <dl class="weeknum">
                       <dd>
-                          <strong>本周总询盘</strong>
+                          <strong>7日总询盘</strong>
                           <span>{{C_trendAccount.count}}</span>
                       </dd>
                       <dt>
@@ -54,12 +54,12 @@
             </el-col>
             <el-col :span="6">
               <div class="grid-content bg-purple-light">
-                  <p class="piecharttit">三组本周占比</p>
+                  <p class="piecharttit">三组七天询盘占比</p>
                   <dl class="piechartbox ringbox">
                       <dt><ring-chart :ringchartData="pieC_AccountWeekData" v-if="pieC_AccountWeekData.length>0" style="height:150px"></ring-chart></dt>
                       <dd>
                           <span>{{C_AccountWeek.total}}</span>
-                          <strong>本周总询盘</strong>
+                          <strong>7日总询盘</strong>
                       </dd>               
                   </dl>
               </div>
@@ -68,7 +68,7 @@
           <el-row :gutter="20">
             <el-col :span="12">
               <div class="grid-content bg-purple-light">
-                  <p class="piecharttit">品牌对比
+                  <p class="piecharttit">品牌对比<font>(最近七天)</font>
                       <span class="iconbtn">
                           <i @click="inBrandnum=0" :class="{active:inBrandnum==0}">趋势图</i>
                           <i @click="inBrandnum=1" :class="{active:inBrandnum==1}">对比图</i>
@@ -80,7 +80,7 @@
             </el-col>
             <el-col :span="12">
               <div class="grid-content bg-purple-light">
-                  <p class="piecharttit">产品分析
+                  <p class="piecharttit">产品分析<font>(最近七天)</font>
                       <i v-on:click="handleProMore" class="el-icon-more icon"></i>
                       <span class="iconbtn">
                           <i @click="inPronum=0" :class="{active:inPronum==0}">占比图</i>
@@ -95,7 +95,7 @@
           <el-row :gutter="20">
             <el-col :span="8">
               <div class="grid-content bg-purple-light">
-                  <p class="piecharttit">来源渠道对比</p>
+                  <p class="piecharttit">组别二来源渠道对比<font>(最近一个月)</font></p>
                   <ul class="sources">
                       <li v-for="(item,index) in A_sources" :key="index">
                           <strong>{{item.name}}</strong>
@@ -109,7 +109,7 @@
             </el-col>
             <el-col :span="8">
               <div class="grid-content bg-purple-light">
-                  <p class="piecharttit">来源渠道</p>
+                  <p class="piecharttit">组别三来源渠道对比<font>(最近一个月)</font></p>
                   <ul class="sources">
                       <li v-for="(item,index) in C_sources" :key="index">
                           <strong>{{item.name}}</strong>
@@ -123,7 +123,7 @@
             </el-col>
             <el-col :span="8">
               <div class="grid-content bg-purple-light">
-                  <p class="piecharttit">来源国家<i v-on:click="handleCountriesMore" class="el-icon-more icon"></i></p>
+                  <p class="piecharttit">来源国家<font>(默认2020-02到现在所有英文来源国家占比)</font><i v-on:click="handleCountriesMore" class="el-icon-more icon"></i></p>
                   <ul class="sources">
                       <li v-for="(item,index) in pieSourceCountriesData" :key="index">
                           <strong><i><img :src="item.ConPic"  alt=""></i>{{item.name}}</strong>
@@ -141,6 +141,7 @@
               <div class="grid-content bg-purple-light">
                   <div class="piecharttit">
                        <strong>组员</strong>
+                       <font>(最近一个月)</font>
                        <div class="searchtime">
                             <search-timeday class="timebox" v-on:childTimeDayData="listenTimeday"></search-timeday>
                             <span class="searchbtn" v-on:click="handlezuyuanBtn">查询</span>
@@ -155,6 +156,7 @@
               <div class="grid-content bg-purple-light">
                   <div class="piecharttit">
                        <strong>时段</strong>
+                       <font>(最近一个月)</font>
                        <div class="searchtime">
                             <search-timeday class="timebox" v-on:childTimeDayData="listenTimeday"></search-timeday>
                             <span class="searchbtn" v-on:click="handleshiduanBtn">查询</span>
@@ -167,6 +169,7 @@
               <div class="grid-content bg-purple-light">
                   <div class="piecharttit">
                        <strong>页面受众特</strong>
+                       <font>(默认2020-02到现在)</font>
                   </div>
                   <div class="piechartbox"><colum-chart :columchartData="pieAudienceCharacterData" v-if="pieAudienceCharacterData.length>0" style="height:300px"></colum-chart></div>
               </div>
@@ -175,7 +178,7 @@
           <el-row :gutter="20" v-if="Submenu[5].isOn||Submenu[3].isOn||Submenu[4].isOn">
             <el-col :span="9" v-if="Submenu[3].isOn">
               <div class="grid-content bg-purple-light">
-                  <p class="piecharttit">来源词</p>
+                  <p class="piecharttit">来源词<font>(默认2020-02到现在)</font></p>
                   <ul class="sources">
                       <li v-for="(item,index) in pieSourceTermData" :key="index">
                           <strong>{{item.name}}</strong>
@@ -189,7 +192,7 @@
             </el-col>
             <el-col :span="9" v-if="Submenu[4].isOn">
               <div class="grid-content bg-purple-light">
-                  <p class="piecharttit">客户搜索词</p>
+                  <p class="piecharttit">客户搜索词<font>(默认2020-02到现在)</font></p>
                   <ul class="sources">
                       <li v-for="(item,index) in pieSearchWordData" :key="index">
                           <strong>{{item.name}}</strong>
@@ -205,15 +208,16 @@
               <div class="grid-content bg-purple-light">
                   <div class="piecharttit">
                        <strong>来源设备</strong>
+                       <font>(默认2020-02到现在)</font>
                   </div>
-                  <div class="piechartbox"><pie-chart :piechartData="pieSourceDeviceData" v-if="pieSourceDeviceData.length>0" style="height:300px"></pie-chart></div>
+                  <div class="piechartbox"><pie-chartdevice :piechartData="pieSourceDeviceData" v-if="pieSourceDeviceData.length>0" style="height:300px"></pie-chartdevice></div>
               </div>
             </el-col>
           </el-row>
           <el-row :gutter="20" v-if="Submenu[6].isOn">
               <el-col :span="8" v-for="(item,index) in pieSourcePageData">
                 <div class="grid-content bg-purple-light">
-                    <p class="piecharttit">{{item[0].pinpai}}来源页面</p>
+                    <p class="piecharttit">{{item[0].pinpai}}来源页面<font>(默认2020-02到现在)</font></p>
                     <ul class="sourcesPage">
                         <li v-for="(items,indexs) in item" :key="indexs">
                             <strong @click="See(items.name)">{{items.url}}</strong>
@@ -246,12 +250,14 @@ import AreaChart from "../chart/AreaChart";
 import EncolumChartone from "../chart/EncolumChartone";
 import EnlineChartone from "../chart/EnlineChartone";
 import PieChart from "../chart/PieChart";
+import PieChartdevice from "../chart/PieChartdevice";
 import ColumChart from "../chart/ColumChart";
 import ModalDialogone from "./components/ModalDialogone";
 import ModalDialogtwo from "./components/ModalDialogtwo";
 import ModalDialogthree from "./components/ModalDialogthree";
 import searchTimeday from "../public/searchTimeDay";
 import AreaJson from "@/assets/json/area";
+import floatObj from "@/assets/js/floatObj";
 export default {
     name: 'enalldataPage',
     data() {
@@ -342,6 +348,7 @@ export default {
       EncolumChartone,
       EnlineChartone,
       PieChart,
+      PieChartdevice,
       ColumChart,
       ModalDialogone,
       ModalDialogtwo,
@@ -560,7 +567,7 @@ export default {
                    };
                    arrObj.name=item.device;
                    arrObj.count=item.n;
-                   arrObj.percent= Math.floor(parseFloat(item.rat) * 10000)/100;
+                   arrObj.percent= floatObj.multiply(parseFloat(item.rat),10000);
                    arrObj.total=item.s;
                    arrproAcclist.push(arrObj);
                 });
@@ -1154,54 +1161,6 @@ export default {
       width:100%;
       border-radius:5px;
       //padding: 20px;
-      .piecharttit{
-        clear: both;
-        display: block;
-        text-align: left;
-        padding:10px 15px;
-        font-size:16px;
-        font-weight: bold;
-        color: #333;
-        background: #f9f9f9; 
-        .icon{
-          float: right;
-          color: #0277d5;
-          font-size: 24px;
-          line-height: 30px;
-          cursor: pointer;
-        }
-        .iconbtn{
-          float: right;
-          padding-top: 3px;
-          padding-right: 30px;
-          i{
-            float: left;
-            font-style: normal;
-            font-size: 12px;
-            border: 1px solid #ccc;
-            background: #f5f5f5;
-            margin-left: -1px;
-            padding: 5px 10px;
-            line-height: 1;
-            cursor: pointer;
-            font-weight: normal;
-            color: #666;
-            &.active{
-              background:#0277d5;
-              border:1px solid #0277d5;
-              color: #fff;
-            }
-            &:first-child{
-              border-top-left-radius:3px;
-              border-bottom-left-radius:3px;
-            }
-            &:first-child+i{
-              border-top-right-radius:3px;
-              border-bottom-right-radius:3px;
-            }
-          }
-        }
-      }
       .piechartbox{
         clear: both;
         display: block;

@@ -6,7 +6,7 @@
             <el-breadcrumb-item>长尾词</el-breadcrumb-item>
         </el-breadcrumb>
         <div class="searchtime">
-              <search-time v-on:childTimeData="listenTime"></search-time>
+              <search-timeday v-on:childTimeDayData="listenTimeday"></search-timeday>
               <span class="searchbtn" v-on:click="handleQueryBtn">查询</span>
         </div>
     </el-header>
@@ -14,7 +14,7 @@
         <el-row :gutter="20">
           <el-col :span="24">
             <div class="grid-content bg-purple-light">
-                 <p class="piecharttit">域名询盘</p>
+                 <p class="piecharttit">域名询盘<font>(默认2020年2月至今)</font></p>
                  <div class="piechartbox"><columitalic-chart :columchartData="pieDomainNaData" v-if="pieDomainNaData.length>0" style="height:350px"></columitalic-chart></div>
             </div>
           </el-col>
@@ -22,15 +22,47 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <div class="grid-content bg-purple-light">
-                 <p class="piecharttit">后缀询盘询盘</p>
+                 <p class="piecharttit">后缀询盘询盘<font>(默认2020年2月至今)</font></p>
                  <div class="piechartbox"><colum-chart :columchartData="piesuffixData" v-if="piesuffixData.length>0" style="height:280px"></colum-chart></div>
             </div>
           </el-col>
           <el-col :span="12">
             <div class="grid-content bg-purple-light">
-                 <p class="piecharttit">主题分布询盘</p>
+                 <p class="piecharttit">主题分布询盘<font>(默认2020年2月至今)</font></p>
                  <div class="piechartbox"><pie-chart :piechartData="pieThemeData" v-if="pieThemeData.length>0" style="height:280px"></pie-chart></div>
             </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+              <div class="grid-content bg-purple-light">
+                  <p class="piecharttit">长尾词站询盘-组合一<font>(默认当前一天)</font></p>
+                  <ul class="sources">
+                      <li v-for="(item,index) in LongTail.LongTail_02">
+                          <strong>{{item.name}}</strong>
+                          <span>{{item.count}}</span>
+                      </li>
+                      <li>
+                          <strong>总计</strong>
+                          <span>{{LongTail.num02}}</span>
+                      </li>
+                  </ul>
+              </div>
+          </el-col>
+          <el-col :span="12">
+              <div class="grid-content bg-purple-light">
+                  <p class="piecharttit">长尾词站询盘-组合三<font>(默认当前一天)</font></p>
+                  <ul class="sources">
+                      <li v-for="(item,index) in LongTail.LongTail_01">
+                          <strong>{{item.name}}</strong>
+                          <span>{{item.count}}</span>
+                      </li>
+                      <li>
+                          <strong>总计</strong>
+                          <span>{{LongTail.num01}}</span>
+                      </li>
+                  </ul>
+              </div>
           </el-col>
         </el-row>
     </el-main>
@@ -40,7 +72,7 @@
 import PieChart from "../chart/PieChart";
 import ColumitalicChart from "../chart/ColumitalicChart";
 import ColumChart from "../chart/ColumChart";
-import SearchTime from "../public/searchTime";
+import searchTimeday from "../public/searchTimeDay";
 export default {
   name: 'loalldataPage',
   data() {
@@ -48,12 +80,13 @@ export default {
       DomainNa:[],      //域名询盘
       suffix:[],     //后缀询盘
       Theme:[],       //主题分布
-      timeDate:{
-        starttime:'',
-        endtime:'',
-      },                //时间插件传递值
-      starttime:'',     //查询开始时间
-      endtime:'',       //查询结束时间
+      LongTail:[],
+      timeDayDate:{
+        startDaytime:'',
+        endDaytime:'', 
+      },                              // 日期插件传递值
+      startDaytime:'',                // 查询开始日期
+      endDaytime:'',                  // 查询结束日期
       pieDomainNaData:[], //饼图需要传过去的域名询盘数据
       piesuffixData:[], //饼图需要传过去的后缀询盘数据
       pieThemeData:[], //饼图需要传过去的主题分布数据
@@ -63,7 +96,7 @@ export default {
     PieChart,
     ColumChart,
     ColumitalicChart,
-    SearchTime
+    searchTimeday
   },
   mounted() {
     var $this=this;
@@ -72,7 +105,7 @@ export default {
   methods: {
     getDomainNaInfo:function(){
       var $this = this;      
-      $this.$api.get("/index/ym_changwei?starttime=" + $this.starttime + "&endtime=" + $this.endtime,null,function(res) {
+      $this.$api.get("/index/ym_changwei?starttime=" + $this.startDaytime + "&endtime=" + $this.endDaytime,null,function(res) {
           if (res) {
             var arrlist=[];
             res.data.forEach(function(item,index){
@@ -98,7 +131,7 @@ export default {
     },
     getsuffixInfo:function(){
       var $this = this;      
-      $this.$api.get("/index/houzhui_changwei?starttime=" + $this.starttime + "&endtime=" + $this.endtime,null,function(res) {
+      $this.$api.get("/index/houzhui_changwei?starttime=" + $this.startDaytime + "&endtime=" + $this.endDaytime,null,function(res) {
           if (res) {
             var arrlist=[];
             res.data.forEach(function(item,index){
@@ -118,7 +151,7 @@ export default {
     },
     getThemeInfo:function(){
       var $this = this;
-      $this.$api.get("/index/zhuti_changwei?starttime=" + $this.starttime + "&endtime=" + $this.endtime,null,function(res) {
+      $this.$api.get("/index/zhuti_changwei?starttime=" + $this.startDaytime + "&endtime=" + $this.endDaytime,null,function(res) {
           if (res) {
             var arrlist=[];
             res.data.forEach(function(item,index){
@@ -138,7 +171,55 @@ export default {
                arrlist.push(arrObj);
             });
             $this.Theme=$this.CustomSort(arrlist);
-            $this.ThemePieChart($this.Theme);
+            var arrTheme=[];
+            $this.Theme.forEach(function(item, index) {
+                if(index<=10){
+                  arrTheme.push(item);
+                }         
+            });
+            $this.pieThemeData=arrTheme;
+          }
+        }
+      );
+    },
+    getLongTailInfo:function(){
+      var $this = this;
+      $this.$api.get("/index/day_longword?starttime=" + $this.startDaytime + "&endtime=" + $this.endDaytime,null,function(res) {
+          if (res) {
+            console.log(res,'longtail');
+            $this.LongTail=[];
+            var LongTail_01=[];
+            var LongTail_02=[];
+            var arrlist=[];
+            res.data.forEach(function(item,index){
+              var arrObj={
+                name:'',
+                count:0
+              }
+              if(item.zu=="1"){
+                arrObj.name=item.remark1;
+                arrObj.count=item.count;
+                LongTail_01.push(arrObj);
+              }
+              if(item.zu=="2"){
+                arrObj.name=item.remark1;
+                arrObj.count=item.count;
+                LongTail_02.push(arrObj);
+              }
+            });
+            var num01=0;
+            var num02=0;
+            LongTail_01.forEach(function(item,index){
+                 num01 += item.count;
+            });
+            LongTail_02.forEach(function(item,index){
+                 num02 += item.count;
+            });
+            $this.LongTail.LongTail_01=$this.CustomSort(LongTail_01);
+            $this.LongTail.LongTail_02=$this.CustomSort(LongTail_02);
+            $this.LongTail.num01=num01;
+            $this.LongTail.num02=num02;
+            console.log($this.LongTail,'$this.LongTail');
           }
         }
       );
@@ -178,39 +259,15 @@ export default {
       });
       $this.piesuffixData=arrlist;
     },
-    ThemePieChart:function(ThemeData){
-      var $this=this;
-      var dataobj = ThemeData;
-      var arrlist = [];
-      var otherObj={
-        name:'其它',
-        count:0,
-        s:0,
-        percent:0,
-      }
-      dataobj.forEach(function(item, index) {
-          if(index<=10){
-            arrlist.push(item);
-          }else{
-            otherObj.count += item.count;
-            otherObj.s = item.s;
-            otherObj.percent += item.percent;
-          }          
-      });
-      if(otherObj.percent!=0){
-        arrlist.push(otherObj);
-      }
-      $this.pieThemeData=arrlist;
-    },
     //时间插件
-    TimePlug:function(TimeData){
+    TimePlug:function(){
       var $this = this;
-      if(TimeData.starttime==''&&TimeData.endtime==''){
-          $this.starttime='';
-          $this.endtime='';
+      if($this.timeDayDate.startDaytime!=''&&$this.timeDayDate.endDaytime!=''){
+          $this.startDaytime=$this.timeDayDate.startDaytime;
+          $this.endDaytime=$this.timeDayDate.endDaytime;
       }else{
-          $this.starttime=TimeData.starttime;
-          $this.endtime=TimeData.endtime;
+          $this.startDaytime='';
+          $this.endDaytime='';
       }
     },
     //点击查询事件
@@ -219,27 +276,20 @@ export default {
       $this.pieDomainNaData=[];
       $this.piesuffixData=[];
       $this.pieThemeData=[];
-      $this.TimePlug($this.timeDate);
+      $this.TimePlug();
       $this.getDomainNaInfo();     //域名询盘
       $this.getsuffixInfo();    //后缀询盘
       $this.getThemeInfo();      //主题分布
+      $this.getLongTailInfo();
     },
     //接收传递的时间
-    listenTime:function(TDate){
+    listenTimeday:function(TDate){
       var $this=this;
-      if(TDate.starttime==''&&TDate.endtime==''){
-        $this.timeDate.starttime='';
-        $this.timeDate.endtime='';
-      }else{
-        $this.timeDate.starttime=TDate.starttime + '-01';
-        var endtimeVal =TDate.endtime.split("-");
-        $this.timeDate.endtime=TDate.endtime + '-' +new Date(endtimeVal[0],endtimeVal[1],0).getDate();
-      }
+      $this.timeDayDate=TDate;
     },
   }
 }
 </script>
-
 <style lang="scss" scoped>
 .el-header{
   background-color:#fff;
@@ -260,16 +310,6 @@ export default {
       width:100%;
       border-radius:5px;
       //padding: 20px;
-      .piecharttit{
-        clear: both;
-        display: block;
-        text-align: left;
-        padding:5px 15px;
-        font-size:16px;
-        font-weight: bold;
-        color: #333;
-        background: #f9f9f9;        
-      }
       .piechartbox{
         clear: both;
         display: block;
@@ -293,5 +333,44 @@ export default {
       background: #fff;
     }
   }
+}
+.sources{  
+    clear: both;
+    display: block;
+    //padding:5px 0px;
+    li{
+      clear: both;
+      display: block;
+      text-align: left;
+      overflow: hidden;
+      padding:12px 20px;
+      line-height:24px;
+      border-top:1px solid #e8e8ea;
+      &:first-child{border-top:0px;}
+      strong{
+        font-size: 15px;
+        color: #666;
+        line-height:24px;
+        display: inline-block;
+        font-weight: normal;
+        i{
+          float: left;
+          width:25px;
+          margin-right: 10px;
+          margin-top:4px;
+          img{width: 100%;display: block;}
+        }
+      }
+      span{
+        float: right;
+        text-align: right;
+        line-height:24px;
+        font-style: normal;
+        font-size: 15px;
+        font-weight: bold;
+        display: inline-block;
+        color: #3e404f;
+      }
+    }
 }
 </style>

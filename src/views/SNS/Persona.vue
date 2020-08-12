@@ -15,19 +15,19 @@
         <el-row :gutter="20">
           <el-col :span="8">
             <div class="grid-content bg-purple-light">
-                 <p class="piecharttit">国家询盘<i v-on:click="handleMore(Countrie,'国家')" class="el-icon-more icon"></i></p>
+                 <p class="piecharttit">国家询盘<font>(默认2020年2月至今)</font><i v-on:click="handleMore(Countrie,'国家')" class="el-icon-more icon"></i></p>
                  <div class="piechartbox"><pie-chart :piechartData="pieCountrieData" v-if="pieCountrieData.length>0" style="height:280px"></pie-chart></div>
             </div>
           </el-col>
           <el-col :span="8">
             <div class="grid-content bg-purple-light">
-                 <p class="piecharttit">大洲询盘<i v-on:click="handleMore(Continent,'大洲')" class="el-icon-more icon"></i></p>
+                 <p class="piecharttit">大洲询盘<font>(默认2020年2月至今)</font><i v-on:click="handleMore(Continent,'大洲')" class="el-icon-more icon"></i></p>
                  <div class="piechartbox"><pie-chart :piechartData="pieContinentData" v-if="pieContinentData.length>0" style="height:280px"></pie-chart></div>
             </div>
           </el-col>
           <el-col :span="8">
             <div class="grid-content bg-purple-light">
-                 <p class="piecharttit">渠道询盘<i v-on:click="handleMore(Channel,'渠道')" class="el-icon-more icon"></i></p>
+                 <p class="piecharttit">渠道询盘<font>(默认2020年2月至今)</font><i v-on:click="handleMore(Channel,'渠道')" class="el-icon-more icon"></i></p>
                  <div class="piechartbox"><pie-chart :piechartData="pieChannelData" v-if="pieChannelData.length>0" style="height:280px"></pie-chart></div>
             </div>
           </el-col>
@@ -35,7 +35,7 @@
         <el-row :gutter="20">
           <el-col :span="24">
             <div class="grid-content bg-purple-light">
-                 <p class="piecharttit">三组询盘对比</p>
+                 <p class="piecharttit">三组询盘对比<font>(默认2020年2月至今)</font></p>
                  <div class="piechartbox"><line-charttwo :linechartData="lineEncomparedData" v-if="lineEncomparedData.length>0" style="height:290px"></line-charttwo></div>
             </div>
           </el-col>
@@ -210,24 +210,11 @@ export default {
       var $this=this;
       var dataobj = CountrieData; //原始对象
       var arrlist = [];
-      var otherObj={
-        name:'其它',
-        count:0,
-        s:0,
-        percent:0,
-      }
       dataobj.forEach(function(item, index) {
           if(index<=10){
             arrlist.push(item);
-          }else{
-            otherObj.count += item.count;
-            otherObj.s = item.s;
-            otherObj.percent += item.percent;
-          } 
+          }
       });
-      if(otherObj.percent!=0){
-         arrlist.push(otherObj); 
-      }
       $this.pieCountrieData=arrlist;
     },
     ContinentPieChart:function(ContinentData){
@@ -312,8 +299,7 @@ export default {
         $this.timeDate.endtime='';
       }else{
         $this.timeDate.starttime=TDate.starttime + '-01';
-        var endtimeVal =TDate.endtime.split("-");
-        $this.timeDate.endtime=TDate.endtime + '-' +new Date(endtimeVal[0],endtimeVal[1],0).getDate();
+        $this.timeDate.endtime=TDate.endtime + '-01';
       }
     },
     //点击查看更多
@@ -354,24 +340,6 @@ export default {
       display: block;
       width:100%;
       border-radius:5px;
-      //padding: 20px;
-      .piecharttit{
-        clear: both;
-        display: block;
-        text-align: left;
-        padding:5px 15px;
-        font-size:16px;
-        font-weight: bold;
-        color: #333;
-        background: #f9f9f9;
-        .icon{
-          float: right;
-          color: #0277d5;
-          font-size: 24px;
-          line-height: 30px;
-          cursor: pointer;
-        }  
-      }
       .piechartbox{
         clear: both;
         display: block;

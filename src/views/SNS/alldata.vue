@@ -22,19 +22,19 @@
           <el-row :gutter="20">
             <el-col :span="8">
               <div class="grid-content bg-purple-light">
-                  <p class="piecharttit">国家询盘<i v-on:click="handleMore(Countrie,'国家')" class="el-icon-more icon"></i></p>
+                  <p class="piecharttit">国家询盘<font>(默认2020年2月至今)</font><i v-on:click="handleMore(Countrie,'国家')" class="el-icon-more icon"></i></p>
                   <div class="piechartbox"><pie-chart :piechartData="pieCountrieData" v-if="pieCountrieData.length>0" style="height:300px"></pie-chart></div>
               </div>
             </el-col>
             <el-col :span="8">
               <div class="grid-content bg-purple-light">
-                  <p class="piecharttit">大洲询盘<i v-on:click="handleMore(Continent,'大洲')" class="el-icon-more icon"></i></p>
+                  <p class="piecharttit">大洲询盘<font>(默认2020年2月至今)</font><i v-on:click="handleMore(Continent,'大洲')" class="el-icon-more icon"></i></p>
                   <div class="piechartbox"><pie-chart :piechartData="pieContinentData" v-if="pieContinentData.length>0" style="height:300px"></pie-chart></div>
               </div>
             </el-col>
             <el-col :span="8">
               <div class="grid-content bg-purple-light">
-                  <p class="piecharttit">渠道询盘<i v-on:click="handleMore(Channel,'渠道')" class="el-icon-more icon"></i></p>
+                  <p class="piecharttit">渠道询盘<font>(默认2020年2月至今)</font><i v-on:click="handleMore(Channel,'渠道')" class="el-icon-more icon"></i></p>
                   <div class="piechartbox"><pie-chart :piechartData="pieChannelData" v-if="pieChannelData.length>0" style="height:300px"></pie-chart></div>
               </div>
             </el-col>
@@ -42,7 +42,7 @@
           <el-row :gutter="20">
             <el-col :span="24">
               <div class="grid-content bg-purple-light">
-                  <p class="piecharttit">三组询盘对比</p>
+                  <p class="piecharttit">三组询盘对比<font>(默认2020年2月至今)</font></p>
                   <div class="piechartbox"><line-chartone :linechartData="lineEncomparedData" v-if="lineEncomparedData.length>0" style="height:300px"></line-chartone></div>
               </div>
             </el-col>
@@ -58,6 +58,8 @@ import PieChart from "../chart/PieChart";
 import LineChartone from "../chart/LineChartone";
 import SearchTime from "../public/searchTime";
 import ModalDialog from "./components/Modaldialog";
+import floatObj from "@/assets/js/floatObj";
+import toFixed from "@/assets/js/toFixed";
 export default {
   name: 'snsalldataPage',
   data() {
@@ -100,6 +102,7 @@ export default {
       var $this = this;
       $this.$api.get("/index/sns_group_area?starttime=" + $this.starttime + "&endtime=" + $this.endtime,null,function(res) {
           if (res) {
+            console.log(res,'sns_group_area');
             var arrlist=[];
             var chinaObj={
               name:'中国',
@@ -117,23 +120,36 @@ export default {
               if(item.area.indexOf("中国") >= 0){
                 chinaObj.count += item.n;
                 chinaObj.s = item.s;
-                chinaObj.percent += parseFloat(item.rat);
               }else{
                 arrObj.name=item.area;
                 arrObj.count=item.n;
                 arrObj.s=item.s;
-                arrObj.percent=parseFloat(item.rat);
+                arrObj.percent=parseFloat(toFixed(floatObj.divide(item.n,item.s),4));
                 arrlist.push(arrObj);
               }              
             });
+            chinaObj.percent=parseFloat(toFixed(floatObj.divide(chinaObj.count,chinaObj.s),4));
             if(chinaObj.percent!=0){
               arrlist.push(chinaObj);
             }
             $this.Countrie=$this.CustomSort(arrlist);
+            console.log($this.Countrie,'$this.Countrie');
             $this.CountriePieChart($this.Countrie);
           }
         }
       );
+    },
+    CountriePieChart:function(CountrieData){
+      var $this=this;
+      var dataobj = CountrieData; //原始对象
+      var arrlist = [];
+      dataobj.forEach(function(item, index) {
+          if(index<10){
+            arrlist.push(item);
+          }
+      });
+      console.log(arrlist,"pieCountrieData");
+      $this.pieCountrieData=arrlist;
     },
     getContinentInfo:function(){
       var $this = this;      
@@ -158,6 +174,15 @@ export default {
           }
         }
       );
+    },
+    ContinentPieChart:function(ContinentData){
+      var $this=this;
+      var dataobj = ContinentData; //原始对象
+      var arrlist = [];
+      dataobj.forEach(function(item, index) {
+          arrlist.push(item);
+      });
+      $this.pieContinentData=arrlist;
     },
     getChannelInfo:function(){
       var $this = this;
@@ -235,39 +260,6 @@ export default {
         };
         return SortData;
     },
-    CountriePieChart:function(CountrieData){
-      var $this=this;
-      var dataobj = CountrieData; //原始对象
-      var arrlist = [];
-      var otherObj={
-        name:'其它',
-        count:0,
-        s:0,
-        percent:0,
-      }
-      dataobj.forEach(function(item, index) {
-          if(index<=10){
-            arrlist.push(item);
-          }else{
-            otherObj.count += item.count;
-            otherObj.s = item.s;
-            otherObj.percent += item.percent;
-          } 
-      });
-      if(otherObj.percent!=0){
-         arrlist.push(otherObj); 
-      }
-      $this.pieCountrieData=arrlist;
-    },
-    ContinentPieChart:function(ContinentData){
-      var $this=this;
-      var dataobj = ContinentData; //原始对象
-      var arrlist = [];
-      dataobj.forEach(function(item, index) {
-          arrlist.push(item);
-      });
-      $this.pieContinentData=arrlist;
-    },
     ChannelPieChart:function(ChannelData){
       var $this=this;
       var dataobj = ChannelData; //原始对象
@@ -343,8 +335,7 @@ export default {
         $this.timeDate.endtime='';
       }else{
         $this.timeDate.starttime=TDate.starttime + '-01';
-        var endtimeVal =TDate.endtime.split("-");
-        $this.timeDate.endtime=TDate.endtime + '-' +new Date(endtimeVal[0],endtimeVal[1],0).getDate();
+        $this.timeDate.endtime=TDate.endtime + '-01';
       }
     },
     //点击姓名缓存
@@ -398,23 +389,6 @@ export default {
       width:100%;
       border-radius:5px;
       //padding: 20px;
-      .piecharttit{
-        clear: both;
-        display: block;
-        text-align: left;
-        padding:5px 15px;
-        font-size:16px;
-        font-weight: bold;
-        color: #333;
-        background: #f9f9f9; 
-        .icon{
-          float: right;
-          color: #0277d5;
-          font-size: 24px;
-          line-height: 30px;
-          cursor: pointer;
-        }  
-      }
       .piechartbox{
         clear: both;
         display: block;

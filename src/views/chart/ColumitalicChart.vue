@@ -47,7 +47,7 @@ export default {
       chart.axis('name', {
         label:{
           offset:10, // 设置坐标轴文本 label 距离坐标轴线的距离
-          rotate:0.3,
+          //rotate:0.3,
           autoRotate:true // 是否需要自动旋转，默认为 true
         }
       });

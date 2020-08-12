@@ -11,7 +11,7 @@
           <el-row :gutter="20">
             <el-col :span="15">
               <div class="grid-content bg-purple-light">
-                  <p class="piecharttit">总花费每天月/月变化趋势</p>
+                  <p class="piecharttit">总花费<font>(每天月/月变化趋势)</font></p>
                   <div class="piechartbox"><costline-chartone :linechartData="DayCost" v-if="DayCost.length>0" style="height:300px"></costline-chartone></div>
               </div>
             </el-col>
@@ -38,7 +38,7 @@
           <el-row :gutter="20">
             <el-col :span="24">
               <div class="grid-content bg-purple-light">
-                  <p class="piecharttit">性价比(有效询盘数/总花费)</p>
+                  <p class="piecharttit">性价比<font>(有效询盘数/总花费)</font></p>
                   <div class="piechartbox"><costline-charttwo :linechartData="DayCostPerformance" v-if="DayCostPerformance.length>0" style="height:300px"></costline-charttwo></div>
               </div>
             </el-col>
@@ -46,7 +46,7 @@
           <el-row :gutter="20">
             <el-col :span="24">
               <div class="grid-content bg-purple-light">
-                  <p class="piecharttit">单个搜索询盘成本变化趋势（搜索渠道询盘总数/搜索点击次数）</p>
+                  <p class="piecharttit">单个搜索询盘成本变化趋势<font>(搜索渠道询盘总数/搜索点击次数)</font></p>
                   <div class="piechartbox"><costline-chartthree :linechartData="DayCostNumber" v-if="DayCostNumber.length>0" style="height:300px"></costline-chartthree></div>
               </div>
             </el-col>
@@ -268,22 +268,6 @@ export default {
       display: block;
       width:100%;
       border-radius:5px;
-      .piecharttit{
-        clear: both;
-        display: block;
-        text-align: left;
-        padding:20px 15px 10px 15px;
-        font-size:15px;
-        font-weight: bold;
-        color: #495057;
-        .icon{
-          float: right;
-          color: #0277d5;
-          font-size: 24px;
-          line-height: 30px;
-          cursor: pointer;
-        }         
-      }
       .piechartbox{
         clear: both;
         display: block;
