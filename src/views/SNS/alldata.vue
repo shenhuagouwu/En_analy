@@ -271,7 +271,7 @@ export default {
         percent:0,
       }
       dataobj.forEach(function(item, index) {
-          if(item.name==""||item.name=="未知"){
+          if(item.name==""||item.name=="未知"||item.name==null){
             otherObj.count += item.count;
             otherObj.s = item.s;
             otherObj.percent += item.percent;
