@@ -30,17 +30,17 @@ export default {
           pid: 0,
           children:[
             {
-                id:1,
+                id:2,
                 type:'enCost',
                 name:'花费统计',
                 isOn:true,
                 url:"/Enpromotion/encostRecord",
-                pid:0,
+                pid:1,
             }
           ]
         },
         {
-          id: 4,
+          id: 3,
           type: "SNSanaly",
           name: "SNS",
           isOn: false,
@@ -49,13 +49,23 @@ export default {
           pid: 0
         },
         {
-          id: 7,
+          id: 4,
           type: "longword",
           name: "长尾词",
           isOn: false,
           url: "/longword",
           icon:"el-icon-date",
-          pid: 0
+          pid: 0,
+          children:[
+            {
+                id:5,
+                type:'addlong',
+                name:'添加长尾词',
+                isOn:true,
+                url:"/longword/addlong",
+                pid:4,
+            }
+          ]
         }
       ],
       childList: []

@@ -230,17 +230,21 @@ export default {
              arrObj_zd.count +=item.count;
            }
            Num_count += item.count;
-         });         
-         arrObj_zd.percent=Math.floor(arrObj_zd.count/Num_count*10000) / 100;
-         arrObj_hx.percent=Math.floor(arrObj_hx.count/Num_count*10000) / 100;
-         arrObj_ft.percent=Math.floor(arrObj_ft.count/Num_count*10000) / 100;
+         });
+         Num_count=Math.floor(Num_count*100)/100;    
+         arrObj_zd.percent=Math.floor(arrObj_zd.count/Num_count*10000)/100;
+         arrObj_hx.percent=Math.floor(arrObj_hx.count/Num_count*10000)/100;
+         arrObj_ft.percent=Math.floor(arrObj_ft.count/Num_count*10000)/100;
          if(arrObj_zd.name!=""){
+            arrObj_zd.count=Math.floor(arrObj_zd.count*100)/100;
             arr_BrandMonth.push(arrObj_zd);
          }
          if(arrObj_ft.name!=""){
+            arrObj_ft.count=Math.floor(arrObj_ft.count*100)/100;
             arr_BrandMonth.push(arrObj_ft);
          }
          if(arrObj_hx.name!=""){
+            arrObj_hx.count=Math.floor(arrObj_hx.count*100)/100;
             arr_BrandMonth.push(arrObj_hx);
          }
          $this.BrandMonthCost=arr_BrandMonth;

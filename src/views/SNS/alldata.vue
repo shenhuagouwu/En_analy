@@ -312,6 +312,17 @@ export default {
           $this.endtime=TimeData.endtime;
       }
     },
+    //接收传递的时间
+    listenTime:function(TDate){
+      var $this=this;
+      if(TDate.starttime==''&&TDate.endtime==''){
+        $this.timeDate.starttime='';
+        $this.timeDate.endtime='';
+      }else{
+        $this.timeDate.starttime=TDate.starttime + '-01';
+        $this.timeDate.endtime=TDate.endtime + '-01';
+      }
+    },
     //点击查询事件
     handleQueryBtn:function(){
       var $this = this;

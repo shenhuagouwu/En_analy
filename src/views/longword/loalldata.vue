@@ -5,16 +5,19 @@
             <i class="icon el-icon-position"></i>
             <el-breadcrumb-item>长尾词</el-breadcrumb-item>
         </el-breadcrumb>
-        <div class="searchtime">
-              <search-timeday v-on:childTimeDayData="listenTimeday"></search-timeday>
-              <span class="searchbtn" v-on:click="handleQueryBtn">查询</span>
-        </div>
     </el-header>
     <el-main>
         <el-row :gutter="20">
           <el-col :span="24">
             <div class="grid-content bg-purple-light">
-                 <p class="piecharttit">域名询盘<font>(默认2020年2月至今)</font></p>
+                  <div class="piecharttit">
+                       <strong>域名询盘</strong>
+                       <font>(默认2020年2月至今)</font>
+                       <div class="searchtime">
+                            <search-timeday  class="timebox" v-on:childTimeDayData="listenTimeday"></search-timeday>
+                            <span class="searchbtn" v-on:click="handleHostBtn">查询</span>
+                       </div>
+                  </div>
                  <div class="piechartbox"><columitalic-chart :columchartData="pieDomainNaData" v-if="pieDomainNaData.length>0" style="height:350px"></columitalic-chart></div>
             </div>
           </el-col>
@@ -22,46 +25,78 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <div class="grid-content bg-purple-light">
-                 <p class="piecharttit">后缀询盘询盘<font>(默认2020年2月至今)</font></p>
+                  <div class="piecharttit">
+                       <strong>后缀询盘询盘</strong>
+                       <font>(默认2020年2月至今)</font>
+                       <div class="searchtime">
+                            <search-timeday class="timebox" v-on:childTimeDayData="listenTimeday"></search-timeday>
+                            <span class="searchbtn" v-on:click="handleHouzhuiBtn">查询</span>
+                       </div>
+                  </div>
                  <div class="piechartbox"><colum-chart :columchartData="piesuffixData" v-if="piesuffixData.length>0" style="height:280px"></colum-chart></div>
             </div>
           </el-col>
           <el-col :span="12">
             <div class="grid-content bg-purple-light">
-                 <p class="piecharttit">主题分布询盘<font>(默认2020年2月至今)</font></p>
+                  <div class="piecharttit">
+                       <strong>主题分布询盘</strong>
+                       <font>(默认2020年2月至今)</font>
+                       <div class="searchtime">
+                            <search-timeday class="timebox" v-on:childTimeDayData="listenTimeday"></search-timeday>
+                            <span class="searchbtn" v-on:click="handleThemeBtn">查询</span>
+                       </div>
+                  </div>
                  <div class="piechartbox"><pie-chart :piechartData="pieThemeData" v-if="pieThemeData.length>0" style="height:280px"></pie-chart></div>
             </div>
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="12">
+          <el-col :span="24">
               <div class="grid-content bg-purple-light">
-                  <p class="piecharttit">长尾词站询盘-组合一<font>(默认当前一天)</font></p>
-                  <ul class="sources">
-                      <li v-for="(item,index) in LongTail.LongTail_02">
-                          <strong>{{item.name}}</strong>
-                          <span>{{item.count}}</span>
-                      </li>
-                      <li>
-                          <strong>总计</strong>
-                          <span>{{LongTail.num02}}</span>
-                      </li>
-                  </ul>
-              </div>
-          </el-col>
-          <el-col :span="12">
-              <div class="grid-content bg-purple-light">
-                  <p class="piecharttit">长尾词站询盘-组合三<font>(默认当前一天)</font></p>
-                  <ul class="sources">
-                      <li v-for="(item,index) in LongTail.LongTail_01">
-                          <strong>{{item.name}}</strong>
-                          <span>{{item.count}}</span>
-                      </li>
-                      <li>
-                          <strong>总计</strong>
-                          <span>{{LongTail.num01}}</span>
-                      </li>
-                  </ul>
+                  <div class="piecharttit">
+                       <strong>长尾词站询盘-组合三</strong>
+                       <font>(默认当前一天)</font>
+                       <dl class="searchdl">
+                          <dd>
+                            <el-input placeholder="请选择域名" v-model="searchDomainNa" clearable></el-input>
+                          </dd>
+                          <dd>
+                            <el-input placeholder="请选择姓名" v-model="searchName" clearable></el-input>
+                          </dd>
+                          <dd>
+                            <el-input placeholder="请选择后缀" v-model="searchSuffix" clearable></el-input>
+                          </dd>
+                          <dt>
+                              <search-timeday class="timebox" v-on:childTimeDayData="listenTimeday"></search-timeday>
+                              <span class="searchbtn" v-on:click="handleResBtn">查询</span>
+                          </dt>
+                       </dl>
+                  </div>   
+                  <dl class="Personallong" v-for="(item,index) in teamNum" :key="index">
+                      <dt v-for="(items) in item">
+                          <i class="el-icon-user-solid"></i>{{items.name}}<span>{{items.count}}</span>
+                      </dt>
+                  </dl>
+                  <div class="sources">
+                      <ul v-for="(item,index) in LongTail">                    
+                          <li class="sources_tit">
+                              <span class="span01">姓名</span>
+                              <span class="span02">域名</span>
+                              <span class="span03">国家</span>
+                              <span class="span04">询盘来源</span>
+                              <span class="span05">产品名称</span>
+                              <span class="span06">来询盘时间</span>
+                          </li>
+                          <li class="sources_main"  v-for="(items,index) in item" :key="index">
+                              <span class="span01">{{items.remark1}}</span>
+                              <span class="span02"><i @click="See(items.url)" :title="items.url">{{items.host}}</i></span>
+                              <span class="span03">{{items.area}}</span>
+                              <span class="span04">{{items.mode}}</span>
+                              <span class="span05">{{items.key}}</span>
+                              <span class="span06">{{items.datetimeday}}<i>{{items.datetimedate}}</i></span>
+                          </li>
+                      </ul>
+                  </div>
               </div>
           </el-col>
         </el-row>
@@ -81,12 +116,16 @@ export default {
       suffix:[],     //后缀询盘
       Theme:[],       //主题分布
       LongTail:[],
+      teamNum:[],
       timeDayDate:{
         startDaytime:'',
         endDaytime:'', 
       },                              // 日期插件传递值
       startDaytime:'',                // 查询开始日期
       endDaytime:'',                  // 查询结束日期
+      searchDomainNa:'',              // 查询域名
+      searchName:'',                  // 查询姓名
+      searchSuffix:'',                // 查询后缀
       pieDomainNaData:[], //饼图需要传过去的域名询盘数据
       piesuffixData:[], //饼图需要传过去的后缀询盘数据
       pieThemeData:[], //饼图需要传过去的主题分布数据
@@ -100,7 +139,10 @@ export default {
   },
   mounted() {
     var $this=this;
-    $this.handleQueryBtn();
+    $this.handleHostBtn();
+    $this.handleHouzhuiBtn();
+    $this.handleThemeBtn();
+    $this.handleResBtn();
   },
   methods: {
     getDomainNaInfo:function(){
@@ -155,25 +197,24 @@ export default {
           if (res) {
             var arrlist=[];
             res.data.forEach(function(item,index){
-               if(item.zhuti==""||item.zhuti==undefined||item.zhuti==null){
-                 item.zhuti="无主题"
+               if(item.zhuti!=""||item.zhuti!=undefined||item.zhuti!=null){
+                  var arrObj={
+                      name:'',
+                      count:0,
+                      s:0,
+                      percent:0,
+                  };
+                  arrObj.name=item.zhuti;
+                  arrObj.count=item.n;
+                  arrObj.s=item.s;
+                  arrObj.percent=parseFloat(item.rat);
+                  arrlist.push(arrObj);
                }
-               var arrObj={
-                  name:'',
-                  count:0,
-                  s:0,
-                  percent:0,
-               };
-               arrObj.name=item.zhuti;
-               arrObj.count=item.n;
-               arrObj.s=item.s;
-               arrObj.percent=parseFloat(item.rat);
-               arrlist.push(arrObj);
             });
             $this.Theme=$this.CustomSort(arrlist);
             var arrTheme=[];
             $this.Theme.forEach(function(item, index) {
-                if(index<=10){
+                if(index<10){
                   arrTheme.push(item);
                 }         
             });
@@ -184,42 +225,105 @@ export default {
     },
     getLongTailInfo:function(){
       var $this = this;
-      $this.$api.get("/index/day_longword?starttime=" + $this.startDaytime + "&endtime=" + $this.endDaytime,null,function(res) {
+      $this.$api.get("/index/longword_liebiao?starttime=" + $this.startDaytime + "&endtime=" + $this.endDaytime + "&remark1=" + $this.searchName + "&host=" + $this.searchDomainNa + "&ym_hou=" + $this.searchSuffix,null,function(res) {
           if (res) {
-            console.log(res,'longtail');
-            $this.LongTail=[];
-            var LongTail_01=[];
-            var LongTail_02=[];
-            var arrlist=[];
+            console.log(res,'$this.LongTailres'); 
+            if(res.data!=''){
+            var arr01=[];
+            var arr02=[];
             res.data.forEach(function(item,index){
               var arrObj={
-                name:'',
-                count:0
+                area:'',
+                datetimeday:'',
+                datetimedate:'',
+                host:'',
+                key:'',
+                mode:'',
+                remark1:'',
+                remark3:'',
+                url:''
               }
-              if(item.zu=="1"){
-                arrObj.name=item.remark1;
-                arrObj.count=item.count;
-                LongTail_01.push(arrObj);
+              if(item.remark3=='组合一'&&item.remark3!=''){
+                arrObj.area=item.area;
+                arrObj.datetime=item.datetime;
+                arrObj.datetimeday=item.datetime.split(" ")[0];
+                arrObj.datetimedate=item.datetime.split(" ")[1];
+                arrObj.host=item.host;
+                arrObj.key=item.key;
+                arrObj.mode=item.mode;
+                arrObj.remark1=item.remark1;
+                arrObj.remark3=item.remark3;
+                arrObj.url=item.url;
+                arr01.push(arrObj);
               }
-              if(item.zu=="2"){
-                arrObj.name=item.remark1;
-                arrObj.count=item.count;
-                LongTail_02.push(arrObj);
+              if(item.remark3=='组合三'&&item.remark3!=''){
+                arrObj.area=item.area;
+                arrObj.datetimeday=item.datetime.split(" ")[0];
+                arrObj.datetimedate=item.datetime.split(" ")[1];
+                arrObj.host=item.host;
+                arrObj.key=item.key;
+                arrObj.mode=item.mode;
+                arrObj.remark1=item.remark1;
+                arrObj.remark3=item.remark3;
+                arrObj.url=item.url;
+                arr02.push(arrObj);
               }
             });
-            var num01=0;
-            var num02=0;
-            LongTail_01.forEach(function(item,index){
-                 num01 += item.count;
-            });
-            LongTail_02.forEach(function(item,index){
-                 num02 += item.count;
-            });
-            $this.LongTail.LongTail_01=$this.CustomSort(LongTail_01);
-            $this.LongTail.LongTail_02=$this.CustomSort(LongTail_02);
-            $this.LongTail.num01=num01;
-            $this.LongTail.num02=num02;
+            $this.LongTail.push(arr01,arr02);  
             console.log($this.LongTail,'$this.LongTail');
+            }          
+          }
+        }
+      );
+    },
+    getTeamNum:function(){
+      var $this = this;
+      $this.$api.get("/index/day_longword?starttime=" + $this.startDaytime + "&endtime=" + $this.endDaytime,null,function(res) {
+          if (res) {
+            console.log(res,'getTeamNum');
+            if(res.data!=''){
+              var arrList01=[];
+              var arrList02=[];
+              res.data.forEach(function(item,index){
+                var arrObj={
+                    name:'',
+                    count:0,
+                    team:''
+                }
+                if(item.remark3=='组合一'&&item.remark3!=''){
+                  arrObj.name=item.remark1;
+                  arrObj.count=item.count;
+                  arrObj.team=item.remark3;
+                  arrList01.push(arrObj);
+                }
+                if(item.remark3=='组合三'&&item.remark3!=''){
+                  arrObj.name=item.remark1;
+                  arrObj.count=item.count;
+                  arrObj.team=item.remark3;
+                  arrList02.push(arrObj);
+                }
+              });
+              var arrTotal01={
+                  name:'组合一',
+                  count:0,
+                  team:'组合一'
+              }
+              var arrTotal02={
+                  name:'组合三',
+                  count:0,
+                  team:'组合三'
+              }
+              arrList01.forEach(function(item,index){
+                  arrTotal01.count += item.count;
+              });
+              arrList02.forEach(function(item,index){
+                  arrTotal02.count += item.count;
+              });
+              arrList01.unshift(arrTotal01);
+              arrList02.unshift(arrTotal02);
+              $this.teamNum.push(arrList01,arrList02);
+              console.log($this.teamNum,'liebiao');
+            }
           }
         }
       );
@@ -259,6 +363,15 @@ export default {
       });
       $this.piesuffixData=arrlist;
     },
+    //点击来源页面跳转
+    See:function(e){
+      window.open(e, '_blank');
+    },
+    //接收传递的时间
+    listenTimeday:function(TDate){
+      var $this=this;
+      $this.timeDayDate=TDate;
+    },
     //时间插件
     TimePlug:function(){
       var $this = this;
@@ -271,21 +384,31 @@ export default {
       }
     },
     //点击查询事件
-    handleQueryBtn:function(){
+    handleHostBtn:function(){
       var $this = this;
       $this.pieDomainNaData=[];
-      $this.piesuffixData=[];
-      $this.pieThemeData=[];
       $this.TimePlug();
       $this.getDomainNaInfo();     //域名询盘
-      $this.getsuffixInfo();    //后缀询盘
-      $this.getThemeInfo();      //主题分布
-      $this.getLongTailInfo();
     },
-    //接收传递的时间
-    listenTimeday:function(TDate){
-      var $this=this;
-      $this.timeDayDate=TDate;
+    handleHouzhuiBtn:function(){
+      var $this = this;
+      $this.piesuffixData=[];
+      $this.TimePlug();
+      $this.getsuffixInfo();    //后缀询盘
+    },
+    handleThemeBtn:function(){
+      var $this = this;
+      $this.pieThemeData=[];
+      $this.TimePlug();
+      $this.getThemeInfo();      //主题分布
+    },
+    handleResBtn:function(){
+      var $this = this;
+      $this.LongTail=[];
+      $this.teamNum=[];
+      $this.TimePlug();
+      $this.getLongTailInfo();
+      $this.getTeamNum();
     },
   }
 }
@@ -337,40 +460,184 @@ export default {
 .sources{  
     clear: both;
     display: block;
-    //padding:5px 0px;
-    li{
-      clear: both;
-      display: block;
-      text-align: left;
-      overflow: hidden;
-      padding:12px 20px;
-      line-height:24px;
-      border-top:1px solid #e8e8ea;
-      &:first-child{border-top:0px;}
-      strong{
-        font-size: 15px;
-        color: #666;
+    padding:5px 20px;
+    overflow: hidden;
+      margin-left:-2%;
+    ul{
+      float: left;
+      margin-left:2%;
+      width: 48%;
+      padding-top:15px;
+      li{
+        clear: both;
+        display: block;
+        text-align: left;
+        overflow: hidden;
+        padding:12px 0px;
         line-height:24px;
-        display: inline-block;
-        font-weight: normal;
-        i{
-          float: left;
-          width:25px;
-          margin-right: 10px;
-          margin-top:4px;
-          img{width: 100%;display: block;}
+        &.sources_tit{
+          clear: both;
+          overflow: hidden;
+          background: #e9eef3;
+          border-radius: 10px;
+          span{
+            float: left;
+            line-height:24px;
+            font-size: 15px;
+            color: #3e404f;
+            font-weight: bold;
+            height: 24px;
+          }
+        }
+        &.sources_main{
+          clear: both;
+          overflow: hidden;
+          border-bottom:1px solid #e8e8ea;
+          span{
+            float: left;
+            line-height:24px;
+            font-size: 14px;
+            min-height: 24px;
+            word-break: break-all;
+            &.span02{
+              height:auto;
+              min-height:24px;
+              i{
+                display:inline-block;
+                font-style: normal;
+                  cursor: pointer;  
+                  &:hover{
+                    color: #f30;
+                    font-weight: bold;
+                  }
+              }
+            }
+            &.span06{
+               font-size: 14px;
+            }
+          }
+        }
+        &:last-child{
+          border-bottom:0px;
         }
       }
-      span{
-        float: right;
-        text-align: right;
-        line-height:24px;
-        font-style: normal;
-        font-size: 15px;
-        font-weight: bold;
-        display: inline-block;
-        color: #3e404f;
-      }
     }
+}
+.searchtime {
+    /deep/ .timebox {
+        padding: 3px 10px!important;
+        height: 30px!important;
+        line-height: 24px!important;
+        .el-input__icon {
+            line-height: 24px!important;
+        }
+        &.el-date-editor .el-range-separator {
+            line-height: 24px!important;
+        }
+        &.el-date-editor .el-range__icon{
+            line-height: 24px!important;
+        }
+    }
+    /deep/ .searchbtn {
+        font-size: 14px;
+        height: 30px!important;
+        padding: 0px 10px;
+    }
+}
+.searchdl {
+  float: right;
+  dd{
+    float: left;
+    width: 150px;
+    margin-right: 15px;
+    /deep/ .el-input__inner{height:30px!important; line-height:28px!important;}
+    /deep/ .el-input__icon{line-height:30px!important;}
+  }
+  dt{
+    float: left;
+    /deep/ .timebox {
+        padding: 3px 10px!important;
+        height: 30px!important;
+        line-height: 24px!important;
+        .el-input__icon {
+            line-height: 24px!important;
+        }
+        &.el-date-editor .el-range-separator {
+            line-height: 24px!important;
+            width: auto!important;
+        }
+        &.el-date-editor .el-range__icon{
+            line-height: 24px!important;
+        }
+    }
+    /deep/ .searchbtn {
+        float: right;
+        background: #21262e;
+        color: #fff;
+        border-radius: 5px;
+        line-height: 30px;
+        margin-left: 15px;
+        font-size: 14px;
+        height: 30px!important;
+        padding: 0px 10px;
+        cursor: pointer;
+        &:hover {
+          background: #f13331;
+        }
+    }
+  }
+}
+.Personallong{
+  clear: both;
+  overflow: hidden;
+  padding-top:15px;
+  dt{
+    float: left;
+    width:8.5%;
+    text-align: left;
+    padding: 10px 15px;
+    cursor: pointer;
+    background: #f7f7f7;
+    border-radius: 10px;
+    margin-left: 1%;
+    text-align: left;
+    font-size: 14px;
+    color: #647698;
+    font-weight: bold;
+    i{
+      float: left;
+      font-size: 16px;
+      color: #647698;
+      margin-right: 7px;
+      margin-top: 7px;
+    }
+    span{
+      float: right;
+      color: #0277d5;
+      font-size: 14px;
+    }
+  }
+}
+.span01{width:10%; text-align:center;color: #3e404f;}
+.span02{
+  width:28%;
+  text-align:left;
+  color: #3e404f;
+}
+.span03{width:10%; text-align:left;color: #3e404f;}
+.span04{width:10%; text-align:left;color: #3e404f;}
+.span05{width:30%; text-align:left;color: #3e404f;}
+.span06{
+  width:12%; text-align:left;color: #3e404f;position: relative;
+    
+  i{
+    clear: both;
+    display: block;
+    font-style: normal;
+    font-size: 12px;
+    color: #bfbfbf;
+    line-height: 1;
+    margin-top: -6px;
+  }
 }
 </style>

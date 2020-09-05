@@ -67,7 +67,7 @@ export default {
           month = month - 12;
           year = year + 1;
         }
-        $this.timeDate.endtime=year + ',' + month
+        $this.timeDate.endtime=year + '-' + month
       }else{
         $this.timeDate.starttime="";
         $this.timeDate.endtime="";
