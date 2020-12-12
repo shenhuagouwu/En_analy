@@ -7,7 +7,7 @@
             <el-breadcrumb-item>长尾词询盘</el-breadcrumb-item>
         </el-breadcrumb>
     </el-header>
-    <el-main>
+    <el-scrollbar style="height:100%">
         <el-row :gutter="20">
           <el-col :span="24">
               <div class="grid-content bg-purple-light searchdlBox">
@@ -70,7 +70,7 @@
                               <span class="span01">{{item.remark1}}</span>
                               <span class="span02">{{item.remark3}}</span>
                               <span class="span03">{{item.online_time}}</span>
-                              <span class="span04"><i @click="See(item.url)" :title="item.url">{{item.host}}</i></span>
+                              <span class="span04"><i @click="See(item.url)">{{item.host}}</i></span>
                               <span class="span05">{{item.area}}</span>
                               <span class="span06">{{item.mode}}</span>
                               <span class="span07">{{item.key}}</span>
@@ -81,7 +81,7 @@
               </div>
           </el-col>
         </el-row>
-    </el-main>
+    </el-scrollbar>
   </el-container>
 </template>
 <script>
@@ -140,7 +140,12 @@ export default {
                 }
                 arrObj.area=item.area;
                 arrObj.datetime=item.datetime;
-                arrObj.online_time=item.online_time;
+                if(item.remark1=='Email'){
+                    arrObj.online_time=item.datetime.split(" ")[0];
+                }else{                  
+                    arrObj.online_time=item.online_time;
+                }
+                //arrObj.online_time=item.online_time;
                 arrObj.datetimeday=item.datetime.split(" ")[0];
                 arrObj.datetimedate=item.datetime.split(" ")[1];
                 arrObj.host=item.host;
@@ -151,7 +156,9 @@ export default {
                 arrObj.url=item.url;
                 arr01.push(arrObj);
               });
+              console.log(arr01,'arr01');
               arr02=$this.filterDate(arr01,$this.startDomaintime,$this.endDomaintime);
+              console.log(arr02,'arr01');
               $this.LongTail=$this.filtergroup(arr02,$this.searchGroup);
               console.log($this.LongTail,'$this.LongTail01');
               $this.getTeamNum();
@@ -295,13 +302,9 @@ export default {
           newData = initData;
         } else {
           initData.forEach(function(item) {
-            if(item.online_time){
               if ($this.compareDate(item.online_time, startDate) >= 0 && $this.compareDate(endDate, item.online_time) >= 0){
                 newData.push(item);
               }
-            }else{
-              $this.$message.error('错了哦，数据没有域名分配时间：area:'+item.area+'datetimeday:'+item.datetimeday+'datetimedate:'+item.datetimedate+'host:'+item.host+'key:'+item.key+'mode:'+item.mode+'remark1:'+item.remark1+'remark3:'+item.remark3+'url:'+item.url);
-            }
           });
         }
         return newData;

@@ -7,7 +7,7 @@
             <el-breadcrumb-item>添加长尾词</el-breadcrumb-item>
         </el-breadcrumb>
     </el-header>
-    <el-main>
+    <el-scrollbar style="height:100%">
         <el-row :gutter="20">
           <el-col :span="24">
                 <dl class="Infotop">
@@ -41,6 +41,7 @@
                      <dl>
                        <dt>
                           <span class="span01">ID</span>
+                          <span class="span01">域名ID</span>
                           <span class="span02">姓名</span>
                           <span class="span03">域名分配日期</span>
                           <span class="span04">域名</span>
@@ -51,9 +52,10 @@
                        </dt>
                        <dd v-for="(item,index) in Information" :key="index">
                           <span class="span01">{{item.id}}</span>
+                          <span class="span01">{{item.ymid}}</span>
                           <span class="span02">{{item.name}}</span>
                           <span class="span03">{{item.online_time}}</span>
-                          <span class="span04"><i @click="See(item.domain)" :title="item.domain">{{item.domain}}</i></span>
+                          <span class="span04"><i @click="See('https://'+item.domain)">{{item.domain}}</i></span>
                           <span class="span06">{{item.zhuti}}</span>
                           <span class="span07">{{item.zu}}</span>
                           <span class="span08">{{item.beizhu}}</span>
@@ -100,7 +102,7 @@
             </div>
         </div>
         <p class="mask" v-if="showAbs"></p>
-    </el-main>
+    </el-scrollbar>
   </el-container>
 </template>
 <script>
@@ -127,6 +129,14 @@ export default {
               {name:'徐凌霄'},
               {name:'王雷'},
               {name:'王文博'},
+              {name:'常怡广'},
+              {name:'王俊威'},
+              {name:'李鹏远'},
+              {name:'梁迎春'},
+              {name:'刘培斌'},
+              {name:'刘松海'},
+              {name:'孟君豪'},
+              {name:'张旭'},
             ],
             searchName:'',
             searchzuNameList:[
@@ -144,6 +154,14 @@ export default {
               {name:'徐凌霄'},
               {name:'王雷'},
               {name:'王文博'},
+              {name:'常怡广'},
+              {name:'王俊威'},
+              {name:'李鹏远'},
+              {name:'梁迎春'},
+              {name:'刘培斌'},
+              {name:'刘松海'},
+              {name:'孟君豪'},
+              {name:'张旭'},
             ],
             uploadName:'',
             uploadDomain:'',
@@ -294,6 +312,7 @@ export default {
                     $this.Information=[];
                     $this.initInfo();
                 }
+                $this.$message.error('错了哦，这是一条错误消息');
               }
             );
           }else{            

@@ -6,7 +6,7 @@
             <el-breadcrumb-item>长尾词</el-breadcrumb-item>
         </el-breadcrumb>
     </el-header>
-    <el-main>
+    <el-scrollbar style="height:100%">
         <el-row :gutter="20">
           <el-col :span="24">
             <div class="grid-content bg-purple-light">
@@ -50,7 +50,7 @@
             </div>
           </el-col>
         </el-row>
-    </el-main>
+    </el-scrollbar>
   </el-container>
 </template>
 <script>
