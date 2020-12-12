@@ -74,6 +74,11 @@ const routes = [
                         component: () => import('@/views/longword/addlong'),
                         name: 'addlongPage',
                     },
+                    {
+                        path: '/longword/longtail',
+                        component: () => import('@/views/longword/longtail'),
+                        name: 'longtailPage',
+                    },
                 ]
             }
         ]
@@ -82,7 +87,7 @@ const routes = [
 /* 3. 创建 router 实例 */
 const router = new Router({
     /* 4. 传 `routes` 配置，这里是缩写，相当于 routes: routes */
-    //mode:'history',
+    mode:'history',
     routes
 });
 // var ThereField = '/login';

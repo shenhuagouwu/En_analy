@@ -14,10 +14,10 @@ axios.defaults.baseURL = env=="development"?config.dev.env.BASE_API: config.buil
 let http = axios.create({
     withCredentials: true,//指示是否跨站点访问控制请求 
     timeout: 20000,//指定请求超时之前的毫秒数
-    // headers:{//是要发送的自定义标题
-    //     // "Access-Control-Allow-Origin":"*",
-    //     // "Access-Control-Allow-Credentials": false,
-    //     // 'Content-Type': "application/json;charset=utf-8"
+    // headers:{
+    //     "Access-Control-Allow-Origin":"*",
+    //     "Access-Control-Allow-Credentials": false,
+    //     'Content-Type': "application/json;charset=utf-8"
     // },    
     transformRequest:[function(data){//允许在将请求数据发送到服务器之前对其进行更改,仅适用于请求方法“ PUT”，“ POST”，“ PATCH”和“ DELETE”
         let newData = Qs.stringify(data);

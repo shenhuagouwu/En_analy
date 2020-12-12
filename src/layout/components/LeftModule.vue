@@ -64,6 +64,14 @@ export default {
                 isOn:true,
                 url:"/longword/addlong",
                 pid:4,
+            },
+            {
+                id:6,
+                type:'longtail',
+                name:'长尾词询盘',
+                isOn:true,
+                url:"/longword/longtail",
+                pid:4,
             }
           ]
         }

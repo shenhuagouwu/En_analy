@@ -50,56 +50,6 @@
             </div>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
-          <el-col :span="24">
-              <div class="grid-content bg-purple-light">
-                  <div class="piecharttit">
-                       <strong>长尾词站询盘-组合三</strong>
-                       <font>(默认当前一天)</font>
-                       <dl class="searchdl">
-                          <dd>
-                            <el-input placeholder="请选择域名" v-model="searchDomainNa" clearable></el-input>
-                          </dd>
-                          <dd>
-                            <el-input placeholder="请选择姓名" v-model="searchName" clearable></el-input>
-                          </dd>
-                          <dd>
-                            <el-input placeholder="请选择后缀" v-model="searchSuffix" clearable></el-input>
-                          </dd>
-                          <dt>
-                              <search-timeday class="timebox" v-on:childTimeDayData="listenTimeday"></search-timeday>
-                              <span class="searchbtn" v-on:click="handleResBtn">查询</span>
-                          </dt>
-                       </dl>
-                  </div>   
-                  <dl class="Personallong" v-for="(item,index) in teamNum" :key="index">
-                      <dt v-for="(items) in item">
-                          <i class="el-icon-user-solid"></i>{{items.name}}<span>{{items.count}}</span>
-                      </dt>
-                  </dl>
-                  <div class="sources">
-                      <ul v-for="(item,index) in LongTail">                    
-                          <li class="sources_tit">
-                              <span class="span01">姓名</span>
-                              <span class="span02">域名</span>
-                              <span class="span03">国家</span>
-                              <span class="span04">询盘来源</span>
-                              <span class="span05">产品名称</span>
-                              <span class="span06">来询盘时间</span>
-                          </li>
-                          <li class="sources_main"  v-for="(items,index) in item" :key="index">
-                              <span class="span01">{{items.remark1}}</span>
-                              <span class="span02"><i @click="See(items.url)" :title="items.url">{{items.host}}</i></span>
-                              <span class="span03">{{items.area}}</span>
-                              <span class="span04">{{items.mode}}</span>
-                              <span class="span05">{{items.key}}</span>
-                              <span class="span06">{{items.datetimeday}}<i>{{items.datetimedate}}</i></span>
-                          </li>
-                      </ul>
-                  </div>
-              </div>
-          </el-col>
-        </el-row>
     </el-main>
   </el-container>
 </template>
@@ -115,8 +65,6 @@ export default {
       DomainNa:[],      //域名询盘
       suffix:[],     //后缀询盘
       Theme:[],       //主题分布
-      LongTail:[],
-      teamNum:[],
       timeDayDate:{
         startDaytime:'',
         endDaytime:'', 
@@ -142,7 +90,6 @@ export default {
     $this.handleHostBtn();
     $this.handleHouzhuiBtn();
     $this.handleThemeBtn();
-    $this.handleResBtn();
   },
   methods: {
     getDomainNaInfo:function(){
@@ -276,58 +223,6 @@ export default {
         }
       );
     },
-    getTeamNum:function(){
-      var $this = this;
-      $this.$api.get("/index/day_longword?starttime=" + $this.startDaytime + "&endtime=" + $this.endDaytime,null,function(res) {
-          if (res) {
-            console.log(res,'getTeamNum');
-            if(res.data!=''){
-              var arrList01=[];
-              var arrList02=[];
-              res.data.forEach(function(item,index){
-                var arrObj={
-                    name:'',
-                    count:0,
-                    team:''
-                }
-                if(item.remark3=='组合一'&&item.remark3!=''){
-                  arrObj.name=item.remark1;
-                  arrObj.count=item.count;
-                  arrObj.team=item.remark3;
-                  arrList01.push(arrObj);
-                }
-                if(item.remark3=='组合三'&&item.remark3!=''){
-                  arrObj.name=item.remark1;
-                  arrObj.count=item.count;
-                  arrObj.team=item.remark3;
-                  arrList02.push(arrObj);
-                }
-              });
-              var arrTotal01={
-                  name:'组合一',
-                  count:0,
-                  team:'组合一'
-              }
-              var arrTotal02={
-                  name:'组合三',
-                  count:0,
-                  team:'组合三'
-              }
-              arrList01.forEach(function(item,index){
-                  arrTotal01.count += item.count;
-              });
-              arrList02.forEach(function(item,index){
-                  arrTotal02.count += item.count;
-              });
-              arrList01.unshift(arrTotal01);
-              arrList02.unshift(arrTotal02);
-              $this.teamNum.push(arrList01,arrList02);
-              console.log($this.teamNum,'liebiao');
-            }
-          }
-        }
-      );
-    },
     //排序函数
     CustomSort:function(SortData){
         var SortD=SortData;
@@ -363,10 +258,6 @@ export default {
       });
       $this.piesuffixData=arrlist;
     },
-    //点击来源页面跳转
-    See:function(e){
-      window.open(e, '_blank');
-    },
     //接收传递的时间
     listenTimeday:function(TDate){
       var $this=this;
@@ -401,14 +292,6 @@ export default {
       $this.pieThemeData=[];
       $this.TimePlug();
       $this.getThemeInfo();      //主题分布
-    },
-    handleResBtn:function(){
-      var $this = this;
-      $this.LongTail=[];
-      $this.teamNum=[];
-      $this.TimePlug();
-      $this.getLongTailInfo();
-      $this.getTeamNum();
     },
   }
 }
@@ -507,8 +390,7 @@ export default {
                 font-style: normal;
                   cursor: pointer;  
                   &:hover{
-                    color: #f30;
-                    font-weight: bold;
+                    color: #f60;
                   }
               }
             }
