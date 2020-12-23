@@ -1,27 +1,29 @@
-import Cookies from 'js-cookie';
 const state = {
-    username: Cookies.get('username') ? Cookies.get('username') : '',
-    userpwd: Cookies.get('userpwd') ? Cookies.get('userpwd') : '',
+    username: sessionStorage.getItem('username') ? sessionStorage.getItem('username') : '',
+    userpwd: sessionStorage.getItem('userpwd') ? sessionStorage.getItem('userpwd') : '',
 };
 const mutations = {
-    account(state,username){
+    username(state,username){
         state.username = username;
-        Cookies.set('username', username);
+        sessionStorage.setItem('username', username);
         console.log("调用vuex后的用户账号:" + username);
     },
-    password(state,userpwd){
+    userpwd(state,userpwd){
         state.userpwd = userpwd;
-        Cookies.set('userpwd', userpwd);
+        sessionStorage.setItem('userpwd', userpwd);
         console.log("调用vuex后的用户账号:" + userpwd);
-    }
+    },
 };
 const actions = {
-    account(ctx,username) {
-        ctx.commit('account',username);
+    username(ctx,username) {
+        ctx.commit('username',username);
     },
-    password(ctx,userpwd) {
-        ctx.commit('password',userpwd);
-    }
+    userpwd(ctx,userpwd) {
+        ctx.commit('userpwd',userpwd);
+    },
+    logOut() {
+        sessionStorage.clear();
+    }  
 };
 export default {
     namespaced: true,

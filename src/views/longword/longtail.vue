@@ -180,11 +180,8 @@ export default {
                 arrObj.url=item.url;
                 arr01.push(arrObj);
               });
-              console.log(arr01,'arr01');
               arr02=$this.filterDate(arr01,$this.startDomaintime,$this.endDomaintime);
-              console.log(arr02,'arr01');
               $this.LongTail=$this.filtergroup(arr02,$this.searchGroup);
-              console.log($this.LongTail,'$this.LongTail01');
               $this.getTeamNum();
               $this.isClick=!$this.isClick;
             }
@@ -212,12 +209,10 @@ export default {
               newStrArr.push(newStr);
             }
         });
-        console.log(OldArr,'OldArr 去重01');
         var newObjArr=[];
         newStrArr.forEach(function(item, index) {
           newObjArr.push(JSON.parse(item));
         });
-        console.log(newObjArr,'newObjArr 去重02');
         //把新的数组与之前的数组进行对比如果相同就让number++最后得出vant-v需要的数组
         OldArr.map(function(item, index) {
           newObjArr.map(function(item1, index1) {
@@ -226,7 +221,6 @@ export default {
             }
           });
         });
-        console.log(newObjArr,'newObjArr相加')
         $this.getTeamArr(newObjArr);
       },
       getTeamArr:function(arrDate){
@@ -271,7 +265,6 @@ export default {
         arrList01.unshift(arrTotal01);
         arrList02.unshift(arrTotal02);
         $this.teamNum.push(arrList01,arrList02);
-        console.log($this.teamNum,'liebiao');
       },
       //点击来源页面跳转
       See:function(e){

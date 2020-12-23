@@ -241,7 +241,6 @@ export default {
       var $this = this;
       $this.$api.get("/index/conversion_longword?starttime=" + $this.startNoMonthtime + "&endtime=" + $this.endNoMonthtime,null,function(res) {
         if(res.data.length>0){   
-          console.log(res.data,"res.data");     
           var arrlist=[];
           res.data.forEach(function(item,index){
             item.forEach(function(items,indexs){
@@ -303,7 +302,6 @@ export default {
           arrlist.push(arrObj);
         });
         $this.pienewSiteSucData=arrlist;
-        console.log($this.pienewSiteSucData,'$this.pienewSiteSucData');
     },
     //成功站个数
     SucSiteNumPieChart:function(ListData){
@@ -322,7 +320,6 @@ export default {
             arrlist.push(arrObj);
         });
         $this.pieSucSiteNumData=arrlist;
-        console.log($this.pieSucSiteNumData,'$this.pieSucSiteNumData');
     },
     //总站个数
     TotalSiteNumPieChart:function(ListData){
@@ -341,7 +338,6 @@ export default {
             arrlist.push(arrObj);
         });
         $this.pieTotalSiteNumData=arrlist;
-        console.log($this.pieTotalSiteNumData,'$this.pieTotalSiteNumData');
     },
     //排序函数
     CustomSort:function(SortData){

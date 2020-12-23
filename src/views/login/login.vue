@@ -8,7 +8,7 @@
                   <p>账户</p>
                   <input
                       class="section-input"
-                      v-model="form.account"
+                      v-model="form.username"
                       placeholder-class="input-holder"
                       placeholder="请输入您的账号"
                   />
@@ -18,7 +18,7 @@
                   <input
                       class="section-input"
                       type="password"
-                      v-model="form.password"
+                      v-model="form.userpwd"
                       placeholder-class="input-holder"
                       placeholder="请输入您的密码"
                   />
@@ -40,11 +40,9 @@ export default {
   name: 'LoginPage',
   data:function(){
     return{
-        account: "",
-        password: "",
         form: {
-            account: "",
-            password: ""
+            username: "",
+            userpwd: ""
         }
     }
   },
@@ -53,11 +51,8 @@ export default {
     $this.$nextTick(function() {
       var username = $this.username;
       var userpwd = $this.userpwd;
-      $this.form.account=username;
-      $this.form.password=userpwd;
-      console.log(username,'01-username');
-      console.log(userpwd,'02-userpwd');
-      console.log($this.form,'03-$this.form');
+      $this.form.username=username;
+      $this.form.userpwd=userpwd;
     });
   },
   computed: {
@@ -68,21 +63,25 @@ export default {
       login:function(value){
         var $this=this;
         var form = {};
-        console.log(value,'03-value');
-        form.account = value.account.trim();
-        form.password = value.password.trim(); 
-        $this.account = form.account;
-        $this.password = form.password;
-        if(!form.account && !form.password){
+        form.username = value.username.trim();
+        form.userpwd = value.userpwd.trim();
+        if(!form.username && !form.userpwd){
               alert("请填写账号密码");
               return false;
-        }   
-        $this.$api.post("/master/login?username=" + $this.account + "&userpwd=" + $this.password,null,function(res) {           
+        }
+        $this.$api.post("/master/login",form,function(res) {
             if(res){
-                console.log(res,"提交成功");
-                $this.$store.dispatch('user/account',form.account);
-                $this.$store.dispatch('user/password',form.password);
-                $this.$router.push("./");
+                if(res.data.state==1){
+                    $this.$message({
+                      message:res.data.msg,
+                      type: 'success'
+                    });
+                    $this.$store.dispatch('user/username',form.username);
+                    $this.$store.dispatch('user/userpwd',form.userpwd);
+                    $this.$router.push("/");
+                }else{
+                    $this.$message.error(res.data.msg);
+                }
             }
         });
         

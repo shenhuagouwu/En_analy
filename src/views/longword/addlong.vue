@@ -226,7 +226,6 @@ export default {
         var $this = this;      
         $this.$api.get("/index/month_longword?starttime=" + $this.starttime + "&endtime=" + $this.endtime,null,function(res) {
             if(res){
-                console.log(res.data,"res02");
                 var searchParam={};
                 searchParam.searchName=$this.searchName;
                 searchParam.searchzu=$this.searchzuName;
@@ -358,7 +357,6 @@ export default {
                       message:res.data.msg,
                       type: 'success'
                     });
-                    console.log(res,"添加成功");
                     $this.Information=[];
                     //$this.initInfo();
                     $this.handleSearchBtn();
@@ -377,7 +375,6 @@ export default {
                       message:res.data.msg,
                       type: 'success'
                     });
-                    console.log(res,"修改成功");
                     $this.Information=[];
                     //$this.initInfo();
                     $this.handleSearchBtn();
@@ -414,7 +411,6 @@ export default {
                   type: 'success'
                 });
               }
-              console.log(res,"httpRequest上传成功");
               $this.handleSearchBtn();
             }else{
               $this.$message.error(res.data.msg);

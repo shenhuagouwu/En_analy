@@ -9,7 +9,7 @@
 <template>    
     <div class="adminmaintop">
         <p class="adminmaintoplogo"><span><img src="../../assets/images/logo.png" alt=""></span>英文推广数据分析系统</p>
-        <p class="adminmaintopfr">你好，聂亚兵&nbsp;&nbsp;|&nbsp;&nbsp;权限：美工&nbsp;&nbsp;|&nbsp;&nbsp;<span>退出</span>&nbsp;&nbsp;当前服务器时间: {{currentTime}}</p>
+        <p class="adminmaintopfr">你好，{{username}}&nbsp;&nbsp;|&nbsp;&nbsp;权限：美工&nbsp;&nbsp;|&nbsp;&nbsp;<span class="back" @click="handleBack">退出</span>&nbsp;&nbsp;当前服务器时间: {{currentTime}}</p>
     </div>
 </template>
 <script>
@@ -39,6 +39,11 @@ export default {
         $this.appendZero(new Date().getSeconds());
     }, 1000);
   },
+  computed: {
+    username: function() {
+      return this.$store.state.user.username;
+    }
+  },
   beforeDestroy() {
     if (this.timer) {
       clearInterval(this.timer); // 在Vue实例销毁前，清除我们的定时器
@@ -52,6 +57,29 @@ export default {
           return obj;
         }
       },
+      handleBack:function(){
+        var $this=this;
+        $this.$confirm('确定退出系统?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'info'
+        }).then(() => {
+          $this.$store.dispatch('user/logOut');
+          $this.$message({
+            type: 'success',
+            message: '退出成功!'
+          })
+          setTimeout(() => {
+            //$this.$router.push("/login");
+            location.reload() // 强制刷新
+          }, 1000)
+        }).catch(() => {
+          $this.$message({
+            type: 'info',
+            message: '已取消退出'
+          })
+        })
+      }
   }
 }
 </script>
@@ -81,6 +109,12 @@ export default {
       font-size: 14px;
       line-height: 1;
       padding-top: 18px;
+      .back{
+        cursor: pointer;
+        &:hover{
+          color:#ff0;
+        }
+      }
     }
   }
 </style>
