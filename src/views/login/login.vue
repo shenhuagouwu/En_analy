@@ -40,6 +40,8 @@ export default {
   name: 'LoginPage',
   data:function(){
     return{
+        account: "",
+        password: "",
         form: {
             account: "",
             password: ""
@@ -49,32 +51,41 @@ export default {
   beforeCreate: function() {
     var $this = this;
     $this.$nextTick(function() {
-      var userInfo = $this.userInfo;
-      $this.form.account=userInfo.account;
-      $this.form.password=userInfo.password;
-      console.log(userInfo,'userInfo');
-      console.log($this.form,'$this.form');
-      console.log($this.form.account,'$this.form.account');
-      console.log($this.form.password,'$this.form.password');
+      var username = $this.username;
+      var userpwd = $this.userpwd;
+      $this.form.account=username;
+      $this.form.password=userpwd;
+      console.log(username,'01-username');
+      console.log(userpwd,'02-userpwd');
+      console.log($this.form,'03-$this.form');
     });
   },
   computed: {
-    ...mapGetters(["userInfo"]),
+    ...mapGetters(["username"]),
+    ...mapGetters(["userpwd"]),
   },
   methods:{
       login:function(value){
         var $this=this;
         var form = {};
-        console.log(value);
-        form.account = value.account;
-        form.password = value.password;
+        console.log(value,'03-value');
+        form.account = value.account.trim();
+        form.password = value.password.trim(); 
+        $this.account = form.account;
+        $this.password = form.password;
         if(!form.account && !form.password){
               alert("请填写账号密码");
               return false;
-        }
+        }   
+        $this.$api.post("/master/login?username=" + $this.account + "&userpwd=" + $this.password,null,function(res) {           
+            if(res){
+                console.log(res,"提交成功");
+                $this.$store.dispatch('user/account',form.account);
+                $this.$store.dispatch('user/password',form.password);
+                $this.$router.push("./");
+            }
+        });
         
-        $this.$store.dispatch('user/login',form);
-        $this.$router.push("./");
       },
   }
 }

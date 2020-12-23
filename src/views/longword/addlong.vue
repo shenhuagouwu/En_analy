@@ -17,10 +17,16 @@
                         <el-option v-for="item in searchNameList" :key="item.name" :label="item.name" :value="item.name"></el-option>
                       </el-select>
                     </dd>
-                    <dd>                      
+                    <dd>
                       <el-select v-model="searchzuName" class="selectbrands" clearable placeholder="请选择小组">
                         <el-option v-for="item in searchzuNameList" :key="item.name" :label="item.name" :value="item.name"></el-option>
                       </el-select>
+                    </dd>
+                    <dd>
+                      <el-input placeholder="域名ID" v-model="searchDomainID" clearable></el-input>
+                    </dd>
+                    <dd>
+                      <el-input placeholder="请选择域名" v-model="searchDomainNa" clearable></el-input>
                     </dd>
                     <dd class="Infotopdd">
                       <search-time class="timebox" v-on:childTimeData="listenTimeday"></search-time>
@@ -30,7 +36,7 @@
                       <el-upload
                         class="upload-demo"
                         action=""                  
-                        accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                        accept=".csv,.xlsx, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                         :http-request="httpRequest"                        
                         :file-list="fileList">
                         <el-button type="primary">点击上传</el-button>
@@ -54,7 +60,7 @@
                           <span class="span01">{{item.id}}</span>
                           <span class="span01">{{item.ymid}}</span>
                           <span class="span02">{{item.name}}</span>
-                          <span class="span03">{{item.online_time}}</span>
+                          <span class="span03">{{item.time}}</span>
                           <span class="span04"><i @click="See('https://'+item.domain)">{{item.domain}}</i></span>
                           <span class="span06">{{item.zhuti}}</span>
                           <span class="span07">{{item.zu}}</span>
@@ -76,6 +82,9 @@
                       <el-select v-model="uploadName" class="selectbrands" clearable placeholder="请选择姓名">
                         <el-option v-for="item in uploadNameList" :key="item.name" :label="item.name" :value="item.name"></el-option>
                       </el-select>
+                    </li>
+                    <li>
+                      <el-input placeholder="请输入域名ID" v-model="uploadymid" clearable></el-input>
                     </li>
                     <li>
                       <el-input placeholder="请输入域名" v-model="uploadDomain" clearable></el-input>
@@ -119,9 +128,11 @@ export default {
             timeDate:{
               starttime:'',
               endtime:'', 
-            },                              // 日期插件传递值
+            },                           // 日期插件传递值
             starttime:'',                // 查询开始日期
             endtime:'',                  // 查询结束日期
+            searchDomainNa:'',           // 查询域名
+            searchDomainID:'',           // 查询域名ID
             Information:[],
             searchNameList:[
               {name:'李伟东'},
@@ -164,6 +175,7 @@ export default {
               {name:'张旭'},
             ],
             uploadName:'',
+            uploadymid:'',
             uploadDomain:'',
             uploadTime:'',
             uploadZhuti:'',
@@ -171,6 +183,7 @@ export default {
             uploadzb:'',
             uploadArr:{
               name:'',
+              ymid:'',
               domain:'',
               time:'',
               zhuti:'',
@@ -217,6 +230,8 @@ export default {
                 var searchParam={};
                 searchParam.searchName=$this.searchName;
                 searchParam.searchzu=$this.searchzuName;
+                searchParam.DomainNa=$this.searchDomainNa;
+                searchParam.DomainID=$this.searchDomainID
                 $this.searchParam=searchParam;
                 $this.Information=$this.filterResult(res.data,$this.searchParam);
             }
@@ -226,7 +241,9 @@ export default {
       filterResult:function(initData, searchParam){
           var filtersearchName = this.filtersearchName(initData,searchParam.searchName);
           var filtersearchzu = this.filtersearchzu(filtersearchName,searchParam.searchzu);
-          return filtersearchzu;
+          var filterDomainNa = this.filterDomainNa(filtersearchzu,searchParam.DomainNa);
+          var filterDomainID = this.filterDomainID(filterDomainNa,searchParam.DomainID);
+          return filterDomainID;
       },
       filtersearchName:function(initData, searchParam){
           var newData = [];
@@ -254,6 +271,32 @@ export default {
           }
           return newData;
       },
+      filterDomainNa:function(initData, searchParam){
+          var newData = [];
+          if (searchParam.length > 0) {
+            initData.forEach(function(item) {
+                if (item.domain == searchParam) {
+                  newData.push(item);
+                }
+            });
+          } else {
+            newData = initData;
+          }
+          return newData;
+      },
+      filterDomainID:function(initData, searchParam){
+          var newData = [];
+          if (searchParam.length > 0) {
+            initData.forEach(function(item) {
+                if (item.ymid == searchParam) {
+                  newData.push(item);
+                }
+            });
+          } else {
+            newData = initData;
+          }
+          return newData;
+      },
       //点击来源页面跳转
       See:function(e){
         window.open(e, '_blank');
@@ -263,9 +306,9 @@ export default {
         var $this=this;
          $this.type='edit';
         $this.showAbs=!$this.showAbs;
-
         $this.item_Id=DaT.id;
         $this.uploadName=DaT.name;
+        $this.uploadymid=DaT.ymid;
         $this.uploadDomain=DaT.domain;
         $this.uploadTime=DaT.time;
         $this.uploadZhuti=DaT.zhuti;
@@ -277,9 +320,10 @@ export default {
          var $this=this;
          $this.type='add';
          $this.showAbs=!$this.showAbs;
-        $this.uploadName='';
+        $this.uploadName='';        
+        $this.uploadymid='';
         $this.uploadDomain='';
-        $this.uploadTime='';
+        //$this.uploadTime='';
         $this.uploadZhuti='';
         $this.uploadBeizhu='';  
         $this.uploadzb='';
@@ -298,8 +342,9 @@ export default {
       },
       handleSaveClick:function(){
           var $this=this;
-          console.log($this.uploadName +"," + $this.uploadDomain +"," + $this.uploadTime + "," +$this.uploadZhuti +"," + $this.uploadBeizhu +"," + $this.uploadzb);
-          $this.uploadArr.name=$this.uploadName;
+          console.log($this.uploadName +"," + $this.uploadDomain +"," + $this.uploadTime + "," +$this.uploadZhuti +"," + $this.uploadBeizhu +"," + $this.uploadzb +"," + $this.uploadymid);
+          $this.uploadArr.name=$this.uploadName;               
+          $this.uploadArr.ymid=$this.uploadymid;
           $this.uploadArr.domain=$this.uploadDomain;
           $this.uploadArr.time=$this.uploadTime;
           $this.uploadArr.zhuti=$this.uploadZhuti;
@@ -308,20 +353,37 @@ export default {
           if($this.type == "add"){
             $this.$api.post("/index/add_longword",$this.uploadArr,function(res) {
                 if(res){
+                  if(res.data.state==1){
+                    $this.$message({
+                      message:res.data.msg,
+                      type: 'success'
+                    });
                     console.log(res,"添加成功");
                     $this.Information=[];
-                    $this.initInfo();
+                    //$this.initInfo();
+                    $this.handleSearchBtn();
+                  }else{
+                    $this.$message.error(res.data.msg);
+                  }
                 }
-                $this.$message.error('错了哦，这是一条错误消息');
               }
             );
           }else{            
             $this.uploadArr.id=$this.item_Id;
             $this.$api.post("/index/edit_longword",$this.uploadArr,function(res) {
                 if(res){
+                  if(res.data.state==1){
+                    $this.$message({
+                      message:res.data.msg,
+                      type: 'success'
+                    });
                     console.log(res,"修改成功");
                     $this.Information=[];
-                    $this.initInfo();
+                    //$this.initInfo();
+                    $this.handleSearchBtn();
+                  }else{
+                    $this.$message.error(res.data.msg);
+                  }
                 }
               }
             );
@@ -341,7 +403,22 @@ export default {
           data:formData,
           url: '/index/excel_dao_longword'
         }).then(res => {
-            console.log(res,"httpRequest上传成功");
+            if(res.data.state==1){
+              if(res.data.msg.length>0){
+                  $this.$alert(res.data.msg, '上传失败的数据', {
+                    dangerouslyUseHTMLString: true
+                  });
+              }else{
+                $this.$message({
+                  message:res.data.tiao,
+                  type: 'success'
+                });
+              }
+              console.log(res,"httpRequest上传成功");
+              $this.handleSearchBtn();
+            }else{
+              $this.$message.error(res.data.msg);
+            }
         })
       }
     }

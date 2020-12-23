@@ -831,6 +831,7 @@ export default {
         });
         $this.BrandTrend=arrlist;
         $this.pieBrandTrendData=arrlist;
+        console.log($this.pieBrandTrendData,'$this.pieBrandTrendData');
       },
       ProductsAccountPieChart:function(Atrend){
         var $this=this;

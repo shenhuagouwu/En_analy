@@ -11,6 +11,37 @@
           <el-col :span="24">
             <div class="grid-content bg-purple-light">
                   <div class="piecharttit">
+                       <strong>网站统计</strong>
+                       <div class="searchtime">
+                            <nodefault-searchtime class="timebox" v-on:childNoTimeData="listenNoTimeMonth"></nodefault-searchtime>
+                            <span class="searchbtn" v-on:click="handleSiteBtn">查询</span>
+                       </div>                      
+                        <span class="sucbtn">
+                            <i @click="inBrandnum=0" :class="{active:inBrandnum==0}">新站成功率</i>
+                            <i @click="inBrandnum=1" :class="{active:inBrandnum==1}">成功站个数</i>
+                            <i @click="inBrandnum=2" :class="{active:inBrandnum==2}">总站个数</i>
+                            <i @click="inBrandnum=3" :class="{active:inBrandnum==3}">个人询盘</i>
+                        </span>
+                  </div>
+                  <div class="piechartbox" v-if="inBrandnum==0">
+                      <sitecostline-chartone :linechartData="pienewSiteSucData" :key="new Date().getTime()" v-if="pienewSiteSucData.length>0" style="height:300px"></sitecostline-chartone>
+                  </div>
+                  <div class="piechartbox" v-if="inBrandnum==1">
+                      <sitecostline-charttwo :sitecostlineData="pieSucSiteNumData" :key="new Date().getTime()" v-if="pieSucSiteNumData.length>0" style="height:300px"></sitecostline-charttwo>
+                  </div>
+                  <div class="piechartbox" v-if="inBrandnum==2">
+                      <sitecostline-charttwo :sitecostlineData="pieTotalSiteNumData" :key="new Date().getTime()" v-if="pieTotalSiteNumData.length>0" style="height:300px"></sitecostline-charttwo>
+                  </div>
+                  <div class="piechartbox" v-if="inBrandnum==3">
+                      <sitecostline-charttwo :sitecostlineData="pieTotalPersonNumData" :key="new Date().getTime()" v-if="pieTotalPersonNumData.length>0" style="height:300px"></sitecostline-charttwo>
+                  </div>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="24">
+            <div class="grid-content bg-purple-light">
+                  <div class="piecharttit">
                        <strong>域名询盘</strong>
                        <font>(默认2020年2月至今)</font>
                        <div class="searchtime">
@@ -41,8 +72,8 @@
                   <div class="piecharttit">
                        <strong>主题分布询盘</strong>
                        <font>(默认2020年2月至今)</font>
-                       <div class="searchtime">
-                            <search-timeday class="timebox" v-on:childTimeDayData="listenTimeday"></search-timeday>
+                       <div class="searchtime">                            
+                            <search-time class="timebox" v-on:childTimeData="listenTimeMonth"></search-time>
                             <span class="searchbtn" v-on:click="handleThemeBtn">查询</span>
                        </div>
                   </div>
@@ -54,42 +85,78 @@
   </el-container>
 </template>
 <script>
+import LineChartone from "../chart/LineChartone";
+import SitecostlineChartone from "../chart/SitecostlineChartone";
+import SitecostlineCharttwo from "../chart/SitecostlineCharttwo";
+import SitecostlineChartthree from "../chart/SitecostlineChartthree";
 import PieChart from "../chart/PieChart";
 import ColumitalicChart from "../chart/ColumitalicChart";
 import ColumChart from "../chart/ColumChart";
 import searchTimeday from "../public/searchTimeDay";
+import searchTime from "../public/searchTime";
+import nodefaultSearchtime from "../public/nodefaultSearchtime";
 export default {
   name: 'loalldataPage',
   data() {
     return {
-      DomainNa:[],      //域名询盘
-      suffix:[],     //后缀询盘
-      Theme:[],       //主题分布
+      inBrandnum:0,
+      DomainNa:[],         //域名询盘
+      suffix:[],           //后缀询盘
+      Theme:[],            //主题分布
+      SiteStat:[],         //网站统计
+
       timeDayDate:{
         startDaytime:'',
         endDaytime:'', 
       },                              // 日期插件传递值
       startDaytime:'',                // 查询开始日期
       endDaytime:'',                  // 查询结束日期
+
+      timeMonthDate:{
+        starttime:'',
+        endtime:'', 
+      },                              // 月份插件传递值
+      startMonthtime:'',                // 查询开始月份
+      endMonthtime:'',                  // 查询结束月份
+
+      timeNoMonthDate:{
+        starttime:'',
+        endtime:'', 
+      }, 
+      startNoMonthtime:'',                // 查询开始月份
+      endNoMonthtime:'',                  // 查询结束月份
+
+
       searchDomainNa:'',              // 查询域名
       searchName:'',                  // 查询姓名
       searchSuffix:'',                // 查询后缀
       pieDomainNaData:[], //饼图需要传过去的域名询盘数据
       piesuffixData:[], //饼图需要传过去的后缀询盘数据
       pieThemeData:[], //饼图需要传过去的主题分布数据
+      pienewSiteSucData:[],       //新站成功率
+      pieSucSiteNumData:[],       //成功站个数
+      pieTotalSiteNumData:[],     //总站个数
+      pieTotalPersonNumData:[],     //个人询盘
     }
   },
   components: {
     PieChart,
     ColumChart,
     ColumitalicChart,
-    searchTimeday
+    searchTimeday,
+    searchTime,
+    nodefaultSearchtime,
+    LineChartone,
+    SitecostlineChartone,
+    SitecostlineCharttwo,
+    SitecostlineChartthree
   },
   mounted() {
     var $this=this;
     $this.handleHostBtn();
     $this.handleHouzhuiBtn();
     $this.handleThemeBtn();
+    $this.handleSiteBtn();
   },
   methods: {
     getDomainNaInfo:function(){
@@ -170,58 +237,111 @@ export default {
         }
       );
     },
-    getLongTailInfo:function(){
+    getSiteStatInfo:function(){
       var $this = this;
-      $this.$api.get("/index/longword_liebiao?starttime=" + $this.startDaytime + "&endtime=" + $this.endDaytime + "&remark1=" + $this.searchName + "&host=" + $this.searchDomainNa + "&ym_hou=" + $this.searchSuffix,null,function(res) {
-          if (res) {
-            console.log(res,'$this.LongTailres'); 
-            if(res.data!=''){
-            var arr01=[];
-            var arr02=[];
-            res.data.forEach(function(item,index){
-              var arrObj={
-                area:'',
-                datetimeday:'',
-                datetimedate:'',
-                host:'',
-                key:'',
-                mode:'',
-                remark1:'',
-                remark3:'',
-                url:''
-              }
-              if(item.remark3=='组合一'&&item.remark3!=''){
-                arrObj.area=item.area;
-                arrObj.datetime=item.datetime;
-                arrObj.datetimeday=item.datetime.split(" ")[0];
-                arrObj.datetimedate=item.datetime.split(" ")[1];
-                arrObj.host=item.host;
-                arrObj.key=item.key;
-                arrObj.mode=item.mode;
-                arrObj.remark1=item.remark1;
-                arrObj.remark3=item.remark3;
-                arrObj.url=item.url;
-                arr01.push(arrObj);
-              }
-              if(item.remark3=='组合三'&&item.remark3!=''){
-                arrObj.area=item.area;
-                arrObj.datetimeday=item.datetime.split(" ")[0];
-                arrObj.datetimedate=item.datetime.split(" ")[1];
-                arrObj.host=item.host;
-                arrObj.key=item.key;
-                arrObj.mode=item.mode;
-                arrObj.remark1=item.remark1;
-                arrObj.remark3=item.remark3;
-                arrObj.url=item.url;
-                arr02.push(arrObj);
-              }
+      $this.$api.get("/index/conversion_longword?starttime=" + $this.startNoMonthtime + "&endtime=" + $this.endNoMonthtime,null,function(res) {
+        if(res.data.length>0){   
+          console.log(res.data,"res.data");     
+          var arrlist=[];
+          res.data.forEach(function(item,index){
+            item.forEach(function(items,indexs){
+                var arrObj={
+                    name:'',
+                    times:'',
+                    domain_number:0,
+                    xunpan_number:0,
+                    conversion:0,
+                };
+                arrObj.name=items.name;
+                arrObj.times=items.times;
+                arrObj.domain_number=items.domain_number;
+                arrObj.xunpan_number=items.xunpan_number;
+                arrObj.conversion=items.conversion;
+                arrlist.push(arrObj);
             });
-            $this.LongTail.push(arr01,arr02);  
-            console.log($this.LongTail,'$this.LongTail');
-            }          
-          }
+          });
+          $this.SiteStat=arrlist;
+          $this.newSiteSucPieChart($this.SiteStat);
+          $this.SucSiteNumPieChart($this.SiteStat);
+          $this.TotalSiteNumPieChart($this.SiteStat);
         }
-      );
+      });
+      $this.$api.get("/index/month_people_doamin?starttime=" + $this.startNoMonthtime + "&endtime=" + $this.endNoMonthtime,null,function(res) {
+        if(res.data.length>0){            
+          var arrlist=[];
+          res.data.forEach(function(item,index){
+            item.forEach(function(items,indexs){
+                var arrObj={
+                    name:'',
+                    time:'',
+                    count:0,
+                };
+                arrObj.name=items.name;
+                arrObj.time=items.times;
+                arrObj.count=items.count;
+                arrlist.push(arrObj);
+            });
+          });
+          $this.pieTotalPersonNumData=arrlist;
+        }  
+      });
+    },
+    //新站成功率
+    newSiteSucPieChart:function(ListData){
+        var $this=this;
+        var EnData=ListData;
+        var arrlist=[];
+        EnData.forEach(function(item,index){
+          var arrObj={
+              name:'',
+              percent:0,
+              time:''
+          };
+          arrObj.name=item.name;
+          arrObj.percent=Math.floor(item.conversion * 10000)/100;
+          arrObj.time=item.times;
+          arrlist.push(arrObj);
+        });
+        $this.pienewSiteSucData=arrlist;
+        console.log($this.pienewSiteSucData,'$this.pienewSiteSucData');
+    },
+    //成功站个数
+    SucSiteNumPieChart:function(ListData){
+        var $this=this;
+        var EnData=ListData;
+        var arrlist=[];
+        EnData.forEach(function(item,index){
+            var arrObj={
+                name:'',
+                count:0,
+                time:''
+            };
+            arrObj.name=item.name;
+            arrObj.count=item.xunpan_number;
+            arrObj.time=item.times;
+            arrlist.push(arrObj);
+        });
+        $this.pieSucSiteNumData=arrlist;
+        console.log($this.pieSucSiteNumData,'$this.pieSucSiteNumData');
+    },
+    //总站个数
+    TotalSiteNumPieChart:function(ListData){
+        var $this=this;
+        var EnData=ListData;
+        var arrlist=[];
+        EnData.forEach(function(item,index){
+            var arrObj={
+                name:'',
+                count:0,
+                time:''
+            };
+            arrObj.name=item.name;
+            arrObj.count=item.domain_number;
+            arrObj.time=item.times;
+            arrlist.push(arrObj);
+        });
+        $this.pieTotalSiteNumData=arrlist;
+        console.log($this.pieTotalSiteNumData,'$this.pieTotalSiteNumData');
     },
     //排序函数
     CustomSort:function(SortData){
@@ -258,12 +378,44 @@ export default {
       });
       $this.piesuffixData=arrlist;
     },
-    //接收传递的时间
+    //无默认接收传递的时间  年-月
+    listenNoTimeMonth:function(TDate){
+      var $this=this;
+      $this.timeNoMonthDate=TDate;
+    },
+    //无默认时间插件  年-月
+    TimeNoMonthPlug:function(){
+      var $this = this;
+      if($this.timeNoMonthDate.starttime!=''&&$this.timeNoMonthDate.endtime!=''){
+          $this.startNoMonthtime=$this.timeNoMonthDate.starttime + '-01';
+          $this.endNoMonthtime=$this.timeNoMonthDate.endtime + '-01';
+      }else{
+          $this.startNoMonthtime='';
+          $this.endNoMonthtime='';
+      }
+    },
+    //接收传递的时间  年-月
+    listenTimeMonth:function(TDate){
+      var $this=this;
+      $this.timeMonthDate=TDate;
+    },
+    //时间插件  年-月
+    TimeMonthPlug:function(){
+      var $this = this;
+      if($this.timeMonthDate.starttime!=''&&$this.timeMonthDate.endtime!=''){
+          $this.startMonthtime=$this.timeMonthDate.starttime + '-01';
+          $this.endMonthtime=$this.timeMonthDate.endtime + '-01';
+      }else{
+          $this.startMonthtime='';
+          $this.endMonthtime='';
+      }
+    },
+    //接收传递的时间  年-月-日
     listenTimeday:function(TDate){
       var $this=this;
       $this.timeDayDate=TDate;
     },
-    //时间插件
+    //时间插件  年-月-日
     TimePlug:function(){
       var $this = this;
       if($this.timeDayDate.startDaytime!=''&&$this.timeDayDate.endDaytime!=''){
@@ -290,9 +442,14 @@ export default {
     handleThemeBtn:function(){
       var $this = this;
       $this.pieThemeData=[];
-      $this.TimePlug();
+      $this.TimeMonthPlug();
       $this.getThemeInfo();      //主题分布
     },
+    handleSiteBtn:function(){
+      var $this = this;
+      $this.TimeNoMonthPlug();
+      $this.getSiteStatInfo();
+    }
   }
 }
 </script>
@@ -337,6 +494,45 @@ export default {
     }
     .bg-purple-light {
       background: #fff;
+    }
+  }
+}
+.piecharttit{
+  clear: both;
+  display: block;
+  text-align: left;
+  padding:10px 15px;
+  font-size:16px;
+  font-weight: bold;
+  color: #333;
+  .sucbtn{
+    float: right;
+    padding-right: 30px;
+    i{
+      float: left;
+      font-style: normal;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      background: #f5f5f5;
+      margin-left: -1px;
+      padding:7px 18px;
+      line-height: 1;
+      cursor: pointer;
+      font-weight: normal;
+      color: #666;
+      &.active{
+        background:#0277d5;
+        border:1px solid #0277d5;
+        color: #fff;
+      }
+      &:first-child{
+        border-top-left-radius:3px;
+        border-bottom-left-radius:3px;
+      }
+      &:first-child+i+i{
+        border-top-right-radius:3px;
+        border-bottom-right-radius:3px;
+      }
     }
   }
 }

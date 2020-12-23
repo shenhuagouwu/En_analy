@@ -8,18 +8,18 @@
  */ 
 import Vue from 'vue';
 import Router from 'vue-router';
-//import store from '../store';
+import store from '../store';
 /* 1. 定义路由组件 */
 import Layout from '@/layout';
 Vue.use(Router);
 
 /* 2. 定义路由 */
 const routes = [
-    // {
-    //     path: "/login",
-    //     component: () => import('@/views/login/login'),
-    //     name: 'LoginPage',
-    // },
+    {
+        path: "/login",
+        component: () => import('@/views/login/login'),
+        name: 'LoginPage',
+    },
     {
         path: '/',
         redirect: '/Enpromotion',
@@ -87,26 +87,26 @@ const routes = [
 /* 3. 创建 router 实例 */
 const router = new Router({
     /* 4. 传 `routes` 配置，这里是缩写，相当于 routes: routes */
-    mode:'history',
+    //mode:'history',
     routes
 });
-// var ThereField = '/login';
-// router.beforeEach(function(to,from,next){
-//     if (store.state.user.userInfo) {
-//         if(to.path === "/login"){
-//             next({path: "/"});
-//         }else{
-//             next();
-//         }
-//     } else {
-//         if(ThereField.indexOf(to.path)!==-1){
-//             next();
-//         }else{
-//             next({
-//                 path: "/login",
-//             });
-//         }
-//     }
-// });
+var ThereField = '/login';
+router.beforeEach(function(to,from,next){
+    if (store.state.user.username&&store.state.user.userpwd) {
+        if(to.path === "/login"){
+            next({path: "/"});
+        }else{
+            next();
+        }
+    } else {
+        if(ThereField.indexOf(to.path)!==-1){
+            next();
+        }else{
+            next({
+                path: "/login",
+            });
+        }
+    }
+});
 /* 5. 暴露出该文件 */
 export default router;

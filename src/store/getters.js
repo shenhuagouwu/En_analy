@@ -1,6 +1,7 @@
 const getters = {
     editorType: state => state.leftnav.editorType,
     dataName: state => state.printdata.dataName,
-    userInfo: state => state.user.userInfo,
+    username: state => state.user.username,
+    userpwd: state => state.user.userpwd,
 };
 export default getters;

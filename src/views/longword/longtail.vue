@@ -14,13 +14,17 @@
                   <div class="piecharttit"><font>(默认当前一天)</font></div>
                   <dl class="searchdl01">
                     <dd>
-                      <el-input placeholder="请选择组别" v-model="searchGroup" clearable></el-input>
+                      <el-select v-model="searchGroup" clearable placeholder="请选择小组">
+                        <el-option v-for="item in searchGroupList" :key="item.name" :label="item.name" :value="item.name"></el-option>
+                      </el-select>
                     </dd>
                     <dd>
                       <el-input placeholder="请选择域名" v-model="searchDomainNa" clearable></el-input>
                     </dd>
-                    <dd>
-                      <el-input placeholder="请选择姓名" v-model="searchName" clearable></el-input>
+                    <dd>    
+                      <el-select v-model="searchName" clearable placeholder="请选择姓名">
+                        <el-option v-for="item in searchNameList" :key="item.name" :label="item.name" :value="item.name"></el-option>
+                      </el-select>
                     </dd>
                     <dd>
                       <el-input placeholder="请选择后缀" v-model="searchSuffix" clearable></el-input>
@@ -59,12 +63,12 @@
                           <li class="sources_tit">
                               <span class="span01">姓名</span>
                               <span class="span02">组合</span>
-                              <span class="span03">域名分配日期</span>
+                              <span class="span03">域名分配日期<i><s v-on:click="handleAscOrderOnlineTime(LongTail)" class="el-icon-caret-top"></s><s v-on:click="handleDesOrderOnlineTime(LongTail)" class="el-icon-caret-bottom"></s></i></span>
                               <span class="span04">域名</span>
                               <span class="span05">国家</span>
                               <span class="span06">询盘来源</span>
                               <span class="span07">产品名称</span>
-                              <span class="span08">来询盘时间</span>
+                              <span class="span08">来询盘时间<i><s v-on:click="handleAscOrderEnqTime(LongTail)" class="el-icon-caret-top"></s><s v-on:click="handleDesOrderEnqTime(LongTail)" class="el-icon-caret-bottom"></s></i></span>
                           </li>
                           <li class="sources_main" v-for="(item,index) in LongTail" :key="index">
                               <span class="span01">{{item.remark1}}</span>
@@ -91,6 +95,7 @@ export default {
     name: 'addlongPage',
     data() {
       return {
+        isClick:false,
         LongTail:[],
         teamNum:[],
         timeDomainDate:{
@@ -105,9 +110,28 @@ export default {
         endDomaintime:'',               // 查询域名结束日期
         startDaytime:'',                // 查询开始日期
         endDaytime:'',                  // 查询结束日期
-        searchGroup:'',                 // 查询组别
+        searchGroup:'',                 // 查询组别        
+        searchGroupList:[
+          {name:'组合一'},
+          {name:'组合三'},
+        ],
         searchDomainNa:'',              // 查询域名
-        searchName:'',                  // 查询姓名
+        searchName:'',                  // 查询姓名        
+        searchNameList:[
+          {name:'李伟东'},
+          {name:'刘燕永'},
+          {name:'徐凌霄'},
+          {name:'王雷'},
+          {name:'王文博'},
+          {name:'常怡广'},
+          {name:'王俊威'},
+          {name:'李鹏远'},
+          {name:'梁迎春'},
+          {name:'刘培斌'},
+          {name:'刘松海'},
+          {name:'孟君豪'},
+          {name:'张旭'},
+        ],
         searchSuffix:'',                // 查询后缀
       }
     },
@@ -162,6 +186,7 @@ export default {
               $this.LongTail=$this.filtergroup(arr02,$this.searchGroup);
               console.log($this.LongTail,'$this.LongTail01');
               $this.getTeamNum();
+              $this.isClick=!$this.isClick;
             }
           }
         );
@@ -196,7 +221,7 @@ export default {
         //把新的数组与之前的数组进行对比如果相同就让number++最后得出vant-v需要的数组
         OldArr.map(function(item, index) {
           newObjArr.map(function(item1, index1) {
-            if (item.name == item1.name) {
+            if (item.name == item1.name && item.team == item1.team) {
               item1.count++;
             }
           });
@@ -286,11 +311,14 @@ export default {
       },
       handleResBtn:function(){
         var $this = this;
-        $this.LongTail=[];
-        $this.teamNum=[];
-        $this.TimeDayPlug();
-        $this.TimeDomainPlug();
-        $this.getLongTailInfo();
+        if(!$this.isClick){
+          $this.isClick = !$this.isClick;
+          $this.LongTail=[];
+          $this.teamNum=[];
+          $this.TimeDayPlug();
+          $this.TimeDomainPlug();
+          $this.getLongTailInfo();
+        }
       },
       // 过滤日期
       filterDate: function(initData, date1, date2) {
@@ -303,7 +331,9 @@ export default {
         } else {
           initData.forEach(function(item) {
               if ($this.compareDate(item.online_time, startDate) >= 0 && $this.compareDate(endDate, item.online_time) >= 0){
-                newData.push(item);
+                if(item.remark1!="Email"){
+                    newData.push(item);
+                }
               }
           });
         }
@@ -330,6 +360,62 @@ export default {
             newData = initData;
           }
           return newData;
+      },
+      // 域名上传时间升序排列
+      handleAscOrderOnlineTime:function(DateList){
+        var $this = this;
+        var newArr = DateList;
+        $this.LongTail=[];
+        newArr.sort(function(a, b) {
+            var value1 = a.online_time.replace(/-/g,'/');
+            var value2 = b.online_time.replace(/-/g,'/');
+            var aTime = new Date(value1).getTime();
+            var bTime = new Date(value2).getTime();
+            return aTime - bTime;
+        });
+        $this.LongTail = newArr;
+      },
+      // 域名上传时间降序排列
+      handleDesOrderOnlineTime:function(DateList){
+        var $this = this;
+        var newArr = DateList;
+        $this.LongTail=[];
+        newArr.sort(function(a, b) {
+            var value1 = a.online_time.replace(/-/g,'/');
+            var value2 = b.online_time.replace(/-/g,'/');
+            var aTime = new Date(value1).getTime();
+            var bTime = new Date(value2).getTime();
+            return bTime - aTime;
+        });
+        $this.LongTail = newArr;
+      },      
+      // 询盘时间升序排列
+      handleAscOrderEnqTime:function(DateList){
+        var $this = this;
+        var newArr = DateList;
+        $this.LongTail=[];
+        newArr.sort(function(a, b) {
+            var value1 = a.datetimeday.replace(/-/g,'/');
+            var value2 = b.datetimeday.replace(/-/g,'/');
+            var aTime = new Date(value1).getTime();
+            var bTime = new Date(value2).getTime();
+            return aTime - bTime;
+        });
+        $this.LongTail = newArr;
+      },
+      // 询盘时间降序排列
+      handleDesOrderEnqTime:function(DateList){
+        var $this = this;
+        var newArr = DateList;
+        $this.LongTail=[];
+        newArr.sort(function(a, b) {
+            var value1 = a.datetimeday.replace(/-/g,'/');
+            var value2 = b.datetimeday.replace(/-/g,'/');
+            var aTime = new Date(value1).getTime();
+            var bTime = new Date(value2).getTime();
+            return bTime - aTime;
+        });
+        $this.LongTail = newArr;
       },
     }
 }
@@ -411,6 +497,35 @@ export default {
             color:#3e404f;
             font-weight:bold;
             height:24px;
+            i{
+              display: inline-block;
+              width:16px;
+              height: 17px;
+              position: relative;
+              top:2px;
+              margin-left:5px;
+              s{
+                clear: both;
+                display: block;
+                cursor: pointer;
+                position: absolute;
+                left:0px;
+                bottom:0px;
+                width:100%;
+                height:8px;
+                line-height:8px;
+                text-decoration: none;
+                color:#ff9800;
+                font-size:16px;
+                &:first-child{
+                  bottom:auto;
+                  top:0px;
+                }
+                &:hover{
+                color:#f60;
+                }
+              }
+            }
           }
         }
         &.sources_main{
@@ -447,6 +562,9 @@ export default {
     }
 }
 .searchtime {
+    /deep/ .el-date-editor .el-range-separator {
+        padding:0px!important;
+        }
     /deep/ .timebox {
         padding:3px 10px!important;
         height:30px!important;
@@ -510,6 +628,7 @@ export default {
           background:#67b0fb;
         }
     }
+    /deep/ .el-date-editor .el-range-separator{    width: auto !important;}
   }
 }
 .PersonallongBox{padding:10px 0px;}

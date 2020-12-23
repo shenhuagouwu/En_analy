@@ -40,18 +40,12 @@ export default {
           }
         }]
       },
-      subtime:[],
+      subtime:"",
       timeDate:{
         starttime:'',
         endtime:'',
       }, //时间插件传递值
     }
-  },
-  created () {
-    var $this = this;
-    var creatDate = new Date();
-    $this.subtime[0]=creatDate;
-    $this.subtime[1]=creatDate;
   },
   beforeMount() {
     var $this = this;
@@ -78,7 +72,7 @@ export default {
         $this.timeDate.starttime="";
         $this.timeDate.endtime="";
       }
-      $this.$emit('childTimeData',$this.timeDate);
+      $this.$emit('childNoTimeData',$this.timeDate);
     }
   }
 }
