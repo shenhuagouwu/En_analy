@@ -20,7 +20,7 @@
                             <i @click="inBrandnum=0" :class="{active:inBrandnum==0}">新站成功率</i>
                             <i @click="inBrandnum=1" :class="{active:inBrandnum==1}">成功站个数</i>
                             <i @click="inBrandnum=2" :class="{active:inBrandnum==2}">总站个数</i>
-                            <i @click="inBrandnum=3" :class="{active:inBrandnum==3}">个人询盘</i>
+                            <i @click="inBrandnum=3" :class="{active:inBrandnum==3}">个人询盘站</i>
                         </span>
                   </div>
                   <div class="piechartbox" v-if="inBrandnum==0">

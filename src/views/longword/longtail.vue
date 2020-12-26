@@ -100,7 +100,7 @@ export default {
         teamNum:[],
         timeDomainDate:{
           startDaytime:'',
-          endDaytime:'',
+          endDaytime:'', 
         },
         timeDayDate:{
           startDaytime:'',
@@ -150,35 +150,35 @@ export default {
               var arr01=[];
               var arr02=[];
               res.data.forEach(function(item,index){
-                var arrObj={
-                  area:'',
-                  datetimeday:'',
-                  datetimedate:'',
-                  online_time:'',
-                  host:'',
-                  key:'',
-                  mode:'',
-                  remark1:'',
-                  remark3:'',
-                  url:''
-                }
-                arrObj.area=item.area;
-                arrObj.datetime=item.datetime;
-                if(item.remark1=='Email'){
-                    arrObj.online_time=item.datetime.split(" ")[0];
-                }else{                  
-                    arrObj.online_time=item.online_time;
-                }
-                //arrObj.online_time=item.online_time;
-                arrObj.datetimeday=item.datetime.split(" ")[0];
-                arrObj.datetimedate=item.datetime.split(" ")[1];
-                arrObj.host=item.host;
-                arrObj.key=item.key;
-                arrObj.mode=item.mode;
-                arrObj.remark1=item.remark1;
-                arrObj.remark3=item.remark3;
-                arrObj.url=item.url;
-                arr01.push(arrObj);
+                  var arrObj={
+                    area:'',
+                    datetimeday:'',
+                    datetimedate:'',
+                    online_time:'',
+                    host:'',
+                    key:'',
+                    mode:'',
+                    remark1:'',
+                    remark3:'',
+                    url:''
+                  }
+                  arrObj.area=item.area;
+                  arrObj.datetime=item.datetime;
+                  if(item.remark1=='Email'){
+                      arrObj.online_time=item.datetime.split(" ")[0];
+                  }else{                  
+                      arrObj.online_time=item.online_time;
+                  }
+                  //arrObj.online_time=item.online_time;
+                  arrObj.datetimeday=item.datetime.split(" ")[0];
+                  arrObj.datetimedate=item.datetime.split(" ")[1];
+                  arrObj.host=item.host;
+                  arrObj.key=item.key;
+                  arrObj.mode=item.mode;
+                  arrObj.remark1=item.remark1;
+                  arrObj.remark3=item.remark3;
+                  arrObj.url=item.url;
+                  arr01.push(arrObj);
               });
               arr02=$this.filterDate(arr01,$this.startDomaintime,$this.endDomaintime);
               $this.LongTail=$this.filtergroup(arr02,$this.searchGroup);
@@ -335,11 +335,15 @@ export default {
       // 日期比较大小
       compareDate: function(a, b) {
         var reg = /[^\d+]/;
-        var arr1 = a.split(reg);
-        var arr2 = b.split(reg);
-        var date1 = new Date(arr1[0], arr1[1], arr1[2]);
-        var date2 = new Date(arr2[0], arr2[1], arr2[2]);
-        return date1 - date2;
+        var date1 = new Date(a);
+        var date2 = new Date(b); 
+        if(date1>date2){     
+           return date1 - date2;
+        }
+        // var arr1 = a.split(reg);
+        // var arr2 = b.split(reg);
+        // var date1 = new Date(arr1[0], arr1[1], arr1[2]);
+        // var date2 = new Date(arr2[0], arr2[1], arr2[2]);   
       },
       filtergroup:function(initData, searchGroupData){
           var newData = [];
