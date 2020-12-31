@@ -31,6 +31,14 @@ export default {
             picker.$emit('pick', [start, end]);
           }
         }, {
+          text: '最近三个月',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setMonth(start.getMonth() - 3);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
           text: '最近六个月',
           onClick(picker) {
             const end = new Date();

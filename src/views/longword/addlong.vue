@@ -366,7 +366,7 @@ export default {
                 }
               }
             );
-          }else{            
+          }else{
             $this.uploadArr.id=$this.item_Id;
             $this.$api.post("/index/edit_longword",$this.uploadArr,function(res) {
                 if(res){

@@ -80,6 +80,11 @@ const routes = [
                         name: 'longtailPage',
                     },
                 ]
+            },
+            {                
+                path: '/changePassword',
+                component: () => import('@/views/login/ChangePassword'),
+                name: 'changePasswordPage'
             }
         ]
     }
@@ -87,7 +92,7 @@ const routes = [
 /* 3. 创建 router 实例 */
 const router = new Router({
     /* 4. 传 `routes` 配置，这里是缩写，相当于 routes: routes */
-    //mode:'history',
+    mode:'history',
     routes
 });
 var ThereField = '/login';

@@ -146,7 +146,7 @@ export default {
       getLongTailInfo:function(){
         var $this = this;
         $this.$api.get("/index/longword_liebiao?starttime=" + $this.startDaytime + "&endtime=" + $this.endDaytime + "&remark1=" + $this.searchName + "&host=" + $this.searchDomainNa + "&ym_hou=" + $this.searchSuffix,null,function(res) {
-            if (res.data.length>0) {
+            if (res.data) {
               var arr01=[];
               var arr02=[];
               res.data.forEach(function(item,index){
@@ -183,8 +183,8 @@ export default {
               arr02=$this.filterDate(arr01,$this.startDomaintime,$this.endDomaintime);
               $this.LongTail=$this.filtergroup(arr02,$this.searchGroup);
               $this.getTeamNum();
-              $this.isClick=!$this.isClick;
             }
+            $this.isClick=!$this.isClick;
           }
         );
       },
@@ -337,7 +337,7 @@ export default {
         var reg = /[^\d+]/;
         var date1 = new Date(a);
         var date2 = new Date(b); 
-        if(date1>date2){     
+        if(date1>=date2){     
            return date1 - date2;
         }
         // var arr1 = a.split(reg);

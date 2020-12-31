@@ -6,12 +6,10 @@ const mutations = {
     username(state,username){
         state.username = username;
         sessionStorage.setItem('username', username);
-        console.log("调用vuex后的用户账号:" + username);
     },
     userpwd(state,userpwd){
         state.userpwd = userpwd;
         sessionStorage.setItem('userpwd', userpwd);
-        console.log("调用vuex后的用户账号:" + userpwd);
     },
 };
 const actions = {

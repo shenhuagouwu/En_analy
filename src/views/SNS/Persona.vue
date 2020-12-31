@@ -7,7 +7,7 @@
             <el-breadcrumb-item>{{perName}}数据</el-breadcrumb-item>
         </el-breadcrumb>
         <div class="searchtime">
-              <search-time v-on:childTimeData="listenTime"></search-time>
+              <nodefault-searchtime v-on:childNoTimeData="listenTime"></nodefault-searchtime>
               <span class="searchbtn" v-on:click="handleQueryBtn">查询</span>
         </div>
     </el-header>
@@ -50,7 +50,7 @@
 import { mapGetters } from "vuex";
 import PieChart from "../chart/PieChart";
 import LineCharttwo from "../chart/LineCharttwo";
-import SearchTime from "../public/searchTime";
+import nodefaultSearchtime from "../public/nodefaultSearchtime";
 import ModalDialog from "./components/Modaldialog";
 export default {
   name: 'snsPersonaPage',
@@ -82,7 +82,7 @@ export default {
   components: {
     PieChart,
     LineCharttwo,
-    SearchTime,
+    nodefaultSearchtime,
     ModalDialog
   },
   computed: {
@@ -268,15 +268,19 @@ export default {
       $this.lineEncomparedData=arrlist;
     },
     //时间插件
-    TimePlug:function(TimeData){
+    TimePlug:function(TimeData){      
       var $this = this;
-      if(TimeData.starttime==''&&TimeData.endtime==''){
+      if($this.timeDate.starttime!=''&&$this.timeDate.endtime!=''){
+          $this.starttime=$this.timeDate.starttime + '-01';
+          $this.endtime=$this.timeDate.endtime + '-01';
+      }else{
           $this.starttime='';
           $this.endtime='';
-      }else{
-          $this.starttime=TimeData.starttime;
-          $this.endtime=TimeData.endtime;
       }
+    },
+    listenTime:function(TDate){
+      var $this=this;
+      $this.timeDate=TDate;
     },
     //点击查询事件
     handleQueryBtn:function(){
@@ -285,22 +289,11 @@ export default {
       $this.pieContinentData=[];
       $this.pieChannelData=[];
       $this.lineEncomparedData=[];
-      $this.TimePlug($this.timeDate);
+      $this.TimePlug();
       $this.getCountrieInfo();     //国家
       $this.getContinentInfo();    //大洲
       $this.getChannelInfo();      //渠道
       $this.getEncomparedInfo();   //三组询盘对比
-    },
-    //接收传递的时间
-    listenTime:function(TDate){
-      var $this=this;
-      if(TDate.starttime==''&&TDate.endtime==''){
-        $this.timeDate.starttime='';
-        $this.timeDate.endtime='';
-      }else{
-        $this.timeDate.starttime=TDate.starttime + '-01';
-        $this.timeDate.endtime=TDate.endtime + '-01';
-      }
     },
     //点击查看更多
     handleMore:function(CountrieMore,v){

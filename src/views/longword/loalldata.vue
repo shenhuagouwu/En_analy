@@ -45,8 +45,13 @@
                        <strong>域名询盘</strong>
                        <font>(默认2020年2月至今)</font>
                        <div class="searchtime">
+                            <span class="searchtxt">域名询盘时间</span>
                             <search-timeday  class="timebox" v-on:childTimeDayData="listenTimeday"></search-timeday>
                             <span class="searchbtn" v-on:click="handleHostBtn">查询</span>
+                       </div>
+                       <div class="searchtime">
+                            <span class="searchtxt">新加域名分配时间</span>
+                            <search-timeday  class="timebox" v-on:childTimeDayData="listenTimeYM"></search-timeday>
                        </div>
                   </div>
                  <div class="piechartbox"><columitalic-chart :columchartData="pieDomainNaData" v-if="pieDomainNaData.length>0" style="height:350px"></columitalic-chart></div>
@@ -72,8 +77,8 @@
                   <div class="piecharttit">
                        <strong>主题分布询盘</strong>
                        <font>(默认2020年2月至今)</font>
-                       <div class="searchtime">                            
-                            <search-time class="timebox" v-on:childTimeData="listenTimeMonth"></search-time>
+                       <div class="searchtime">
+                            <nodefault-searchtime class="timebox" v-on:childNoTimeData="listenNoTimeMonth"></nodefault-searchtime>
                             <span class="searchbtn" v-on:click="handleThemeBtn">查询</span>
                        </div>
                   </div>
@@ -111,6 +116,14 @@ export default {
       },                              // 日期插件传递值
       startDaytime:'',                // 查询开始日期
       endDaytime:'',                  // 查询结束日期
+
+      
+      ym_timeDate:{
+        startDaytime:'',
+        endDaytime:'', 
+      },                              // 日期插件传递值
+      ym_starttime:'',
+      ym_endtime:'',
 
       timeMonthDate:{
         starttime:'',
@@ -161,8 +174,8 @@ export default {
   methods: {
     getDomainNaInfo:function(){
       var $this = this;      
-      $this.$api.get("/index/ym_changwei?starttime=" + $this.startDaytime + "&endtime=" + $this.endDaytime,null,function(res) {
-          if (res) {
+      $this.$api.get("/index/ym_changwei?starttime=" + $this.startDaytime + "&endtime=" + $this.endDaytime + "&ym_starttime=" + $this.ym_starttime + "&ym_endtime=" + $this.ym_endtime,null,function(res) {
+          if (res.data) {
             var arrlist=[];
             res.data.forEach(function(item,index){
                var arrObj={
@@ -180,7 +193,10 @@ export default {
                arrlist.push(arrObj);
             });
             $this.DomainNa=$this.CustomSort(arrlist);
+            console.log($this.DomainNa,'$this.DomainNa');
             $this.DomainNaPieChart($this.DomainNa);
+          }else{
+            $this.$message("暂时没有数据");
           }
         }
       );
@@ -188,7 +204,7 @@ export default {
     getsuffixInfo:function(){
       var $this = this;      
       $this.$api.get("/index/houzhui_changwei?starttime=" + $this.startDaytime + "&endtime=" + $this.endDaytime,null,function(res) {
-          if (res) {
+          if(res.data){
             var arrlist=[];
             res.data.forEach(function(item,index){
                var arrObj={
@@ -201,17 +217,19 @@ export default {
             });
             $this.suffix=$this.CustomSort(arrlist);
             $this.suffixPieChart($this.suffix);
+          }else{
+            $this.$message("暂时没有数据");
           }
         }
       );
     },
     getThemeInfo:function(){
       var $this = this;
-      $this.$api.get("/index/zhuti_changwei?starttime=" + $this.startDaytime + "&endtime=" + $this.endDaytime,null,function(res) {
-          if (res) {
+      $this.$api.get("/index/zhuti_changwei?starttime=" + $this.startNoMonthtime + "&endtime=" + $this.endNoMonthtime,null,function(res) {
+          if (res.data) {
             var arrlist=[];
+            console.log(res.data,'res.data');
             res.data.forEach(function(item,index){
-               if(item.zhuti!=""||item.zhuti!=undefined||item.zhuti!=null){
                   var arrObj={
                       name:'',
                       count:0,
@@ -223,7 +241,6 @@ export default {
                   arrObj.s=item.s;
                   arrObj.percent=parseFloat(item.rat);
                   arrlist.push(arrObj);
-               }
             });
             $this.Theme=$this.CustomSort(arrlist);
             var arrTheme=[];
@@ -232,7 +249,10 @@ export default {
                   arrTheme.push(item);
                 }         
             });
+            console.log(arrTheme,'arrTheme');
             $this.pieThemeData=arrTheme;
+          }else{
+            $this.$message("暂时没有数据");
           }
         }
       );
@@ -240,7 +260,7 @@ export default {
     getSiteStatInfo:function(){
       var $this = this;
       $this.$api.get("/index/conversion_longword?starttime=" + $this.startNoMonthtime + "&endtime=" + $this.endNoMonthtime,null,function(res) {
-        if(res.data.length>0){   
+        if(res.data){   
           var arrlist=[];
           res.data.forEach(function(item,index){
             item.forEach(function(items,indexs){
@@ -263,10 +283,12 @@ export default {
           $this.newSiteSucPieChart($this.SiteStat);
           $this.SucSiteNumPieChart($this.SiteStat);
           $this.TotalSiteNumPieChart($this.SiteStat);
+        }else{
+            $this.$message("暂时没有数据");
         }
       });
       $this.$api.get("/index/month_people_doamin?starttime=" + $this.startNoMonthtime + "&endtime=" + $this.endNoMonthtime,null,function(res) {
-        if(res.data.length>0){            
+        if(res.data){            
           var arrlist=[];
           res.data.forEach(function(item,index){
             item.forEach(function(items,indexs){
@@ -282,7 +304,9 @@ export default {
             });
           });
           $this.pieTotalPersonNumData=arrlist;
-        }  
+        }else{
+            $this.$message("暂时没有数据");
+        }
       });
     },
     //新站成功率
@@ -422,11 +446,27 @@ export default {
           $this.endDaytime='';
       }
     },
+    listenTimeYM:function(TDate){
+      var $this=this;
+      $this.ym_timeDate=TDate;
+    },
+    //时间插件  年-月-日
+    TimePlugYM:function(){
+      var $this = this;
+      if($this.ym_timeDate.startDaytime!=''&&$this.ym_timeDate.endDaytime!=''){
+          $this.ym_starttime=$this.ym_timeDate.startDaytime;
+          $this.ym_endtime=$this.ym_timeDate.endDaytime;
+      }else{
+          $this.ym_starttime='';
+          $this.ym_endtime='';
+      }
+    },
     //点击查询事件
     handleHostBtn:function(){
       var $this = this;
       $this.pieDomainNaData=[];
       $this.TimePlug();
+      $this.TimePlugYM();
       $this.getDomainNaInfo();     //域名询盘
     },
     handleHouzhuiBtn:function(){
@@ -438,11 +478,13 @@ export default {
     handleThemeBtn:function(){
       var $this = this;
       $this.pieThemeData=[];
-      $this.TimeMonthPlug();
+      $this.TimeNoMonthPlug();
       $this.getThemeInfo();      //主题分布
     },
     handleSiteBtn:function(){
       var $this = this;
+      $this.SiteStat=[];
+      $this.pieTotalPersonNumData=[];
       $this.TimeNoMonthPlug();
       $this.getSiteStatInfo();
     }
@@ -598,6 +640,7 @@ export default {
     }
 }
 .searchtime {
+  margin-left:15px;
     /deep/ .timebox {
         padding: 3px 10px!important;
         height: 30px!important;
@@ -613,6 +656,11 @@ export default {
         }
     }
     /deep/ .searchbtn {
+        font-size: 14px;
+        height: 30px!important;
+        padding: 0px 10px;
+    }
+    .searchtxt {
         font-size: 14px;
         height: 30px!important;
         padding: 0px 10px;

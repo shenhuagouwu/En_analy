@@ -75,8 +75,16 @@ export default {
             }
           ]
         }
-      ],
-      childList: []
+        // ,{
+        //   id: 7,
+        //   type: "changePassword",
+        //   name: "修改密码",
+        //   isOn: false,
+        //   url: "/changePassword",
+        //   icon:"el-icon-setting",
+        //   pid: 0,
+        // }
+      ]
     };
   },
   beforeCreate: function() {

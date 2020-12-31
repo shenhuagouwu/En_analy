@@ -31,7 +31,7 @@ export default {
           onClick(picker) {
             const end = new Date();
             const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+            start.setMonth(start.getMonth()-1);
             picker.$emit('pick', [start, end]);
           }
         }, {
@@ -39,7 +39,15 @@ export default {
           onClick(picker) {
             const end = new Date();
             const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+            start.setMonth(start.getMonth()-3);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '最近六个月',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setMonth(start.getMonth()-6);
             picker.$emit('pick', [start, end]);
           }
         }]
