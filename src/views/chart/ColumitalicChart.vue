@@ -36,25 +36,28 @@ export default {
         height: elHeightValue
       });
       chart.data(this.arrlist);
-      chart.legend('name', false);
+      chart.legend('host', false);
       chart.scale('count', {
         nice: true,
       });
       chart.tooltip({
-        showMarkers: false
+        showMarkers: false,
+        showTitle: false,
+        itemTpl: '<li style="text-align:left; padding-bottom:10px;"><strong style="clear:both; padding-bottom:10px; display:block; color:#333;">{name}</strong><span style="background-color:{color};" class="g2-tooltip-marker"></span>{host}: {count}</li>'//定义标头
       });
+      
+      chart
+        .interval()
+        .position('host*count')
+        .color("host").tooltip('name*host*count', function (name,host,count) {
+          return {
+              name: name,//itemTpl:{name}
+              host: host,//itemTpl:{host}
+              count: count,//itemTpl:{count}
+          }
+        });
       chart.interaction('active-region');
-      chart.axis('name', {
-        label:{
-          offset:10, // 设置坐标轴文本 label 距离坐标轴线的距离
-          //rotate:0.3,
-          autoRotate:true // 是否需要自动旋转，默认为 true
-        }
-      });
-      chart.interval().position('name*count').color("name");
       chart.render();
-      this.chart = chart;
-      this.chart.render();
       //
     }
   }

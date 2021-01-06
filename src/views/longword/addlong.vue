@@ -49,7 +49,8 @@
                           <span class="span01">ID</span>
                           <span class="span01">域名ID</span>
                           <span class="span02">姓名</span>
-                          <span class="span03">域名分配日期</span>
+                          <span class="span03">分配日期</span>
+                          <span class="span03">上传日期</span>
                           <span class="span04">域名</span>
                           <span class="span06">主题</span>
                           <span class="span07">组别</span>
@@ -61,6 +62,7 @@
                           <span class="span01">{{item.ymid}}</span>
                           <span class="span02">{{item.name}}</span>
                           <span class="span03">{{item.time}}</span>
+                          <span class="span03">{{item.online_time}}</span>
                           <span class="span04"><i @click="See('https://'+item.domain)">{{item.domain}}</i></span>
                           <span class="span06">{{item.zhuti}}</span>
                           <span class="span07">{{item.zu}}</span>
@@ -90,7 +92,10 @@
                       <el-input placeholder="请输入域名" v-model="uploadDomain" clearable></el-input>
                     </li>
                     <li>
-                      <el-date-picker v-model="uploadTime" type="date" placeholder="选择域名分配日期" format="yyyy-MM-dd" value-format="yyyy-MM-dd" ></el-date-picker>
+                      <el-date-picker v-model="uploadTime" type="date" placeholder="选择分配日期" format="yyyy-MM-dd" value-format="yyyy-MM-dd" ></el-date-picker>
+                    </li>
+                    <li>
+                      <el-date-picker v-model="uploadonline_time" type="date" placeholder="选择上传日期" format="yyyy-MM-dd" value-format="yyyy-MM-dd" ></el-date-picker>
                     </li>
                     <li>
                       <el-input placeholder="请输入主题" v-model="uploadZhuti" clearable></el-input>
@@ -178,6 +183,7 @@ export default {
             uploadymid:'',
             uploadDomain:'',
             uploadTime:'',
+            uploadonline_time:'',
             uploadZhuti:'',
             uploadBeizhu:'',
             uploadzb:'',
@@ -186,6 +192,7 @@ export default {
               ymid:'',
               domain:'',
               time:'',
+              online_time:'',
               zhuti:'',
               beizhu:'',
               zu:''
@@ -225,7 +232,7 @@ export default {
       initInfo:function(){
         var $this = this;      
         $this.$api.get("/index/month_longword?starttime=" + $this.starttime + "&endtime=" + $this.endtime,null,function(res) {
-            if(res){
+            if(res.data){
                 var searchParam={};
                 searchParam.searchName=$this.searchName;
                 searchParam.searchzu=$this.searchzuName;
@@ -310,6 +317,7 @@ export default {
         $this.uploadymid=DaT.ymid;
         $this.uploadDomain=DaT.domain;
         $this.uploadTime=DaT.time;
+        $this.uploadonline_time=DaT.online_time;
         $this.uploadZhuti=DaT.zhuti;
         $this.uploadBeizhu=DaT.beizhu;  
         $this.uploadzb=DaT.zu;
@@ -323,6 +331,7 @@ export default {
         $this.uploadymid='';
         $this.uploadDomain='';
         //$this.uploadTime='';
+        $this.uploadonline_time='';
         $this.uploadZhuti='';
         $this.uploadBeizhu='';  
         $this.uploadzb='';
@@ -346,6 +355,7 @@ export default {
           $this.uploadArr.ymid=$this.uploadymid;
           $this.uploadArr.domain=$this.uploadDomain;
           $this.uploadArr.time=$this.uploadTime;
+          $this.uploadArr.online_time=$this.uploadonline_time;
           $this.uploadArr.zhuti=$this.uploadZhuti;
           $this.uploadArr.beizhu=$this.uploadBeizhu;
           $this.uploadArr.zu=$this.uploadzb;
@@ -593,19 +603,19 @@ export default {
 
 .span01{width:5%; text-align:left;color: #3e404f;}
 .span02{width:5%;  text-align:left;  color: #3e404f;i{font-style: normal;}}
-.span03{width:10%; text-align:left;color: #3e404f;}
-.span04{width:17%; text-align:left;color: #3e404f;i{font-style: normal;cursor: pointer;}&:hover{color:#f60;}}
-.span05{width:8%; text-align:left;color: #3e404f;}
-.span06{width:7%; text-align:left;color: #3e404f;}
+.span03{width:9%; text-align:left;color: #3e404f;}
+.span04{width:15%; text-align:left;color: #3e404f;i{font-style: normal;cursor: pointer;}&:hover{color:#f60;}}
+.span05{width:7%; text-align:left;color: #3e404f;}
+.span06{width:6%; text-align:left;color: #3e404f;}
 .span07{width:6%; text-align:left;color: #3e404f;}
-.span08{width:33%; text-align:left;color: #3e404f;}
-.span09{width:8%; text-align:center;color: #3e404f;}
+.span08{width:30%; text-align:left;color: #3e404f;}
+.span09{width:7%; text-align:center;color: #3e404f;}
 
 .ModelPopup {
     position: absolute;
     z-index: 2;
     width: 800px;
-    height:420px;
+    height:480px;
     left: 50%;
     top: 50%;
     margin-top: -210px;

@@ -29,25 +29,34 @@ export default {
         }, {
           text: '最近一个月',
           onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setMonth(start.getMonth()-1);
+            const end01 = new Date();
+            const end = new Date(end01.getFullYear(), end01.getMonth() + 1, 0);
+            const start01 = new Date(end);
+            start01.setMonth(start01.getMonth()-1);
+            const start = new Date(start01);
+            start.setTime(start.getTime() + 3600 * 1000 * 24 * 1);
             picker.$emit('pick', [start, end]);
           }
         }, {
           text: '最近三个月',
           onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setMonth(start.getMonth()-3);
+            const end01 = new Date();
+            const end = new Date(end01.getFullYear(), end01.getMonth() + 1, 0);
+            const start01 = new Date(end);
+            start01.setMonth(start01.getMonth()-3);
+            const start = new Date(start01);
+            start.setTime(start.getTime() + 3600 * 1000 * 24 * 1);
             picker.$emit('pick', [start, end]);
           }
         }, {
           text: '最近六个月',
           onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setMonth(start.getMonth()-6);
+            const end01 = new Date();
+            const end = new Date(end01.getFullYear(), end01.getMonth() + 1, 0);
+            const start01 = new Date(end);
+            start01.setMonth(start01.getMonth()-6);
+            const start = new Date(start01);
+            start.setTime(start.getTime() + 3600 * 1000 * 24 * 1);
             picker.$emit('pick', [start, end]);
           }
         }]

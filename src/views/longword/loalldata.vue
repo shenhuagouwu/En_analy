@@ -45,12 +45,12 @@
                        <strong>域名询盘</strong>
                        <font>(默认2020年2月至今)</font>
                        <div class="searchtime">
-                            <span class="searchtxt">域名询盘时间</span>
+                            <span class="searchtxt">询盘时间</span>
                             <search-timeday  class="timebox" v-on:childTimeDayData="listenTimeday"></search-timeday>
                             <span class="searchbtn" v-on:click="handleHostBtn">查询</span>
                        </div>
                        <div class="searchtime">
-                            <span class="searchtxt">新加域名分配时间</span>
+                            <span class="searchtxt">域名分配时间</span>
                             <search-timeday  class="timebox" v-on:childTimeDayData="listenTimeYM"></search-timeday>
                        </div>
                   </div>
@@ -179,17 +179,19 @@ export default {
             var arrlist=[];
             res.data.forEach(function(item,index){
                var arrObj={
+                  host:'',
                   name:'',
                   count:0,
                };               
                 var hostArr=[]
                 hostArr=item.host.split('.');
                 if(hostArr.length>2){
-                  arrObj.name=hostArr[1] + '.' + hostArr[2]
+                  arrObj.host=hostArr[1] + '.' + hostArr[2]
                 }else{
-                  arrObj.name=hostArr[0] + '.' + hostArr[1]
+                  arrObj.host=hostArr[0] + '.' + hostArr[1]
                 }
                arrObj.count=item.count;
+               arrObj.name=item.remark1;
                arrlist.push(arrObj);
             });
             $this.DomainNa=$this.CustomSort(arrlist);
