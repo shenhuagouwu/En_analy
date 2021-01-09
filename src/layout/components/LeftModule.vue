@@ -75,15 +75,15 @@ export default {
             }
           ]
         }
-        // ,{
-        //   id: 7,
-        //   type: "changePassword",
-        //   name: "修改密码",
-        //   isOn: false,
-        //   url: "/changePassword",
-        //   icon:"el-icon-setting",
-        //   pid: 0,
-        // }
+        ,{
+          id: 7,
+          type: "changePassword",
+          name: "修改密码",
+          isOn: false,
+          url: "/changePassword",
+          icon:"el-icon-setting",
+          pid: 0,
+        }
       ]
     };
   },

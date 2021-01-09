@@ -1,24 +1,24 @@
 const state = {
-    username: sessionStorage.getItem('username') ? sessionStorage.getItem('username') : '',
-    userpwd: sessionStorage.getItem('userpwd') ? sessionStorage.getItem('userpwd') : '',
+    zhanghu: sessionStorage.getItem('zhanghu') ? sessionStorage.getItem('zhanghu') : '',
+    //userpwd: sessionStorage.getItem('userpwd') ? sessionStorage.getItem('userpwd') : '',
 };
 const mutations = {
-    username(state,username){
-        state.username = username;
-        sessionStorage.setItem('username', username);
+    zhanghu(state,zhanghu){
+        state.zhanghu = zhanghu;
+        sessionStorage.setItem('zhanghu', zhanghu);
     },
-    userpwd(state,userpwd){
-        state.userpwd = userpwd;
-        sessionStorage.setItem('userpwd', userpwd);
-    },
+    // userpwd(state,userpwd){
+    //     state.userpwd = userpwd;
+    //     sessionStorage.setItem('userpwd', userpwd);
+    // },
 };
 const actions = {
-    username(ctx,username) {
-        ctx.commit('username',username);
+    zhanghu(ctx,zhanghu) {
+        ctx.commit('zhanghu',zhanghu);
     },
-    userpwd(ctx,userpwd) {
-        ctx.commit('userpwd',userpwd);
-    },
+    // userpwd(ctx,userpwd) {
+    //     ctx.commit('userpwd',userpwd);
+    // },
     logOut() {
         sessionStorage.clear();
     }  

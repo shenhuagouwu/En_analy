@@ -49,15 +49,14 @@ export default {
   beforeCreate: function() {
     var $this = this;
     $this.$nextTick(function() {
-      var username = $this.username;
-      var userpwd = $this.userpwd;
+      var username = $this.zhanghu.username;
+      var userpwd = $this.zhanghu.userpwd;
       $this.form.username=username;
       $this.form.userpwd=userpwd;
     });
   },
   computed: {
-    ...mapGetters(["username"]),
-    ...mapGetters(["userpwd"]),
+    ...mapGetters(["zhanghu"]),
   },
   methods:{
       login:function(value){
@@ -76,8 +75,8 @@ export default {
                       message:res.data.msg,
                       type: 'success'
                     });
-                    $this.$store.dispatch('user/username',form.username);
-                    $this.$store.dispatch('user/userpwd',form.userpwd);
+                    form.id=res.data.id;
+                    $this.$store.dispatch('user/zhanghu',JSON.stringify(form));
                     $this.$router.push("/");
                 }else{
                     $this.$message.error(res.data.msg);

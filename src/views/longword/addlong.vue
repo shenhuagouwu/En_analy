@@ -46,11 +46,12 @@
                 <div class="InformationList">
                      <dl>
                        <dt>
+                          <span class="span00">序号</span>
                           <span class="span01">ID</span>
                           <span class="span01">域名ID</span>
                           <span class="span02">姓名</span>
                           <span class="span03">分配日期</span>
-                          <span class="span03">上传日期</span>
+                          <span class="span03">上线日期</span>
                           <span class="span04">域名</span>
                           <span class="span06">主题</span>
                           <span class="span07">组别</span>
@@ -58,6 +59,7 @@
                           <span class="span09">操作</span>
                        </dt>
                        <dd v-for="(item,index) in Information" :key="index">
+                          <span class="span00">{{item.Num}}</span>
                           <span class="span01">{{item.id}}</span>
                           <span class="span01">{{item.ymid}}</span>
                           <span class="span02">{{item.name}}</span>
@@ -239,7 +241,35 @@ export default {
                 searchParam.DomainNa=$this.searchDomainNa;
                 searchParam.DomainID=$this.searchDomainID
                 $this.searchParam=searchParam;
-                $this.Information=$this.filterResult(res.data,$this.searchParam);
+                var arrList=[];
+                res.data.forEach(function(item,index){
+                    var arrObj={
+                      beizhu: "",
+                      domain: "",
+                      id:0,
+                      name:"",
+                      online_time:"",
+                      time:"",
+                      ymid:0,
+                      zhuti:"",
+                      zu:"",
+                      zym:"",
+                      Num:0,
+                    }
+                    arrObj.beizhu=item.beizhu;
+                    arrObj.domain=item.domain;
+                    arrObj.id=item.id;
+                    arrObj.name=item.name;
+                    arrObj.online_time=item.online_time;
+                    arrObj.time=item.time;
+                    arrObj.ymid=item.ymid;
+                    arrObj.zhuti=item.zhuti;
+                    arrObj.zu=item.zu;
+                    arrObj.zym=item.zym;
+                    arrObj.Num=index+1;
+                    arrList.push(arrObj);
+                });
+                $this.Information=$this.filterResult(arrList,$this.searchParam);
             }
           }
         );
@@ -601,6 +631,7 @@ export default {
   }
 }
 
+.span00{width:5%; text-align:center;color: #3e404f;}
 .span01{width:5%; text-align:left;color: #3e404f;}
 .span02{width:5%;  text-align:left;  color: #3e404f;i{font-style: normal;}}
 .span03{width:9%; text-align:left;color: #3e404f;}
@@ -608,7 +639,7 @@ export default {
 .span05{width:7%; text-align:left;color: #3e404f;}
 .span06{width:6%; text-align:left;color: #3e404f;}
 .span07{width:6%; text-align:left;color: #3e404f;}
-.span08{width:30%; text-align:left;color: #3e404f;}
+.span08{width:25%; text-align:left;color: #3e404f;}
 .span09{width:7%; text-align:center;color: #3e404f;}
 
 .ModelPopup {

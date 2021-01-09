@@ -182,14 +182,18 @@ export default {
                   host:'',
                   name:'',
                   count:0,
-               };               
-                var hostArr=[]
-                hostArr=item.host.split('.');
-                if(hostArr.length>2){
-                  arrObj.host=hostArr[1] + '.' + hostArr[2]
-                }else{
-                  arrObj.host=hostArr[0] + '.' + hostArr[1]
-                }
+               };
+               if(item.host){
+                  var hostArr=[]
+                  hostArr=item.host.split('.');
+                  if(hostArr.length>2){
+                    arrObj.host=hostArr[1] + '.' + hostArr[2]
+                  }else{
+                    arrObj.host=hostArr[0] + '.' + hostArr[1]
+                  }
+               }else{
+                 arrObj.host="Email"
+               }
                arrObj.count=item.count;
                arrObj.name=item.remark1;
                arrlist.push(arrObj);

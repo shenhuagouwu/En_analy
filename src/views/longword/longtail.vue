@@ -44,7 +44,12 @@
               </div>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
+        <el-row :gutter="20"  v-if="Loading">
+          <el-col :span="24">
+              <loader></loader>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" v-else>
           <el-col :span="24">
               <div class="grid-content bg-purple-light PersonallongBox">
                   <dl class="Personallong" v-for="(item,index) in teamNum" :key="index">
@@ -54,16 +59,16 @@
                   </dl>
               </div>
           </el-col>
-        </el-row>
-        <el-row :gutter="20">
           <el-col :span="24">
               <div class="grid-content bg-purple-light">
                   <div class="sources">
                       <ul>                    
                           <li class="sources_tit">
+                              <span class="span00">序号</span>
                               <span class="span01">姓名</span>
                               <span class="span02">组合</span>
-                              <span class="span03">域名分配日期<i><s v-on:click="handleAscOrderOnlineTime(LongTail)" class="el-icon-caret-top"></s><s v-on:click="handleDesOrderOnlineTime(LongTail)" class="el-icon-caret-bottom"></s></i></span>
+                              <span class="span03">域名分配日期<i><s v-on:click="handleAscOrderTime(LongTail)" class="el-icon-caret-top"></s><s v-on:click="handleDesOrderTime(LongTail)" class="el-icon-caret-bottom"></s></i></span>
+                              <span class="span03">上线日期<i><s v-on:click="handleAscOrderOnlineTime(LongTail)" class="el-icon-caret-top"></s><s v-on:click="handleDesOrderOnlineTime(LongTail)" class="el-icon-caret-bottom"></s></i></span>
                               <span class="span04">域名</span>
                               <span class="span05">国家</span>
                               <span class="span06">询盘来源</span>
@@ -71,8 +76,10 @@
                               <span class="span08">来询盘时间<i><s v-on:click="handleAscOrderEnqTime(LongTail)" class="el-icon-caret-top"></s><s v-on:click="handleDesOrderEnqTime(LongTail)" class="el-icon-caret-bottom"></s></i></span>
                           </li>
                           <li class="sources_main" v-for="(item,index) in LongTail" :key="index">
+                              <span class="span00">{{item.Num}}</span>
                               <span class="span01">{{item.remark1}}</span>
                               <span class="span02">{{item.remark3}}</span>
+                              <span class="span03">{{item.time}}</span>
                               <span class="span03">{{item.online_time}}</span>
                               <span class="span04"><i @click="See(item.url)">{{item.host}}</i></span>
                               <span class="span05">{{item.area}}</span>
@@ -91,11 +98,15 @@
 <script>
 import axios from 'axios';
 import searchTimeday from "../public/searchTimeDay";
+import loader from "../public/loading";
+import { mapGetters } from "vuex";
 export default {
     name: 'addlongPage',
     data() {
       return {
         isClick:false,
+        intTimeStart:0,
+        intTimeEnd:0,
         LongTail:[],
         teamNum:[],
         timeDomainDate:{
@@ -136,7 +147,11 @@ export default {
       }
     },
     components: {
-      searchTimeday
+      searchTimeday,
+      loader
+    },
+    computed: {
+      ...mapGetters(["Loading"]),
     },
     mounted() {
       var $this=this;
@@ -145,7 +160,16 @@ export default {
     methods: {
       getLongTailInfo:function(){
         var $this = this;
+        var intTimeStart= setInterval(function(){
+          $this.intTimeStart ++;
+        }, 1000);
+        var intTimeEnd= setInterval(function(){
+          $this.intTimeEnd ++;
+        }, 1000);
+        $this.$store.commit('loading/showLoading');
         $this.$api.get("/index/longword_liebiao?starttime=" + $this.startDaytime + "&endtime=" + $this.endDaytime + "&remark1=" + $this.searchName + "&host=" + $this.searchDomainNa + "&ym_hou=" + $this.searchSuffix,null,function(res) {
+            clearInterval(intTimeStart);
+            console.log(intTimeStart,'intTimeStart');
             if (res.data) {
               var arr01=[];
               var arr02=[];
@@ -154,26 +178,30 @@ export default {
                     area:'',
                     datetimeday:'',
                     datetimedate:'',
+                    time:'',
                     online_time:'',
                     host:'',
                     key:'',
                     mode:'',
                     remark1:'',
                     remark3:'',
-                    url:''
+                    url:'',
+                    Num:0,
                   }
                   arrObj.area=item.area;
                   arrObj.datetime=item.datetime;
                   if(item.remark1=='Email'){
+                      arrObj.time=item.datetime.split(" ")[0];
                       arrObj.online_time=item.datetime.split(" ")[0];
                   }else{                  
+                      arrObj.time=item.time;
                       arrObj.online_time=item.online_time;
                   }
-                  //arrObj.online_time=item.online_time;
                   arrObj.datetimeday=item.datetime.split(" ")[0];
                   arrObj.datetimedate=item.datetime.split(" ")[1];
                   arrObj.host=item.host;
                   arrObj.key=item.key;
+                  arrObj.Num=index+1;
                   arrObj.mode=item.mode;
                   arrObj.remark1=item.remark1;
                   arrObj.remark3=item.remark3;
@@ -183,6 +211,9 @@ export default {
               arr02=$this.filterDate(arr01,$this.startDomaintime,$this.endDomaintime);
               $this.LongTail=$this.filtergroup(arr02,$this.searchGroup);
               $this.getTeamNum();
+              $this.$store.commit('loading/hideLoading');
+              clearInterval(intTimeEnd);
+              console.log(intTimeEnd,'intTimeEnd');
             }
             $this.isClick=!$this.isClick;
           }
@@ -323,7 +354,7 @@ export default {
           newData = initData;
         } else {
           initData.forEach(function(item) {
-              if ($this.compareDate(item.online_time, startDate) >= 0 && $this.compareDate(endDate, item.online_time) >= 0){
+              if ($this.compareDate(item.time, startDate) >= 0 && $this.compareDate(endDate, item.time) >= 0){
                 if(item.remark1!="Email"){
                     newData.push(item);
                 }
@@ -359,6 +390,34 @@ export default {
           return newData;
       },
       // 域名上传时间升序排列
+      handleAscOrderTime:function(DateList){
+        var $this = this;
+        var newArr = DateList;
+        $this.LongTail=[];
+        newArr.sort(function(a, b) {
+            var value1 = a.time.replace(/-/g,'/');
+            var value2 = b.time.replace(/-/g,'/');
+            var aTime = new Date(value1).getTime();
+            var bTime = new Date(value2).getTime();
+            return aTime - bTime;
+        });
+        $this.LongTail = newArr;
+      },
+      // 域名分配时间降序排列
+      handleDesOrderTime:function(DateList){
+        var $this = this;
+        var newArr = DateList;
+        $this.LongTail=[];
+        newArr.sort(function(a, b) {
+            var value1 = a.time.replace(/-/g,'/');
+            var value2 = b.time.replace(/-/g,'/');
+            var aTime = new Date(value1).getTime();
+            var bTime = new Date(value2).getTime();
+            return bTime - aTime;
+        });
+        $this.LongTail = newArr;
+      },  
+      // 域名分配时间升序排列
       handleAscOrderOnlineTime:function(DateList){
         var $this = this;
         var newArr = DateList;
@@ -385,7 +444,7 @@ export default {
             return bTime - aTime;
         });
         $this.LongTail = newArr;
-      },      
+      },     
       // 询盘时间升序排列
       handleAscOrderEnqTime:function(DateList){
         var $this = this;
@@ -413,7 +472,7 @@ export default {
             return bTime - aTime;
         });
         $this.LongTail = newArr;
-      },
+      }
     }
 }
 </script>
@@ -660,12 +719,13 @@ export default {
     }
   }
 }
-.span01{width:8%;text-align:center;color:#3e404f;}
-.span02{width:8%;text-align:left;color:#3e404f;}
-.span03{width:14%;text-align:left;color:#3e404f;}
-.span04{width:25%;text-align:left;i{display:inline-block;font-style:normal;cursor:pointer;color:#3e404f;&:hover{color:#f60;}}}
-.span05{width:10%;text-align:left;color:#3e404f;}
-.span06{width:10%;text-align:left;color:#3e404f;}
+.span00{width:5%;text-align:center;color:#3e404f;}
+.span01{width:6%;text-align:center;color:#3e404f;}
+.span02{width:6%;text-align:center;color:#3e404f;}
+.span03{width:10%;text-align:center;color:#3e404f;}
+.span04{width:22%;text-align:left;i{display:inline-block;font-style:normal;cursor:pointer;color:#3e404f;&:hover{color:#f60;}}}
+.span05{width:8%;text-align:left;color:#3e404f;}
+.span06{width:8%;text-align:left;color:#3e404f;}
 .span07{width:15%;text-align:left;color:#3e404f;}
 .span08{width:10%;text-align:left;color:#3e404f;position:relative;i{clear:both;display:block;font-style:normal;font-size:12px;color:#bfbfbf;line-height:1;margin-top:-6px;}}
 </style>

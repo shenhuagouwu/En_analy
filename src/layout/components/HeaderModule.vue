@@ -23,7 +23,13 @@ export default {
   },
   created() {
     var $this = this;           //声明一个变量指向Vue实例this，保证作用域一致
-    this.timer = setInterval(function() {
+    //若无身份信息，则跳转登录页
+    if(!(sessionStorage.getItem("zhanghu"))) {
+        $this.$router.push('/login')
+    }
+    //初始化
+    $this.username();
+    $this.timer = setInterval(function() {
       //修改数据date
       $this.currentTime = 
         new Date().getFullYear() +
@@ -39,17 +45,17 @@ export default {
         $this.appendZero(new Date().getSeconds());
     }, 1000);
   },
-  computed: {
-    username: function() {
-      return this.$store.state.user.username;
-    }
-  },
   beforeDestroy() {
     if (this.timer) {
       clearInterval(this.timer); // 在Vue实例销毁前，清除我们的定时器
     }
   },
   methods:{
+      username() {
+          var $this=this;
+          $this.zhanghu = JSON.parse(sessionStorage.getItem("zhanghu"))
+          $this.username = $this.zhanghu.username
+      },
       appendZero(obj) {
         if (obj < 10) {
            return "0" + obj;
@@ -64,7 +70,7 @@ export default {
           cancelButtonText: '取消',
           type: 'info'
         }).then(() => {
-          $this.$store.dispatch('user/logOut');
+          $this.$store.dispatch('user/zhanghu');
           $this.$message({
             type: 'success',
             message: '退出成功!'
