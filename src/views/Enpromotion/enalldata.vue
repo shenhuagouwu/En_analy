@@ -143,7 +143,7 @@
                        <strong>组员</strong>
                        <font>(最近一个月)</font>
                        <div class="searchtime">
-                            <search-timeday class="timebox" v-on:childTimeDayData="listenTimeday"></search-timeday>
+                            <nodefault-searchtimeday class="timebox" v-on:childNoTimeDayData="listenTimeday"></nodefault-searchtimeday>
                             <span class="searchbtn" v-on:click="handlezuyuanBtn">查询</span>
                        </div>
                   </div>
@@ -158,7 +158,7 @@
                        <strong>时段</strong>
                        <font>(最近一个月)</font>
                        <div class="searchtime">
-                            <search-timeday class="timebox" v-on:childTimeDayData="listenTimeday"></search-timeday>
+                            <nodefault-searchtimeday class="timebox" v-on:childNoTimeDayData="listenTimeday"></nodefault-searchtimeday>
                             <span class="searchbtn" v-on:click="handleshiduanBtn">查询</span>
                        </div>
                   </div>
@@ -255,7 +255,7 @@ import ColumChart from "../chart/ColumChart";
 import ModalDialogone from "./components/ModalDialogone";
 import ModalDialogtwo from "./components/ModalDialogtwo";
 import ModalDialogthree from "./components/ModalDialogthree";
-import searchTimeday from "../public/searchTimeDay";
+import nodefaultSearchtimeday from "../public/nodefaultSearchtimeday";
 import AreaJson from "@/assets/json/area";
 import floatObj from "@/assets/js/floatObj";
 export default {
@@ -353,7 +353,7 @@ export default {
       ModalDialogone,
       ModalDialogtwo,
       ModalDialogthree,
-      searchTimeday
+      nodefaultSearchtimeday
     },
     mounted() {
       var $this=this;

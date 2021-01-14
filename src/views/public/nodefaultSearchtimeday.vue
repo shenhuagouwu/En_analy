@@ -61,23 +61,12 @@ export default {
           }
         }]
       },
-      subDayTime:[],
+      subDayTime: "",
       timeDayDate:{
         startDaytime:'',
         endDaytime:'',
       }, //时间插件传递值
     }
-  },
-  created () {
-    var $this = this;
-    var creatDate = new Date();
-    var end = new Date(creatDate.getFullYear(), creatDate.getMonth() + 1, 0);
-    var start01 = new Date(end);
-    start01.setMonth(start01.getMonth()-1);
-    var start = new Date(start01);
-    start.setTime(start.getTime() + 3600 * 1000 * 24 * 1);
-    $this.subDayTime[0]=start;
-    $this.subDayTime[1]=end;
   },
   beforeMount() {
     var $this = this;
@@ -93,6 +82,7 @@ export default {
       var $this = this;
       if ($this.subDayTime != ""&&$this.subDayTime != null) {
         $this.timeDayDate.startDaytime=moment(tDA[0]).format("YYYY-MM-DD");
+        //$this.timeDayDate.endDaytime=moment(tDA[1]).format("YYYY-MM-DD");
         var year = tDA[1].getFullYear();
         var month = tDA[1].getMonth()+1;
         var day = tDA[1].getDate()+1;
@@ -113,7 +103,7 @@ export default {
         $this.timeDayDate.startDaytime="";
         $this.timeDayDate.endDaytime="";
       }
-      $this.$emit('childTimeDayData',$this.timeDayDate);
+      $this.$emit('childNoTimeDayData',$this.timeDayDate);
     }
   }
 }

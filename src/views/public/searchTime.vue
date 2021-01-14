@@ -80,6 +80,9 @@ export default {
           month = month - 12;
           year = year + 1;
         }
+        if(month < 10){
+          month = '0' + month;
+        }
         $this.timeDate.endtime=year + '-' + month
       }else{
         $this.timeDate.starttime="";

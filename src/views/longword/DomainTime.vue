@@ -4,14 +4,13 @@
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <i class="icon el-icon-position"></i>
             <el-breadcrumb-item>长尾词</el-breadcrumb-item>
-            <el-breadcrumb-item>添加长尾词</el-breadcrumb-item>
+            <el-breadcrumb-item>域名过期提醒</el-breadcrumb-item>
         </el-breadcrumb>
     </el-header>
     <el-scrollbar style="height:100%">
         <el-row :gutter="20">
           <el-col :span="24">
                 <dl class="Infotop">
-                    <dt @click="handleBtn"><i class="el-icon-plus"></i>添加</dt>
                     <dd>                      
                       <el-select v-model="searchName" class="selectbrands" clearable placeholder="请选择姓名">
                         <el-option v-for="item in searchNameList" :key="item.name" :label="item.name" :value="item.name"></el-option>
@@ -29,49 +28,32 @@
                       <el-input placeholder="请选择域名" v-model="searchDomainNa" clearable></el-input>
                     </dd>
                     <dd class="Infotopdd">
-                      <search-time class="timebox" v-on:childTimeData="listenTimeday"></search-time>
+                      <search-timeday class="timebox" v-on:childTimeDayData="listenTimeday"></search-timeday>
                     </dd>
                     <dt @click="handleSearchBtn"><i class="el-icon-search"></i>查询</dt>
-                    <dd>
-                      <el-upload
-                        class="upload-demo"
-                        action=""                  
-                        accept=".csv,.xlsx, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                        :http-request="httpRequest"                        
-                        :file-list="fileList">
-                        <el-button type="primary">点击上传</el-button>
-                      </el-upload>
-                    </dd>
                 </dl>
                 <div class="InformationList">
                      <dl>
                        <dt>
-                          <span class="span00">序号</span>
-                          <span class="span01">ID</span>
-                          <span class="span01">域名ID</span>
-                          <span class="span02">姓名</span>
-                          <span class="span03">分配日期</span>
-                          <span class="span03">上线日期</span>
-                          <span class="span04">域名</span>
-                          <span class="span06">主题</span>
+                          <span class="span01">序号</span>
+                          <span class="span02">ID</span>
+                          <span class="span03">域名ID</span>
+                          <span class="span04">姓名</span>
+                          <span class="span05">到期日期</span>
+                          <span class="span06">域名</span>
                           <span class="span07">组别</span>
-                          <span class="span08">备注</span>
-                          <span class="span09">操作</span>
+                          <span class="span08">操作</span>
                        </dt>
                        <dd v-for="(item,index) in Information" :key="index">
-                          <span class="span00">{{index+1}}</span>
-                          <span class="span01">{{item.id}}</span>
-                          <span class="span01">{{item.ymid}}</span>
-                          <span class="span02">{{item.name}}</span>
-                          <span class="span03">{{item.time}}</span>
-                          <span class="span03">{{item.online_time}}</span>
-                          <span class="span04"><i @click="See('https://'+item.domain)">{{item.domain}}</i></span>
-                          <span class="span06">{{item.zhuti}}</span>
+                          <span class="span01">{{index+1}}</span>
+                          <span class="span02">{{item.id}}</span>
+                          <span class="span03">{{item.ymid}}</span>
+                          <span class="span04">{{item.name}}</span>
+                          <span class="span05">{{item.domain_expired_time}}</span>
+                          <span class="span06"><i @click="See('https://'+item.domain)">{{item.domain}}</i></span>
                           <span class="span07">{{item.zu}}</span>
-                          <span class="span08">{{item.beizhu}}</span>
-                          <span class="span09">
+                          <span class="span08">
                                 <i title="修改" @click="handleEdiClick(item)" class="el-icon-edit"></i>
-                                <i title="删除" @click="handleDelClick(item.id)" class="el-icon-delete"></i>
                           </span>
                        </dd>
                      </dl>
@@ -94,24 +76,22 @@
                       <el-input placeholder="请输入域名" v-model="uploadDomain" clearable></el-input>
                     </li>
                     <li>
-                      <el-date-picker v-model="uploadTime" type="date" placeholder="选择分配日期" format="yyyy-MM-dd" value-format="yyyy-MM-dd" ></el-date-picker>
+                      <el-date-picker v-model="uploadExpiredTime" type="date" placeholder="域名到期日期" format="yyyy-MM-dd" value-format="yyyy-MM-dd" ></el-date-picker>
                     </li>
                     <li>
-                      <el-date-picker v-model="uploadonline_time" type="date" placeholder="选择上传日期" format="yyyy-MM-dd" value-format="yyyy-MM-dd" ></el-date-picker>
+                      <label>是否忽略</label>
+                       <el-switch 
+                          v-model="uploadstate"
+                          active-value="100"
+                          active-text="是" 
+                          inactive-value="0" 
+                          inactive-text="否"></el-switch>
                     </li>
-                    <li>
-                      <el-input placeholder="请输入主题" v-model="uploadZhuti" clearable></el-input>
-                    </li>
+
                     <li>
                       <el-select v-model="uploadzb" class="selectbrands" clearable placeholder="请选择小组">
                         <el-option v-for="item in searchzuNameList" :key="item.name" :label="item.name" :value="item.name"></el-option>
                       </el-select>
-                    </li>
-                    <li>
-                      <el-date-picker v-model="uploadExpiredTime" type="date" placeholder="域名到期日期" format="yyyy-MM-dd" value-format="yyyy-MM-dd" ></el-date-picker>
-                    </li>
-                    <li>
-                      <el-input type="textarea" :rows="2" placeholder="请输入备注" v-model="uploadBeizhu" clearable></el-input>
                     </li>
                  </ul>
                  <p class="ModelPopupBoxbom">
@@ -126,18 +106,17 @@
 </template>
 <script>
 import axios from 'axios';
-import searchTime from "../public/searchTime";
+import searchTimeday from "../public/searchTimeDay";
 export default {
-    name: 'addlongPage',
+    name: 'DomainTimePage',
     data() {
         return {
             showAbs:false,
             type:'',
             item_Id:0,
-            fileList:[],
             timeDate:{
-              starttime:'',
-              endtime:'', 
+              startDaytime:'',
+              endDaytime:'', 
             },                           // 日期插件传递值
             starttime:'',                // 查询开始日期
             endtime:'',                  // 查询结束日期
@@ -187,27 +166,21 @@ export default {
             uploadName:'',
             uploadymid:'',
             uploadDomain:'',
-            uploadTime:'',
-            uploadonline_time:'',
-            uploadZhuti:'',
-            uploadBeizhu:'',
-            uploadzb:'',
             uploadExpiredTime:'',
+            uploadzb:'',
+            uploadstate:"0",
             uploadArr:{
               name:'',
               ymid:'',
               domain:'',
-              time:'',
-              online_time:'',
+              state:0,
               domain_expired_time:'',
-              zhuti:'',
-              beizhu:'',
               zu:''
             }
         }
     },
     components: {
-      searchTime,
+      searchTimeday,
     },
     mounted() {
        var $this=this;
@@ -222,9 +195,9 @@ export default {
       //时间插件
       TimePlug:function(){
         var $this = this;
-        if($this.timeDate.starttime!=''&&$this.timeDate.endtime!=''){
-            $this.starttime=$this.timeDate.starttime + '-01';
-            $this.endtime=$this.timeDate.endtime + '-01';
+        if($this.timeDate.startDaytime!=''&&$this.timeDate.endDaytime!=''){
+            $this.starttime=$this.timeDate.startDaytime;
+            $this.endtime=$this.timeDate.endDaytime;
         }else{
             $this.starttime='';
             $this.endtime='';
@@ -237,8 +210,8 @@ export default {
           $this.initInfo(); 
       },
       initInfo:function(){
-        var $this = this;      
-        $this.$api.get("/index/month_longword?starttime=" + $this.starttime + "&endtime=" + $this.endtime,null,function(res) {
+        var $this = this;
+        $this.$api.get("/index/domain_expire_time?starttime=" + $this.starttime + "&endtime=" + $this.endtime,null,function(res) {
             if(res.data){
                 var searchParam={};
                 searchParam.searchName=$this.searchName;
@@ -249,34 +222,27 @@ export default {
                 var arrList=[];
                 res.data.forEach(function(item,index){
                     var arrObj={
-                      beizhu: "",
                       domain: "",
                       id:0,
                       name:"",
-                      online_time:"",
                       domain_expired_time:"",
-                      state:0,
-                      time:"",
                       ymid:0,
-                      zhuti:"",
+                      state:0,
                       zu:"",
-                      zym:"",
                     }
-                    arrObj.beizhu=item.beizhu;
-                    arrObj.domain=item.domain;
-                    arrObj.id=item.id;
-                    arrObj.name=item.name;
-                    arrObj.online_time=item.online_time;
-                    arrObj.domain_expired_time=item.domain_expired_time;
-                    arrObj.state=item.state
-                    arrObj.time=item.time;
-                    arrObj.ymid=item.ymid;
-                    arrObj.zhuti=item.zhuti;
-                    arrObj.zu=item.zu;
-                    arrObj.zym=item.zym;
-                    arrList.push(arrObj);
+                    if(item.state==0){
+                      arrObj.state=item.state;
+                      arrObj.domain=item.domain;
+                      arrObj.id=item.id;
+                      arrObj.name=item.name;
+                      arrObj.ymid=item.ymid;
+                      arrObj.domain_expired_time=item.domain_expired_time;
+                      arrObj.zu=item.zu;
+                      arrList.push(arrObj);
+                    }
                 });
                 $this.Information=$this.filterResult(arrList,$this.searchParam);                
+                $this.$store.dispatch('numType/changeExpiredtimenum',$this.Information.length);
             }
           }
         );
@@ -353,115 +319,43 @@ export default {
         $this.uploadName=DaT.name;
         $this.uploadymid=DaT.ymid;
         $this.uploadDomain=DaT.domain;
-        $this.uploadTime=DaT.time;
-        $this.uploadonline_time=DaT.online_time;
+        $this.uploadstate="0";
         $this.uploadExpiredTime=DaT.domain_expired_time;
-        $this.uploadZhuti=DaT.zhuti;
-        $this.uploadBeizhu=DaT.beizhu;  
         $this.uploadzb=DaT.zu;
-      },
-      //添加弹出
-      handleBtn:function(){
-         var $this=this;
-         $this.type='add';
-         $this.showAbs=!$this.showAbs;
-        $this.uploadName='';        
-        $this.uploadymid='';
-        $this.uploadDomain='';
-        $this.uploadExpiredTime='';
-        $this.uploadonline_time='';
-        $this.uploadZhuti='';
-        $this.uploadBeizhu='';  
-        $this.uploadzb='';
-      },
-      //删除
-      handleDelClick:function(itemID){
-          var $this=this;
-          $this.item_Id=itemID;
-          $this.$api.get("/index/delete_longword?id=" + $this.item_Id,null,function(res) {
-               if(res){
-                   $this.Information=[];
-                   $this.initInfo();
-               }
-            }
-          );
       },
       handleSaveClick:function(){
           var $this=this;
-          $this.uploadArr.name=$this.uploadName;               
-          $this.uploadArr.ymid=$this.uploadymid;
+          $this.uploadArr.name=$this.uploadName; 
+          $this.uploadArr.ymid=$this.uploadymid; 
           $this.uploadArr.domain=$this.uploadDomain;
-          $this.uploadArr.time=$this.uploadTime;
-          $this.uploadArr.online_time=$this.uploadonline_time;
           $this.uploadArr.domain_expired_time=$this.uploadExpiredTime;
-          $this.uploadArr.zhuti=$this.uploadZhuti;
-          $this.uploadArr.beizhu=$this.uploadBeizhu;
           $this.uploadArr.zu=$this.uploadzb;
-          if($this.type == "add"){
-            $this.$api.post("/index/add_longword",$this.uploadArr,function(res) {
-                if(res){
-                  if(res.data.state==1){
-                    $this.$message({
-                      message:res.data.msg,
-                      type: 'success'
-                    });
-                    $this.Information=[];
-                    $this.handleSearchBtn();
-                  }else{
-                    $this.$message.error(res.data.msg);
-                  }
-                }
-              }
-            );
+          if($this.uploadstate=="100"){
+            $this.uploadArr.state=1;
           }else{
-            $this.uploadArr.id=$this.item_Id;
-            $this.$api.post("/index/edit_longword",$this.uploadArr,function(res) {
-                if(res){
-                  if(res.data.state==1){
-                    $this.$message({
-                      message:res.data.msg,
-                      type: 'success'
-                    });
-                    $this.Information=[];
-                    $this.handleSearchBtn();
-                  }else{
-                    $this.$message.error(res.data.msg);
-                  }
+            $this.uploadArr.state=0;
+          }
+          $this.uploadArr.id=$this.item_Id;
+          $this.$api.post("/index/edit_longword",$this.uploadArr,function(res) {
+              if(res){
+                if(res.data.state==1){
+                  $this.$message({
+                    message:res.data.msg,
+                    type: 'success'
+                  });
+                  $this.Information=[];
+                  $this.handleSearchBtn();
+                }else{
+                  $this.$message.error(res.data.msg);
                 }
               }
-            );
-          }
+            }
+          );
           $this.showAbs=!$this.showAbs;
       },
       handleClose:function(){
         var $this=this;
         $this.showAbs=!$this.showAbs;
-      },
-      httpRequest:function(parm){
-        var $this=this;
-        var formData  = new FormData()// FormData 对象
-        formData.append('file',parm.file)// 文件对象   
-        axios({
-          method: 'post',
-          data:formData,
-          url: '/index/excel_dao_longword'
-        }).then(res => {
-            if(res.data.state==1){
-              if(res.data.msg.length>0){
-                  $this.$alert(res.data.msg, '上传失败的数据', {
-                    dangerouslyUseHTMLString: true
-                  });
-              }else{
-                $this.$message({
-                  message:res.data.tiao,
-                  type: 'success'
-                });
-              }
-              $this.handleSearchBtn();
-            }else{
-              $this.$message.error(res.data.msg);
-            }
-        })
       }
     }
 }
@@ -524,7 +418,7 @@ export default {
     text-align: left;
     /deep/ .el-date-editor.el-input{width: 100%!important;}
     &.Infotopdd{
-        width:250px;
+        width:350px;
        /deep/ .el-date-editor--monthrange.el-input__inner{width: 100%!important;}
        /deep/ .el-date-editor .el-range-separator{width:auto!important;}
     }
@@ -602,7 +496,7 @@ export default {
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
-        &.span04{
+        &.span06{
           i{
             cursor: pointer;
             color:#3e404f;
@@ -611,7 +505,7 @@ export default {
             }
           }
         }
-        &.span09{
+        &.span08{
           i{
             display: inline-block;
             width: 30px;
@@ -636,26 +530,23 @@ export default {
     }
   }
 }
-
-.span00{width:5%; text-align:center;color: #3e404f;}
-.span01{width:5%; text-align:left;color: #3e404f;}
-.span02{width:5%;  text-align:left;  color: #3e404f;i{font-style: normal;}}
-.span03{width:9%; text-align:left;color: #3e404f;}
-.span04{width:15%; text-align:left;color: #3e404f;i{font-style: normal;cursor: pointer;}&:hover{color:#f60;}}
-.span05{width:7%; text-align:left;color: #3e404f;}
-.span06{width:6%; text-align:left;color: #3e404f;}
-.span07{width:6%; text-align:left;color: #3e404f;}
-.span08{width:25%; text-align:left;color: #3e404f;}
-.span09{width:7%; text-align:center;color: #3e404f;}
-
+.span01{width:5%; text-align:center;color: #3e404f;}
+.span02{width:5%; text-align:left;color: #3e404f;}
+.span03{width:5%; text-align:left;color: #3e404f;}
+.span04{width:5%;  text-align:left;  color: #3e404f;i{font-style: normal;}}
+.span05{width:10%; text-align:left;color: #3e404f;}
+.span06{width:40%; text-align:left;color: #3e404f;i{font-style: normal;cursor: pointer;}&:hover{color:#f60;}}
+.span07{width:10%; text-align:left;color: #3e404f;}
+.span07{width:10%; text-align:left;color: #3e404f;}
+.span08{width:10%; text-align:center;color: #3e404f;}
 .ModelPopup {
     position: absolute;
     z-index: 2;
     width: 800px;
-    height:480px;
+    height:400px;
     left: 50%;
     top: 50%;
-    margin-top: -240px;
+    margin-top: -200px;
     margin-left: -400px;
     border: 1px solid #e4e6ea;
     background: #fff;
@@ -702,6 +593,11 @@ export default {
             width:50%;
             padding:10px;
             text-align: left;
+            label{
+              display: inline-block;
+              margin-right: 15px;
+              color:#666;
+            }
             .el-select{width: 100%!important;}
             /deep/ .el-date-editor.el-input{width: 100%!important;}
             &.Infotopdd{

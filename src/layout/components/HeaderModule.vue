@@ -13,6 +13,7 @@
     </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
 export default {
   name:"HeaderModule",
   data() {
@@ -45,6 +46,12 @@ export default {
         $this.appendZero(new Date().getSeconds());
     }, 1000);
   },
+  computed: {
+    ...mapGetters(["editorType"]),
+    type: function() {
+      return this.editorType;
+    }
+  },
   beforeDestroy() {
     if (this.timer) {
       clearInterval(this.timer); // 在Vue实例销毁前，清除我们的定时器
@@ -71,6 +78,7 @@ export default {
           type: 'info'
         }).then(() => {
           $this.$store.dispatch('user/zhanghu');
+          $this.$store.dispatch('numType/changeExpiredtimenum');
           $this.$message({
             type: 'success',
             message: '退出成功!'

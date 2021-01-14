@@ -79,6 +79,11 @@ const routes = [
                         component: () => import('@/views/longword/longtail'),
                         name: 'longtailPage',
                     },
+                    {
+                        path: '/longword/DomainTime',
+                        component: () => import('@/views/longword/DomainTime'),
+                        name: 'DomainTimePage',
+                    },
                 ]
             },
             {                

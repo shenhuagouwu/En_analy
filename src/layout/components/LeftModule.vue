@@ -5,7 +5,7 @@
                   <router-link tag="span" v-bind:to="item.url" ><i v-bind:class="item.icon"></i>{{item.name}}</router-link>
                   <ul v-bind:class="item.isOn?'on':''">
                       <li v-for="(items,index) in item.children">
-                          <router-link tag="span" v-bind:to="items.url">{{items.name}}</router-link>
+                          <router-link tag="span" v-bind:to="items.url">{{items.name}}<font v-if="items.typeNumBool">{{items.expiredTimeNum}}</font></router-link>
                       </li>
                   </ul>
               </li>
@@ -62,6 +62,8 @@ export default {
                 type:'addlong',
                 name:'添加长尾词',
                 isOn:true,
+                typeNumBool:false,
+                expiredTimeNum:0,
                 url:"/longword/addlong",
                 pid:4,
             },
@@ -70,13 +72,25 @@ export default {
                 type:'longtail',
                 name:'长尾词询盘',
                 isOn:true,
+                typeNumBool:false,
+                expiredTimeNum:0,
                 url:"/longword/longtail",
+                pid:4,
+            },
+            {
+                id:7,
+                type:'DomainTime',
+                name:'域名过期提醒',
+                isOn:true,
+                typeNumBool:false,
+                expiredTimeNum:0,
+                url:"/longword/DomainTime",
                 pid:4,
             }
           ]
         }
         ,{
-          id: 7,
+          id: 8,
           type: "changePassword",
           name: "修改密码",
           isOn: false,
@@ -94,20 +108,37 @@ export default {
       $this.leftNavList.forEach(function(item, index) {
         if (item.type == types) {
           item.isOn = true;
-          $this.childList = item.children;
         } else {
           item.isOn = false;
         }
       });
     });
   },
-  computed: {
-    ...mapGetters(["editorType"]),
-    type: function() {
-      return this.editorType;
+  created() {
+    var $this = this;
+    $this.numType($this.leftNavList,$this.expiredTimeNum);
+  },
+  watch:{
+    expiredTimeNum:function(){
+       this.numType(this.leftNavList,this.$store.state.numType.expiredTimeNum);
     }
   },
+  computed: {
+    ...mapGetters(["expiredTimeNum"])
+  },
   methods: {
+    numType(varData,Numa){
+      varData.forEach(function(item) {
+        if(item.id==4){
+          item.children.forEach(function(items) {
+              if(items.id==7){
+                items.expiredTimeNum=Numa;
+                items.typeNumBool=true;
+              }
+          })
+        }
+      });
+    },
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
     },
@@ -120,8 +151,6 @@ export default {
       $this.leftNavList.forEach(function(item, index) {
         if (item.type == typeValue) {
           item.isOn = true;
-          var children;
-          $this.childList = item.children;
         } else {
           item.isOn = false;
         }
@@ -189,6 +218,19 @@ export default {
               li{
                  span{
                    padding-left:42px;
+                   font{
+                     height:20px;
+                     background:#f00;
+                     border-radius:10px;
+                     color:#fff;
+                     font-weight: bold;
+                     line-height:18px;
+                     text-align:center;
+                     display: inline-block;
+                     margin-left:10px;
+                     font-size:12px;
+                     padding:0px 5px;
+                   }
                  }
               }
             }

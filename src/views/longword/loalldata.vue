@@ -43,15 +43,15 @@
             <div class="grid-content bg-purple-light">
                   <div class="piecharttit">
                        <strong>域名询盘</strong>
-                       <font>(默认2020年2月至今)</font>
+                       <font>(默认2019年6月至今)</font>
                        <div class="searchtime">
                             <span class="searchtxt">询盘时间</span>
-                            <search-timeday  class="timebox" v-on:childTimeDayData="listenTimeday"></search-timeday>
+                            <nodefault-searchtimeday  class="timebox" v-on:childNoTimeDayData="listenTimeday"></nodefault-searchtimeday>
                             <span class="searchbtn" v-on:click="handleHostBtn">查询</span>
                        </div>
                        <div class="searchtime">
                             <span class="searchtxt">域名分配时间</span>
-                            <search-timeday  class="timebox" v-on:childTimeDayData="listenTimeYM"></search-timeday>
+                            <nodefault-searchtimeday  class="timebox" v-on:childNoTimeDayData="listenTimeYM"></nodefault-searchtimeday>
                        </div>
                   </div>
                  <div class="piechartbox"><columitalic-chart :columchartData="pieDomainNaData" v-if="pieDomainNaData.length>0" style="height:350px"></columitalic-chart></div>
@@ -63,9 +63,9 @@
             <div class="grid-content bg-purple-light">
                   <div class="piecharttit">
                        <strong>后缀询盘询盘</strong>
-                       <font>(默认2020年2月至今)</font>
+                       <font>(默认2019年6月至今)</font>
                        <div class="searchtime">
-                            <search-timeday class="timebox" v-on:childTimeDayData="listenTimeday"></search-timeday>
+                            <nodefault-searchtimeday class="timebox" v-on:childNoTimeDayData="listenTimeday"></nodefault-searchtimeday>
                             <span class="searchbtn" v-on:click="handleHouzhuiBtn">查询</span>
                        </div>
                   </div>
@@ -76,7 +76,7 @@
             <div class="grid-content bg-purple-light">
                   <div class="piecharttit">
                        <strong>主题分布询盘</strong>
-                       <font>(默认2020年2月至今)</font>
+                       <font>(默认2019年6月至今)</font>
                        <div class="searchtime">
                             <nodefault-searchtime class="timebox" v-on:childNoTimeData="listenNoTimeMonth"></nodefault-searchtime>
                             <span class="searchbtn" v-on:click="handleThemeBtn">查询</span>
@@ -97,7 +97,7 @@ import SitecostlineChartthree from "../chart/SitecostlineChartthree";
 import PieChart from "../chart/PieChart";
 import ColumitalicChart from "../chart/ColumitalicChart";
 import ColumChart from "../chart/ColumChart";
-import searchTimeday from "../public/searchTimeDay";
+import nodefaultSearchtimeday from "../public/nodefaultSearchtimeday";
 import searchTime from "../public/searchTime";
 import nodefaultSearchtime from "../public/nodefaultSearchtime";
 export default {
@@ -156,7 +156,7 @@ export default {
     PieChart,
     ColumChart,
     ColumitalicChart,
-    searchTimeday,
+    nodefaultSearchtimeday,
     searchTime,
     nodefaultSearchtime,
     LineChartone,

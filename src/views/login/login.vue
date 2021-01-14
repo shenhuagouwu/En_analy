@@ -77,6 +77,7 @@ export default {
                     });
                     form.id=res.data.id;
                     $this.$store.dispatch('user/zhanghu',JSON.stringify(form));
+                    $this.$store.dispatch('numType/changeExpiredtimenum',res.data.count);
                     $this.$router.push("/");
                 }else{
                     $this.$message.error(res.data.msg);

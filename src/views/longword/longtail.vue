@@ -33,11 +33,11 @@
                   <dl class="searchdl02">
                     <dt>
                         <span class="searchdl02Txt">域名分配日期</span>
-                        <search-timeday class="timebox" v-on:childTimeDayData="listenDomainday"></search-timeday>
+                        <nodefault-searchtimeday class="timebox" v-on:childNoTimeDayData="listenDomainday"></nodefault-searchtimeday>
                     </dt>
                     <dt>
                         <span class="searchdl02Txt">询盘时间</span>
-                        <search-timeday class="timebox" v-on:childTimeDayData="listenTimeday"></search-timeday>
+                        <nodefault-searchtimeday class="timebox" v-on:childNoTimeDayData="listenTimeday"></nodefault-searchtimeday>
                         <span class="searchbtn" v-on:click="handleResBtn">查询</span>
                     </dt>
                   </dl>
@@ -76,7 +76,7 @@
                               <span class="span08">来询盘时间<i><s v-on:click="handleAscOrderEnqTime(LongTail)" class="el-icon-caret-top"></s><s v-on:click="handleDesOrderEnqTime(LongTail)" class="el-icon-caret-bottom"></s></i></span>
                           </li>
                           <li class="sources_main" v-for="(item,index) in LongTail" :key="index">
-                              <span class="span00">{{item.Num}}</span>
+                              <span class="span00">{{index+1}}</span>
                               <span class="span01">{{item.remark1}}</span>
                               <span class="span02">{{item.remark3}}</span>
                               <span class="span03">{{item.time}}</span>
@@ -97,7 +97,7 @@
 </template>
 <script>
 import axios from 'axios';
-import searchTimeday from "../public/searchTimeDay";
+import nodefaultSearchtimeday from "../public/nodefaultSearchtimeday";
 import loader from "../public/loading";
 import { mapGetters } from "vuex";
 export default {
@@ -105,8 +105,6 @@ export default {
     data() {
       return {
         isClick:false,
-        intTimeStart:0,
-        intTimeEnd:0,
         LongTail:[],
         teamNum:[],
         timeDomainDate:{
@@ -147,7 +145,7 @@ export default {
       }
     },
     components: {
-      searchTimeday,
+      nodefaultSearchtimeday,
       loader
     },
     computed: {
@@ -160,16 +158,8 @@ export default {
     methods: {
       getLongTailInfo:function(){
         var $this = this;
-        var intTimeStart= setInterval(function(){
-          $this.intTimeStart ++;
-        }, 1000);
-        var intTimeEnd= setInterval(function(){
-          $this.intTimeEnd ++;
-        }, 1000);
         $this.$store.commit('loading/showLoading');
         $this.$api.get("/index/longword_liebiao?starttime=" + $this.startDaytime + "&endtime=" + $this.endDaytime + "&remark1=" + $this.searchName + "&host=" + $this.searchDomainNa + "&ym_hou=" + $this.searchSuffix,null,function(res) {
-            clearInterval(intTimeStart);
-            console.log(intTimeStart,'intTimeStart');
             if (res.data) {
               var arr01=[];
               var arr02=[];
@@ -186,7 +176,6 @@ export default {
                     remark1:'',
                     remark3:'',
                     url:'',
-                    Num:0,
                   }
                   arrObj.area=item.area;
                   arrObj.datetime=item.datetime;
@@ -201,7 +190,6 @@ export default {
                   arrObj.datetimedate=item.datetime.split(" ")[1];
                   arrObj.host=item.host;
                   arrObj.key=item.key;
-                  arrObj.Num=index+1;
                   arrObj.mode=item.mode;
                   arrObj.remark1=item.remark1;
                   arrObj.remark3=item.remark3;
@@ -212,8 +200,6 @@ export default {
               $this.LongTail=$this.filtergroup(arr02,$this.searchGroup);
               $this.getTeamNum();
               $this.$store.commit('loading/hideLoading');
-              clearInterval(intTimeEnd);
-              console.log(intTimeEnd,'intTimeEnd');
             }
             $this.isClick=!$this.isClick;
           }
@@ -687,7 +673,7 @@ export default {
     /deep/ .el-date-editor .el-range-separator{    width: auto !important;}
   }
 }
-.PersonallongBox{padding:10px 0px;}
+.PersonallongBox{padding:10px 0px; margin-bottom:20px;}
 .Personallong{
   clear:both;
   overflow:hidden;
