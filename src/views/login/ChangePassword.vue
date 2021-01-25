@@ -93,7 +93,7 @@ export default {
                         });
                         $this.$store.dispatch('user/zhanghu');
                         setTimeout(() => {
-                            location.reload() // 强制刷新
+                            location.reload()
                         }, 1000)
                     }else{
                         $this.$message.error(res.data.msg);

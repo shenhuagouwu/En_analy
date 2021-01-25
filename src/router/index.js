@@ -22,9 +22,14 @@ const routes = [
     },
     {
         path: '/',
-        redirect: '/Enpromotion',
+        redirect: '/default',
         component: Layout,
         children: [
+            {
+                path: 'default',
+                component: () => import('@/views/default/default'),
+                name: 'defaultPage',
+            },
             {
                 path: '/Enpromotion',
                 component: () => import('@/views/Enpromotion/index'),
@@ -78,6 +83,11 @@ const routes = [
                         path: '/longword/longtail',
                         component: () => import('@/views/longword/longtail'),
                         name: 'longtailPage',
+                    },
+                    {                
+                        path: '/longword/PersonalStatistic',
+                        component: () => import('@/views/longword/PersonalStatistic'),
+                        name: 'personalstatisticPage'
                     },
                     {
                         path: '/longword/DomainTime',

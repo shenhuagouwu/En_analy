@@ -79,6 +79,16 @@ export default {
             },
             {
                 id:7,
+                type:'PersonalStatistic',
+                name:'个人询盘统计',
+                isOn:true,
+                typeNumBool:false,
+                expiredTimeNum:0,
+                url:"/longword/PersonalStatistic",
+                pid:4,
+            },
+            {
+                id:8,
                 type:'DomainTime',
                 name:'域名过期提醒',
                 isOn:true,
@@ -90,7 +100,7 @@ export default {
           ]
         }
         ,{
-          id: 8,
+          id: 9,
           type: "changePassword",
           name: "修改密码",
           isOn: false,
@@ -131,7 +141,7 @@ export default {
       varData.forEach(function(item) {
         if(item.id==4){
           item.children.forEach(function(items) {
-              if(items.id==7){
+              if(items.id==8){
                 items.expiredTimeNum=Numa;
                 items.typeNumBool=true;
               }

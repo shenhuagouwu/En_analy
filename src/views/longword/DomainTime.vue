@@ -37,9 +37,9 @@
                        <dt>
                           <span class="span01">序号</span>
                           <span class="span02">ID</span>
-                          <span class="span03">域名ID</span>
+                          <span class="span03">域名ID<i><s v-on:click="handleAscYmid(Information)" class="el-icon-caret-top"></s><s v-on:click="handleDesYmid(Information)" class="el-icon-caret-bottom"></s></i></span>
                           <span class="span04">姓名</span>
-                          <span class="span05">到期日期</span>
+                          <span class="span05">到期日期<i><s v-on:click="handleAscOrderExpiredTime(Information)" class="el-icon-caret-top"></s><s v-on:click="handleDesOrderExpiredTime(Information)" class="el-icon-caret-bottom"></s></i></span>
                           <span class="span06">域名</span>
                           <span class="span07">组别</span>
                           <span class="span08">操作</span>
@@ -319,8 +319,12 @@ export default {
         $this.uploadName=DaT.name;
         $this.uploadymid=DaT.ymid;
         $this.uploadDomain=DaT.domain;
-        $this.uploadstate="0";
-        $this.uploadExpiredTime=DaT.domain_expired_time;
+        $this.uploadstate="0";        
+        var DaTData = DaT.domain_expired_time.split("-");
+        DaTData = new Date(DaTData[0],DaTData[1],DaTData[2]);  
+        DaTData = new Date(DaTData.getFullYear(), DaTData.getMonth(), DaTData.getDate());  
+        DaTData = (DaTData.getFullYear()+1) + "-" + DaTData.getMonth() + "-" + DaTData.getDate();
+        $this.uploadExpiredTime=DaTData;
         $this.uploadzb=DaT.zu;
       },
       handleSaveClick:function(){
@@ -352,6 +356,58 @@ export default {
             }
           );
           $this.showAbs=!$this.showAbs;
+      },
+      // 域名ID升序排列
+      handleAscYmid:function(DateList){
+        var $this = this;
+        var newArr = DateList;
+        $this.Information=[];
+        newArr.sort(function(a, b) {
+            var value1 = a.ymid;
+            var value2 = b.ymid;
+            return value1 - value2;
+        });
+        $this.Information = newArr;
+      },
+      // 域名ID降序排列
+      handleDesYmid:function(DateList){
+        var $this = this;
+        var newArr = DateList;
+        $this.Information=[];
+        newArr.sort(function(a, b) {
+            var value1 = a.ymid;
+            var value2 = b.ymid;
+            return value2 - value1;
+        });
+        $this.Information = newArr;
+      },
+      // 域名过期日期升序排列
+      handleAscOrderExpiredTime:function(DateList){
+        var $this = this;
+        var newArr = DateList;
+        $this.Information=[];
+        newArr.sort(function(a, b) {
+            var value1 = a.domain_expired_time.replace(/-/g,'/');
+            var value2 = b.domain_expired_time.replace(/-/g,'/');
+            var aTime = new Date(value1).getTime();
+            var bTime = new Date(value2).getTime();
+            return aTime - bTime;
+        });
+        $this.Information = newArr;
+      },
+      // 域名过期日期降序排列
+      handleDesOrderExpiredTime:function(DateList){
+        var $this = this;
+        var newArr = DateList;
+        $this.Information=[];
+        newArr.sort(function(a, b) {
+            var value1 = a.domain_expired_time.replace(/-/g,'/');
+            var value2 = b.domain_expired_time.replace(/-/g,'/');
+            var aTime = new Date(value1).getTime();
+            var bTime = new Date(value2).getTime();
+            return bTime - aTime;
+        });
+        $this.Information = newArr;
       },
       handleClose:function(){
         var $this=this;
@@ -477,6 +533,35 @@ export default {
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
+            i{
+              display: inline-block;
+              width:16px;
+              height: 17px;
+              position: relative;
+              top:2px;
+              margin-left:5px;
+              s{
+                clear: both;
+                display: block;
+                cursor: pointer;
+                position: absolute;
+                left:0px;
+                bottom:0px;
+                width:100%;
+                height:8px;
+                line-height:8px;
+                text-decoration: none;
+                color:#ff9800;
+                font-size:16px;
+                &:first-child{
+                  bottom:auto;
+                  top:0px;
+                }
+                &:hover{
+                color:#f60;
+                }
+              }
+            }
       }
     }
     dd{
@@ -532,10 +617,10 @@ export default {
 }
 .span01{width:5%; text-align:center;color: #3e404f;}
 .span02{width:5%; text-align:left;color: #3e404f;}
-.span03{width:5%; text-align:left;color: #3e404f;}
+.span03{width:8%; text-align:left;color: #3e404f;}
 .span04{width:5%;  text-align:left;  color: #3e404f;i{font-style: normal;}}
 .span05{width:10%; text-align:left;color: #3e404f;}
-.span06{width:40%; text-align:left;color: #3e404f;i{font-style: normal;cursor: pointer;}&:hover{color:#f60;}}
+.span06{width:35%; text-align:left;color: #3e404f;i{font-style: normal;cursor: pointer;}&:hover{color:#f60;}}
 .span07{width:10%; text-align:left;color: #3e404f;}
 .span07{width:10%; text-align:left;color: #3e404f;}
 .span08{width:10%; text-align:center;color: #3e404f;}

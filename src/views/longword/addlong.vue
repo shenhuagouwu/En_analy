@@ -48,28 +48,28 @@
                        <dt>
                           <span class="span00">序号</span>
                           <span class="span01">ID</span>
-                          <span class="span01">域名ID</span>
-                          <span class="span02">姓名</span>
-                          <span class="span03">分配日期</span>
-                          <span class="span03">上线日期</span>
-                          <span class="span04">域名</span>
-                          <span class="span06">主题</span>
-                          <span class="span07">组别</span>
-                          <span class="span08">备注</span>
-                          <span class="span09">操作</span>
+                          <span class="span02">域名ID<i><s v-on:click="handleAscYmid(Information)" class="el-icon-caret-top"></s><s v-on:click="handleDesYmid(Information)" class="el-icon-caret-bottom"></s></i></span>
+                          <span class="span03">姓名</span>
+                          <span class="span04">分配日期<i><s v-on:click="handleAscOrderTime(Information)" class="el-icon-caret-top"></s><s v-on:click="handleDesOrderTime(Information)" class="el-icon-caret-bottom"></s></i></span>
+                          <span class="span05">上线日期<i><s v-on:click="handleAscOrderOnlineTime(Information)" class="el-icon-caret-top"></s><s v-on:click="handleDesOrderOnlineTime(Information)" class="el-icon-caret-bottom"></s></i></span>
+                          <span class="span06">域名</span>
+                          <span class="span07">主题</span>
+                          <span class="span08">组别</span>
+                          <span class="span09">备注</span>
+                          <span class="span10">操作</span>
                        </dt>
                        <dd v-for="(item,index) in Information" :key="index">
                           <span class="span00">{{index+1}}</span>
                           <span class="span01">{{item.id}}</span>
-                          <span class="span01">{{item.ymid}}</span>
-                          <span class="span02">{{item.name}}</span>
-                          <span class="span03">{{item.time}}</span>
-                          <span class="span03">{{item.online_time}}</span>
-                          <span class="span04"><i @click="See('https://'+item.domain)">{{item.domain}}</i></span>
-                          <span class="span06">{{item.zhuti}}</span>
-                          <span class="span07">{{item.zu}}</span>
-                          <span class="span08">{{item.beizhu}}</span>
-                          <span class="span09">
+                          <span class="span02">{{item.ymid}}</span>
+                          <span class="span03">{{item.name}}</span>
+                          <span class="span04">{{item.time}}</span>
+                          <span class="span05">{{item.online_time}}</span>
+                          <span class="span06"><i @click="See('https://'+item.domain)">{{item.domain}}</i></span>
+                          <span class="span07">{{item.zhuti}}</span>
+                          <span class="span08">{{item.zu}}</span>
+                          <span class="span09">{{item.beizhu}}</span>
+                          <span class="span10">
                                 <i title="修改" @click="handleEdiClick(item)" class="el-icon-edit"></i>
                                 <i title="删除" @click="handleDelClick(item.id)" class="el-icon-delete"></i>
                           </span>
@@ -462,7 +462,87 @@ export default {
               $this.$message.error(res.data.msg);
             }
         })
-      }
+      },
+      // 域名分配日期升序排列
+      handleAscOrderTime:function(DateList){
+        var $this = this;
+        var newArr = DateList;
+        $this.Information=[];
+        newArr.sort(function(a, b) {
+            var value1 = a.time.replace(/-/g,'/');
+            var value2 = b.time.replace(/-/g,'/');
+            var aTime = new Date(value1).getTime();
+            var bTime = new Date(value2).getTime();
+            return aTime - bTime;
+        });
+        $this.Information = newArr;
+      },
+      // 域名分配日期降序排列
+      handleDesOrderTime:function(DateList){
+        var $this = this;
+        var newArr = DateList;
+        $this.Information=[];
+        newArr.sort(function(a, b) {
+            var value1 = a.time.replace(/-/g,'/');
+            var value2 = b.time.replace(/-/g,'/');
+            var aTime = new Date(value1).getTime();
+            var bTime = new Date(value2).getTime();
+            return bTime - aTime;
+        });
+        $this.Information = newArr;
+      },  
+      // 域名上线日期升序排列
+      handleAscOrderOnlineTime:function(DateList){
+        var $this = this;
+        var newArr = DateList;
+        $this.Information=[];
+        newArr.sort(function(a, b) {
+            var value1 = a.online_time.replace(/-/g,'/');
+            var value2 = b.online_time.replace(/-/g,'/');
+            var aTime = new Date(value1).getTime();
+            var bTime = new Date(value2).getTime();
+            return aTime - bTime;
+        });
+        $this.Information = newArr;
+      },
+      // 域名上线日期降序排列
+      handleDesOrderOnlineTime:function(DateList){
+        var $this = this;
+        var newArr = DateList;
+        $this.Information=[];
+        newArr.sort(function(a, b) {
+            var value1 = a.online_time.replace(/-/g,'/');
+            var value2 = b.online_time.replace(/-/g,'/');
+            var aTime = new Date(value1).getTime();
+            var bTime = new Date(value2).getTime();
+            return bTime - aTime;
+        });
+        $this.Information = newArr;
+      },
+      // 域名ID升序排列
+      handleAscYmid:function(DateList){
+        var $this = this;
+        var newArr = DateList;
+        $this.Information=[];
+        newArr.sort(function(a, b) {
+            var value1 = a.ymid;
+            var value2 = b.ymid;
+            return value1 - value2;
+        });
+        $this.Information = newArr;
+      },
+      // 域名ID降序排列
+      handleDesYmid:function(DateList){
+        var $this = this;
+        var newArr = DateList;
+        $this.Information=[];
+        newArr.sort(function(a, b) {
+            var value1 = a.ymid;
+            var value2 = b.ymid;
+            return value2 - value1;
+        });
+        $this.Information = newArr;
+      },
     }
 }
 </script>
@@ -583,6 +663,35 @@ export default {
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
+        i{
+          display: inline-block;
+          width:16px;
+          height: 17px;
+          position: relative;
+          top:2px;
+          margin-left:5px;
+          s{
+            clear: both;
+            display: block;
+            cursor: pointer;
+            position: absolute;
+            left:0px;
+            bottom:0px;
+            width:100%;
+            height:8px;
+            line-height:8px;
+            text-decoration: none;
+            color:#ff9800;
+            font-size:16px;
+            &:first-child{
+              bottom:auto;
+              top:0px;
+            }
+            &:hover{
+            color:#f60;
+            }
+          }
+        }
       }
     }
     dd{
@@ -638,16 +747,16 @@ export default {
 }
 
 .span00{width:5%; text-align:center;color: #3e404f;}
-.span01{width:5%; text-align:left;color: #3e404f;}
-.span02{width:5%;  text-align:left;  color: #3e404f;i{font-style: normal;}}
-.span03{width:9%; text-align:left;color: #3e404f;}
-.span04{width:15%; text-align:left;color: #3e404f;i{font-style: normal;cursor: pointer;}&:hover{color:#f60;}}
-.span05{width:7%; text-align:left;color: #3e404f;}
-.span06{width:6%; text-align:left;color: #3e404f;}
-.span07{width:6%; text-align:left;color: #3e404f;}
-.span08{width:25%; text-align:left;color: #3e404f;}
-.span09{width:7%; text-align:center;color: #3e404f;}
-
+.span01{width:4%; text-align:left;color: #3e404f;}
+.span02{width:6%; text-align:left;color: #3e404f;}
+.span03{width:6%; text-align:left;color: #3e404f;}
+.span04{width:8%;  text-align:left;  color: #3e404f;i{font-style: normal;}}
+.span05{width:8%; text-align:left;color: #3e404f;}
+.span06{width:15%; text-align:left;color: #3e404f;i{font-style: normal;cursor: pointer;}&:hover{color:#f60;}}
+.span07{width:8%; text-align:left;color: #3e404f;}
+.span08{width:7%; text-align:left;color: #3e404f;}
+.span09{width:28%; text-align:left;color: #3e404f;}
+.span10{width:5%; text-align:left;color: #3e404f;}
 .ModelPopup {
     position: absolute;
     z-index: 2;
