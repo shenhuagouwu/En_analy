@@ -74,7 +74,6 @@
   </el-container>
 </template>
 <script>
-import axios from 'axios';
 import searchTimeday from "../public/searchTimeDay";
 import loader from "../public/loading";
 import { mapGetters } from "vuex";

@@ -53,7 +53,6 @@
   </el-scrollbar>
 </template>
 <script>
-import { mapGetters } from "vuex";
 import PieChart from "../chart/PieChart";
 import LineChartone from "../chart/LineChartone";
 import nodefaultSearchtime from "../public/nodefaultSearchtime";

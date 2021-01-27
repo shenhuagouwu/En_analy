@@ -8,7 +8,7 @@
 --> 
 <template>    
     <div class="adminmaintop">
-        <p class="adminmaintoplogo"><span><img src="../../assets/images/logo.png" alt=""></span>英文推广数据分析系统</p>
+        <router-link class="adminmaintoplogo" to="/" tag="p"><span><img src="../../assets/images/logo.png" alt=""></span>英文推广数据分析系统</router-link>
         <p class="adminmaintopfr">你好，{{username}}&nbsp;&nbsp;|&nbsp;&nbsp;权限：美工&nbsp;&nbsp;|&nbsp;&nbsp;<span class="back" @click="handleBack">退出</span>&nbsp;&nbsp;当前服务器时间: {{currentTime}}</p>
     </div>
 </template>
@@ -105,6 +105,7 @@ export default {
       color:#fff;
       font-size:18px;
       line-height:32px;
+      cursor: pointer;
       span{
         display: block;
         float:left;

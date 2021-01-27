@@ -8,12 +8,12 @@
                  <div class="row_box">
                       <p class="row_boxTop clearfix">
                          <span>姓名</span>
-                         <span>今天个数</span>
-                         <span>昨天个数</span>
-                         <span>本月个数</span>
-                         <span>上月个数</span>
-                         <span>本月评比</span>
-                         <span>上月评比</span>
+                         <span>今天个数<i><s v-on:click="handleAscDaycou(arrListOne,'0')" class="el-icon-caret-top"></s><s v-on:click="handleDesDaycou(arrListOne,'0')" class="el-icon-caret-bottom"></s></i></span>
+                         <span>昨天个数<i><s v-on:click="handleAscYesdaycou(arrListOne,'0')" class="el-icon-caret-top"></s><s v-on:click="handleDesYesdaycou(arrListOne,'0')" class="el-icon-caret-bottom"></s></i></span>
+                         <span>本月个数<i><s v-on:click="handleAscMonthcou(arrListOne,'0')" class="el-icon-caret-top"></s><s v-on:click="handleDesMonthcou(arrListOne,'0')" class="el-icon-caret-bottom"></s></i></span>
+                         <span>上月个数<i><s v-on:click="handleAscLastmonthcou(arrListOne,'0')" class="el-icon-caret-top"></s><s v-on:click="handleDesLastmonthcou(arrListOne,'0')" class="el-icon-caret-bottom"></s></i></span>
+                         <span>本月评比<i><s v-on:click="handleAscMonthcom(arrListOne,'0')" class="el-icon-caret-top"></s><s v-on:click="handleDesMonthcom(arrListOne,'0')" class="el-icon-caret-bottom"></s></i></span>
+                         <span>上月评比<i><s v-on:click="handleAscLastmonthcom(arrListOne,'0')" class="el-icon-caret-top"></s><s v-on:click="handleDesLastmonthcom(arrListOne,'0')" class="el-icon-caret-bottom"></s></i></span>
                       </p>
                       <ul class="row_boxMid">
                           <li class="clearfix"  v-for="(item,index) in arrListOne" :key="index">
@@ -44,12 +44,12 @@
                  <div class="row_box">
                       <p class="row_boxTop clearfix">
                          <span>姓名</span>
-                         <span>今天个数</span>
-                         <span>昨天个数</span>
-                         <span>本月个数</span>
-                         <span>上月个数</span>
-                         <span>本月评比</span>
-                         <span>上月评比</span>
+                         <span>今天个数<i><s v-on:click="handleAscDaycou(arrListTwo,'1')" class="el-icon-caret-top"></s><s v-on:click="handleDesDaycou(arrListTwo,'1')" class="el-icon-caret-bottom"></s></i></span>
+                         <span>昨天个数<i><s v-on:click="handleAscYesdaycou(arrListTwo,'1')" class="el-icon-caret-top"></s><s v-on:click="handleDesYesdaycou(arrListTwo,'1')" class="el-icon-caret-bottom"></s></i></span>
+                         <span>本月个数<i><s v-on:click="handleAscMonthcou(arrListTwo,'1')" class="el-icon-caret-top"></s><s v-on:click="handleDesMonthcou(arrListTwo,'1')" class="el-icon-caret-bottom"></s></i></span>
+                         <span>上月个数<i><s v-on:click="handleAscLastmonthcou(arrListTwo,'1')" class="el-icon-caret-top"></s><s v-on:click="handleDesLastmonthcou(arrListTwo,'1')" class="el-icon-caret-bottom"></s></i></span>
+                         <span>本月评比<i><s v-on:click="handleAscMonthcom(arrListTwo,'1')" class="el-icon-caret-top"></s><s v-on:click="handleDesMonthcom(arrListTwo,'1')" class="el-icon-caret-bottom"></s></i></span>
+                         <span>上月评比<i><s v-on:click="handleAscLastmonthcom(arrListTwo,'1')" class="el-icon-caret-top"></s><s v-on:click="handleDesLastmonthcom(arrListTwo,'1')" class="el-icon-caret-bottom"></s></i></span>
                       </p>
                       <ul class="row_boxMid">
                           <li class="clearfix"  v-for="(item,index) in arrListTwo" :key="index">
@@ -151,6 +151,246 @@ export default {
         }
       );
     },
+    // 今天个数升序排列
+    handleAscDaycou:function(DateList,NumData){
+      var $this = this;
+      var newArr = DateList;
+      if(NumData=="0"){
+         $this.arrListOne=[];
+      }else{
+         $this.arrListTwo=[];
+      }
+      newArr.sort(function(a, b) {
+          var value1 = a.today_count;
+          var value2 = b.today_count;
+          return value1 - value2;
+      });
+      if(NumData=="0"){
+          $this.arrListOne = newArr;
+      }else{
+          $this.arrListTwo = newArr;
+      }
+    },
+    // 今天个数降序排列
+    handleDesDaycou:function(DateList,NumData){
+      var $this = this;
+      var newArr = DateList;
+      if(NumData=="0"){
+         $this.arrListOne=[];
+      }else{
+         $this.arrListTwo=[];
+      }
+      newArr.sort(function(a, b) {
+          var value1 = a.today_count;
+          var value2 = b.today_count;
+          return value2 - value1;
+      });
+      if(NumData=="0"){
+          $this.arrListOne = newArr;
+      }else{
+          $this.arrListTwo = newArr;
+      }
+    },
+    // 昨天个数升序排列
+    handleAscYesdaycou:function(DateList,NumData){
+      var $this = this;
+      var newArr = DateList;
+      if(NumData=="0"){
+         $this.arrListOne=[];
+      }else{
+         $this.arrListTwo=[];
+      }
+      newArr.sort(function(a, b) {
+          var value1 = a.yesterday_count;
+          var value2 = b.yesterday_count;
+          return value1 - value2;
+      });
+      if(NumData=="0"){
+          $this.arrListOne = newArr;
+      }else{
+          $this.arrListTwo = newArr;
+      }
+    },
+    // 昨天个数降序排列
+    handleDesYesdaycou:function(DateList,NumData){
+      var $this = this;
+      var newArr = DateList;
+      if(NumData=="0"){
+         $this.arrListOne=[];
+      }else{
+         $this.arrListTwo=[];
+      }
+      newArr.sort(function(a, b) {
+          var value1 = a.yesterday_count;
+          var value2 = b.yesterday_count;
+          return value2 - value1;
+      });
+      if(NumData=="0"){
+          $this.arrListOne = newArr;
+      }else{
+          $this.arrListTwo = newArr;
+      }
+    },
+    // 本月个数升序排列
+    handleAscMonthcou:function(DateList,NumData){
+      var $this = this;
+      var newArr = DateList;
+      if(NumData=="0"){
+         $this.arrListOne=[];
+      }else{
+         $this.arrListTwo=[];
+      }
+      newArr.sort(function(a, b) {
+          var value1 = a.month_count;
+          var value2 = b.month_count;
+          return value1 - value2;
+      });
+      if(NumData=="0"){
+          $this.arrListOne = newArr;
+      }else{
+          $this.arrListTwo = newArr;
+      }
+    },
+    // 本月个数降序排列
+    handleDesMonthcou:function(DateList,NumData){
+      var $this = this;
+      var newArr = DateList;
+      if(NumData=="0"){
+         $this.arrListOne=[];
+      }else{
+         $this.arrListTwo=[];
+      }
+      newArr.sort(function(a, b) {
+          var value1 = a.month_count;
+          var value2 = b.month_count;
+          return value2 - value1;
+      });
+      if(NumData=="0"){
+          $this.arrListOne = newArr;
+      }else{
+          $this.arrListTwo = newArr;
+      }
+    },
+    // 上月个数升序排列
+    handleAscLastmonthcou:function(DateList,NumData){
+      var $this = this;
+      var newArr = DateList;
+      if(NumData=="0"){
+         $this.arrListOne=[];
+      }else{
+         $this.arrListTwo=[];
+      }
+      newArr.sort(function(a, b) {
+          var value1 = a.lastmonth_count;
+          var value2 = b.lastmonth_count;
+          return value1 - value2;
+      });
+      if(NumData=="0"){
+          $this.arrListOne = newArr;
+      }else{
+          $this.arrListTwo = newArr;
+      }
+    },
+    // 上月个数降序排列
+    handleDesLastmonthcou:function(DateList,NumData){
+      var $this = this;
+      var newArr = DateList;
+      if(NumData=="0"){
+         $this.arrListOne=[];
+      }else{
+         $this.arrListTwo=[];
+      }
+      newArr.sort(function(a, b) {
+          var value1 = a.lastmonth_count;
+          var value2 = b.lastmonth_count;
+          return value2 - value1;
+      });
+      if(NumData=="0"){
+          $this.arrListOne = newArr;
+      }else{
+          $this.arrListTwo = newArr;
+      }
+    },
+    // 本月评比升序排列
+    handleAscMonthcom:function(DateList,NumData){
+      var $this = this;
+      var newArr = DateList;
+      if(NumData=="0"){
+         $this.arrListOne=[];
+      }else{
+         $this.arrListTwo=[];
+      }
+      newArr.sort(function(a, b) {
+          var value1 = a.month_comparison;
+          var value2 = b.month_comparison;
+          return value1 - value2;
+      });
+      if(NumData=="0"){
+          $this.arrListOne = newArr;
+      }else{
+          $this.arrListTwo = newArr;
+      }
+    },
+    // 本月评比降序排列
+    handleDesMonthcom:function(DateList,NumData){
+      var $this = this;
+      var newArr = DateList;
+      if(NumData=="0"){
+         $this.arrListOne=[];
+      }else{
+         $this.arrListTwo=[];
+      }
+      newArr.sort(function(a, b) {
+          var value1 = a.month_comparison;
+          var value2 = b.month_comparison;
+          return value2 - value1;
+      });
+      if(NumData=="0"){
+          $this.arrListOne = newArr;
+      }else{
+          $this.arrListTwo = newArr;
+      }
+    },
+    // 上月评比升序排列
+    handleAscLastmonthcom:function(DateList,NumData){
+      var $this = this;
+      var newArr = DateList;
+      if(NumData=="0"){
+         $this.arrListOne=[];
+      }else{
+         $this.arrListTwo=[];
+      }
+      newArr.sort(function(a, b) {
+          var value1 = a.lastmont_comparison;
+          var value2 = b.lastmont_comparison;
+          return value1 - value2;
+      });
+      if(NumData=="0"){
+          $this.arrListOne = newArr;
+      }else{
+          $this.arrListTwo = newArr;
+      }
+    },
+    // 上月评比降序排列
+    handleDesLastmonthcom:function(DateList,NumData){
+      var $this = this;
+      var newArr = DateList;
+      if(NumData=="0"){
+         $this.arrListOne=[];
+      }else{
+         $this.arrListTwo=[];
+      }
+      newArr.sort(function(a, b) {
+          var value1 = a.lastmont_comparison;
+          var value2 = b.lastmont_comparison;
+          return value2 - value1;
+      });
+      if(NumData=="0"){
+          $this.arrListOne = newArr;
+      }else{
+          $this.arrListTwo = newArr;
+      }
+    },
   }
 }
 </script>
@@ -193,17 +433,49 @@ export default {
   .row_box{
     span{
       float: left;
-      width:14.2857%;
+      width:15%;
       text-align:center;
-      padding:5px 20px;
+      padding:5px 10px;
       border-left:1px solid #eee;
       &:first-child{
         border-left:0px solid #eee;
+        width:10%;
       }
     }
     .row_boxTop{
        font-weight: bold;
        font-size:14px;;
+       span{
+            i{
+              display: inline-block;
+              width:16px;
+              height: 17px;
+              position: relative;
+              top:2px;
+              margin-left:5px;
+              s{
+                clear: both;
+                display: block;
+                cursor: pointer;
+                position: absolute;
+                left:0px;
+                bottom:0px;
+                width:100%;
+                height:8px;
+                line-height:8px;
+                text-decoration: none;
+                color:#ff9800;
+                font-size:16px;
+                &:first-child{
+                  bottom:auto;
+                  top:0px;
+                }
+                &:hover{
+                color:#f60;
+                }
+              }
+            }
+       }
     }
     .row_boxMid{
        li{         

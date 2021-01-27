@@ -105,7 +105,6 @@
   </el-container>
 </template>
 <script>
-import axios from 'axios';
 import searchTimeday from "../public/searchTimeDay";
 export default {
     name: 'DomainTimePage',

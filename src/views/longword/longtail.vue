@@ -96,7 +96,6 @@
   </el-container>
 </template>
 <script>
-import axios from 'axios';
 import nodefaultSearchtimeday from "../public/nodefaultSearchtimeday";
 import loader from "../public/loading";
 import { mapGetters } from "vuex";
