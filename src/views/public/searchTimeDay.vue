@@ -33,7 +33,7 @@ export default {
             const end = new Date(end01.getFullYear(), end01.getMonth() + 1, 0);
             const start01 = new Date(end);
             start01.setMonth(start01.getMonth()-1);
-            const start = new Date(start01);
+            const start = new Date(start01.getFullYear(), start01.getMonth() + 1, 0);
             start.setTime(start.getTime() + 3600 * 1000 * 24 * 1);
             picker.$emit('pick', [start, end]);
           }
@@ -44,7 +44,7 @@ export default {
             const end = new Date(end01.getFullYear(), end01.getMonth() + 1, 0);
             const start01 = new Date(end);
             start01.setMonth(start01.getMonth()-3);
-            const start = new Date(start01);
+            const start = new Date(start01.getFullYear(), start01.getMonth() + 1, 0);
             start.setTime(start.getTime() + 3600 * 1000 * 24 * 1);
             picker.$emit('pick', [start, end]);
           }
@@ -55,7 +55,7 @@ export default {
             const end = new Date(end01.getFullYear(), end01.getMonth() + 1, 0);
             const start01 = new Date(end);
             start01.setMonth(start01.getMonth()-6);
-            const start = new Date(start01);
+            const start = new Date(start01.getFullYear(), start01.getMonth() + 1, 0);
             start.setTime(start.getTime() + 3600 * 1000 * 24 * 1);
             picker.$emit('pick', [start, end]);
           }
@@ -74,7 +74,7 @@ export default {
     var end = new Date(creatDate.getFullYear(), creatDate.getMonth() + 1, 0);
     var start01 = new Date(end);
     start01.setMonth(start01.getMonth()-1);
-    var start = new Date(start01);
+    var start = new Date(start01.getFullYear(), start01.getMonth() + 1, 0);
     start.setTime(start.getTime() + 3600 * 1000 * 24 * 1);
     $this.subDayTime[0]=start;
     $this.subDayTime[1]=end;

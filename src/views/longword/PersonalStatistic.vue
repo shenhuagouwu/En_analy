@@ -28,7 +28,11 @@
                     </dd>
                     <dt>
                         <span class="searchdl02Txt">域名分配日期</span>
-                        <search-timeday class="timebox" v-on:childTimeDayData="listenTimeday"></search-timeday>
+                        <nodefault-searchtimeday class="timebox" v-on:childNoTimeDayData="listenTimeday"></nodefault-searchtimeday>
+                    </dt>
+                    <dt>
+                        <span class="searchdl02Txt">询盘日期</span>
+                        <nodefault-searchtimeday class="timebox" v-on:childNoTimeDayData="listenPoltimeday"></nodefault-searchtimeday>
                         <span class="searchbtn" v-on:click="handleResBtn">查询</span>
                     </dt>
                   </dl>
@@ -74,7 +78,7 @@
   </el-container>
 </template>
 <script>
-import searchTimeday from "../public/searchTimeDay";
+import nodefaultSearchtimeday from "../public/nodefaultSearchtimeday";
 import loader from "../public/loading";
 import { mapGetters } from "vuex";
 export default {
@@ -87,8 +91,14 @@ export default {
           startDaytime:'',
           endDaytime:'', 
         },                           // 日期插件传递值
-        starttime:'',                // 查询开始日期
-        endtime:'',                  // 查询结束日期
+        starttime:'',                // 查询域名分配开始日期
+        endtime:'',                  // 查询域名分配结束日期
+        timepolDate:{
+          startDaytime:'',
+          endDaytime:'', 
+        },                           // 日期插件传递值
+        startpoltime:'',                // 查询开始日期
+        endpoltime:'',                  // 查询结束日期
         searchDomainNa:'',              // 查询域名
         searchName:'',                  // 查询姓名
         searchNameList:[
@@ -114,7 +124,7 @@ export default {
       }
     },
     components: {
-      searchTimeday,
+      nodefaultSearchtimeday,
       loader
     },
     computed: {
@@ -128,9 +138,10 @@ export default {
       getInformationInfo:function(){
         var $this = this;
         $this.$store.commit('loading/showLoading');
-        $this.$api.get("/index/web_inquiries_statistics?starttime=" + $this.starttime + "&endtime=" + $this.endtime + "&domain=" + $this.searchDomainNa + "&name=" + $this.searchName + "&zu=" + $this.searchGroup,null,function(res) {
+        $this.$api.get("/index/web_inquiries_statistics?ym_starttime=" + $this.starttime + "&ym_endtime=" + $this.endtime + + "&starttime=" + $this.startpoltime + "&endtime=" + $this.endpoltime + "&domain=" + $this.searchDomainNa + "&name=" + $this.searchName + "&zu=" + $this.searchGroup,null,function(res) {
             if (res.data) {
-              var OldArr=res.data;
+              console.log(res.data,'1');
+              var OldArr=Object.keys(res.data).map(function (key) { return res.data[key]; });
               $this.Information=OldArr;
               $this.$store.commit('loading/hideLoading');
             }
@@ -152,6 +163,20 @@ export default {
         }else{
             $this.starttime='';
             $this.endtime='';
+        }
+      },
+      listenPoltimeday:function(TDate){
+        var $this=this;
+        $this.timepolDate=TDate;
+      },
+      TimepolPlug:function(){
+        var $this = this;
+        if($this.timepolDate.startDaytime!=''&&$this.timepolDate.endDaytime!=''){
+            $this.startpoltime=$this.timepolDate.startDaytime;
+            $this.endpoltime=$this.timepolDate.endDaytime;
+        }else{
+            $this.startpoltime='';
+            $this.endpoltime='';
         }
       },
       // 域名分配日期升序排列
@@ -268,6 +293,7 @@ export default {
           $this.isClick = !$this.isClick;
           $this.Information=[];
           $this.TimePlug();
+          $this.TimepolPlug();          
           $this.getInformationInfo(); 
         }
       },

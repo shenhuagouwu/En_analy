@@ -80,7 +80,7 @@ export default {
             {
                 id:7,
                 type:'PersonalStatistic',
-                name:'个人询盘统计',
+                name:'个人询盘站统计',
                 isOn:true,
                 typeNumBool:false,
                 expiredTimeNum:0,
