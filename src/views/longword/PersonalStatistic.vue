@@ -96,7 +96,7 @@ export default {
         timepolDate:{
           startDaytime:'',
           endDaytime:'', 
-        },                           // 日期插件传递值
+        },                              // 日期插件传递值
         startpoltime:'',                // 查询开始日期
         endpoltime:'',                  // 查询结束日期
         searchDomainNa:'',              // 查询域名
@@ -138,7 +138,7 @@ export default {
       getInformationInfo:function(){
         var $this = this;
         $this.$store.commit('loading/showLoading');
-        $this.$api.get("/index/web_inquiries_statistics?ym_starttime=" + $this.starttime + "&ym_endtime=" + $this.endtime + + "&starttime=" + $this.startpoltime + "&endtime=" + $this.endpoltime + "&domain=" + $this.searchDomainNa + "&name=" + $this.searchName + "&zu=" + $this.searchGroup,null,function(res) {
+        $this.$api.get("/index/web_inquiries_statistics?ym_starttime=" + $this.starttime + "&ym_endtime=" + $this.endtime + "&starttime=" + $this.startpoltime + "&endtime=" + $this.endpoltime + "&domain=" + $this.searchDomainNa + "&name=" + $this.searchName + "&zu=" + $this.searchGroup,null,function(res) {
             if (res.data) {
               console.log(res.data,'1');
               var OldArr=Object.keys(res.data).map(function (key) { return res.data[key]; });
