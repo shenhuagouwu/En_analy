@@ -26,6 +26,9 @@
                       <el-input placeholder="域名ID" v-model="searchDomainID" clearable></el-input>
                     </dd>
                     <dd>
+                      <el-input placeholder="模板序号" v-model="searchMuban" clearable></el-input>
+                    </dd>
+                    <dd>
                       <el-input placeholder="请选择域名" v-model="searchDomainNa" clearable></el-input>
                     </dd>
                     <dd class="Infotopdd">
@@ -54,9 +57,10 @@
                           <span class="span05">上线日期<i><s v-on:click="handleAscOrderOnlineTime(Information)" class="el-icon-caret-top"></s><s v-on:click="handleDesOrderOnlineTime(Information)" class="el-icon-caret-bottom"></s></i></span>
                           <span class="span06">域名</span>
                           <span class="span07">主题</span>
-                          <span class="span08">组别</span>
-                          <span class="span09">备注</span>
-                          <span class="span10">操作</span>
+                          <span class="span08">模板序号</span>
+                          <span class="span09">组别</span>
+                          <span class="span10">备注</span>
+                          <span class="span11">操作</span>
                        </dt>
                        <dd v-for="(item,index) in Information" :key="index">
                           <span class="span00">{{index+1}}</span>
@@ -67,9 +71,10 @@
                           <span class="span05">{{item.online_time}}</span>
                           <span class="span06"><i @click="See('https://'+item.domain)">{{item.domain}}</i></span>
                           <span class="span07">{{item.zhuti}}</span>
-                          <span class="span08">{{item.zu}}</span>
-                          <span class="span09">{{item.beizhu}}</span>
-                          <span class="span10">
+                          <span class="span08">{{item.moban_no}}</span>
+                          <span class="span09">{{item.zu}}</span>
+                          <span class="span10">{{item.beizhu}}</span>
+                          <span class="span11">
                                 <i title="修改" @click="handleEdiClick(item)" class="el-icon-edit"></i>
                                 <i title="删除" @click="handleDelClick(item.id)" class="el-icon-delete"></i>
                           </span>
@@ -94,18 +99,21 @@
                       <el-input placeholder="请输入域名" v-model="uploadDomain" clearable></el-input>
                     </li>
                     <li>
-                      <el-date-picker v-model="uploadTime" type="date" placeholder="选择分配日期" format="yyyy-MM-dd" value-format="yyyy-MM-dd" ></el-date-picker>
-                    </li>
-                    <li>
-                      <el-date-picker v-model="uploadonline_time" type="date" placeholder="选择上传日期" format="yyyy-MM-dd" value-format="yyyy-MM-dd" ></el-date-picker>
-                    </li>
-                    <li>
                       <el-input placeholder="请输入主题" v-model="uploadZhuti" clearable></el-input>
+                    </li>
+                    <li>
+                      <el-input placeholder="请输入模板序号" v-model="uploadMuban" clearable></el-input>
                     </li>
                     <li>
                       <el-select v-model="uploadzb" class="selectbrands" clearable placeholder="请选择小组">
                         <el-option v-for="item in searchzuNameList" :key="item.name" :label="item.name" :value="item.name"></el-option>
                       </el-select>
+                    </li>
+                    <li>
+                      <el-date-picker v-model="uploadTime" type="date" placeholder="选择分配日期" format="yyyy-MM-dd" value-format="yyyy-MM-dd" ></el-date-picker>
+                    </li>
+                    <li>
+                      <el-date-picker v-model="uploadonline_time" type="date" placeholder="选择上传日期" format="yyyy-MM-dd" value-format="yyyy-MM-dd" ></el-date-picker>
                     </li>
                     <li>
                       <el-date-picker v-model="uploadExpiredTime" type="date" placeholder="域名到期日期" format="yyyy-MM-dd" value-format="yyyy-MM-dd" ></el-date-picker>
@@ -143,6 +151,7 @@ export default {
             endtime:'',                  // 查询结束日期
             searchDomainNa:'',           // 查询域名
             searchDomainID:'',           // 查询域名ID
+            searchMuban:'',              // 查询前端模板
             Information:[],
             searchNameList:[
               {name:'李伟东'},
@@ -187,6 +196,7 @@ export default {
             uploadName:'',
             uploadymid:'',
             uploadDomain:'',
+            uploadMuban:'',
             uploadTime:'',
             uploadonline_time:'',
             uploadZhuti:'',
@@ -198,6 +208,7 @@ export default {
               ymid:'',
               domain:'',
               time:'',
+              moban_no:'',
               online_time:'',
               domain_expired_time:'',
               zhuti:'',
@@ -244,7 +255,8 @@ export default {
                 searchParam.searchName=$this.searchName;
                 searchParam.searchzu=$this.searchzuName;
                 searchParam.DomainNa=$this.searchDomainNa;
-                searchParam.DomainID=$this.searchDomainID
+                searchParam.DomainID=$this.searchDomainID;
+                searchParam.Muban=$this.searchMuban;
                 $this.searchParam=searchParam;
                 var arrList=[];
                 res.data.forEach(function(item,index){
@@ -256,6 +268,7 @@ export default {
                       online_time:"",
                       domain_expired_time:"",
                       state:0,
+                      moban_no:'',
                       time:"",
                       ymid:0,
                       zhuti:"",
@@ -266,6 +279,7 @@ export default {
                     arrObj.domain=item.domain;
                     arrObj.id=item.id;
                     arrObj.name=item.name;
+                    arrObj.moban_no=item.moban_no;
                     arrObj.online_time=item.online_time;
                     arrObj.domain_expired_time=item.domain_expired_time;
                     arrObj.state=item.state
@@ -286,7 +300,8 @@ export default {
           var filtersearchzu = this.filtersearchzu(filtersearchName,searchParam.searchzu);
           var filterDomainNa = this.filterDomainNa(filtersearchzu,searchParam.DomainNa);
           var filterDomainID = this.filterDomainID(filterDomainNa,searchParam.DomainID);
-          return filterDomainID;
+          var filterMuban = this.filterMuban(filterDomainID,searchParam.Muban);
+          return filterMuban;
       },
       filtersearchName:function(initData, searchParam){
           var newData = [];
@@ -340,6 +355,19 @@ export default {
           }
           return newData;
       },
+      filterMuban:function(initData, searchParam){
+          var newData = [];
+          if (searchParam.length > 0) {
+            initData.forEach(function(item) {
+                if (item.moban_no == searchParam) {
+                  newData.push(item);
+                }
+            });
+          } else {
+            newData = initData;
+          }
+          return newData;
+      },
       //点击来源页面跳转
       See:function(e){
         window.open(e, '_blank');
@@ -353,6 +381,7 @@ export default {
         $this.uploadName=DaT.name;
         $this.uploadymid=DaT.ymid;
         $this.uploadDomain=DaT.domain;
+        $this.uploadMuban=DaT.moban_no;
         $this.uploadTime=DaT.time;
         $this.uploadonline_time=DaT.online_time;
         $this.uploadExpiredTime=DaT.domain_expired_time;
@@ -370,6 +399,7 @@ export default {
         $this.uploadDomain='';
         $this.uploadExpiredTime='';
         $this.uploadonline_time='';
+        $this.uploadMuban='';
         $this.uploadZhuti='';
         $this.uploadBeizhu='';  
         $this.uploadzb='';
@@ -396,6 +426,7 @@ export default {
           $this.uploadArr.domain_expired_time=$this.uploadExpiredTime;
           $this.uploadArr.zhuti=$this.uploadZhuti;
           $this.uploadArr.beizhu=$this.uploadBeizhu;
+          $this.uploadArr.moban_no=$this.uploadMuban;
           $this.uploadArr.zu=$this.uploadzb;
           if($this.type == "add"){
             $this.$api.post("/index/add_longword",$this.uploadArr,function(res) {
@@ -720,7 +751,7 @@ export default {
             }
           }
         }
-        &.span09{
+        &.span11{
           i{
             display: inline-block;
             width: 30px;
@@ -752,19 +783,20 @@ export default {
 .span03{width:6%; text-align:left;color: #3e404f;}
 .span04{width:8%;  text-align:left;  color: #3e404f;i{font-style: normal;}}
 .span05{width:8%; text-align:left;color: #3e404f;}
-.span06{width:15%; text-align:left;color: #3e404f;i{font-style: normal;cursor: pointer;}&:hover{color:#f60;}}
-.span07{width:8%; text-align:left;color: #3e404f;}
-.span08{width:7%; text-align:left;color: #3e404f;}
-.span09{width:28%; text-align:left;color: #3e404f;}
-.span10{width:5%; text-align:left;color: #3e404f;}
+.span06{width:13%; text-align:left;color: #3e404f;i{font-style: normal;cursor: pointer;}&:hover{color:#f60;}}
+.span07{width:6%; text-align:left;color: #3e404f;}
+.span08{width:6%; text-align:left;color: #3e404f;}
+.span09{width:5%; text-align:left;color: #3e404f;}
+.span10{width:23%; text-align:left;color: #3e404f;}
+.span11{width:10%; text-align:left;color: #3e404f;}
 .ModelPopup {
     position: absolute;
     z-index: 2;
     width: 800px;
-    height:480px;
+    height:424px;
     left: 50%;
     top: 50%;
-    margin-top: -240px;
+    margin-top: -212px;
     margin-left: -400px;
     border: 1px solid #e4e6ea;
     background: #fff;
@@ -808,7 +840,7 @@ export default {
           overflow: hidden;
           li{
             float: left;
-            width:50%;
+            width:33.3333%;
             padding:10px;
             text-align: left;
             .el-select{width: 100%!important;}
