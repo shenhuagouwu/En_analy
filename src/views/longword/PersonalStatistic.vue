@@ -17,12 +17,12 @@
                       <el-input placeholder="请选择域名" v-model="searchDomainNa" clearable></el-input>
                     </dd>
                     <dd>    
-                      <el-select v-model="searchName" clearable placeholder="请选择姓名">
+                      <el-select v-model="searchName" clearable placeholder="请选择姓名" @change="searchNameChange">
                         <el-option v-for="item in searchNameList" :key="item.name" :label="item.name" :value="item.name"></el-option>
                       </el-select>
                     </dd>
                     <dd>
-                      <el-select v-model="searchGroup" clearable placeholder="请选择小组">
+                      <el-select v-model="searchGroup" clearable placeholder="请选择小组" @change="searchGroupChange">
                         <el-option v-for="item in searchGroupList" :key="item.name" :label="item.name" :value="item.name"></el-option>
                       </el-select>
                     </dd>
@@ -32,7 +32,8 @@
                     </dt>
                     <dt>
                         <span class="searchdl02Txt">询盘日期</span>
-                        <nodefault-searchtimeday class="timebox" v-on:childNoTimeDayData="listenPoltimeday"></nodefault-searchtimeday>
+                        <!-- <nodefault-searchtimeday class="timebox" v-on:childNoTimeDayData="listenPoltimeday"></nodefault-searchtimeday> -->
+                        <search-timeday class="timebox" v-on:childTimeDayData="listenPoltimeday"></search-timeday>
                         <span class="searchbtn" v-on:click="handleResBtn">查询</span>
                     </dt>
                   </dl>
@@ -79,6 +80,7 @@
 </template>
 <script>
 import nodefaultSearchtimeday from "../public/nodefaultSearchtimeday";
+import searchTimeday from "../public/searchTimeDay";
 import loader from "../public/loading";
 import { mapGetters } from "vuex";
 export default {
@@ -102,19 +104,20 @@ export default {
         searchDomainNa:'',              // 查询域名
         searchName:'',                  // 查询姓名
         searchNameList:[
-          {name:'李伟东'},
-          {name:'刘燕永'},
-          {name:'徐凌霄'},
-          {name:'王雷'},
-          {name:'王文博'},
-          {name:'常怡广'},
-          {name:'王俊威'},
-          {name:'李鹏远'},
-          {name:'梁迎春'},
-          {name:'刘培斌'},
-          {name:'刘松海'},
-          {name:'孟君豪'},
-          {name:'张旭'},
+          {name:'李伟东',id:4},
+          {name:'刘燕永',id:8},
+          {name:'徐凌霄',id:7},
+          {name:'王雷',id:6},
+          {name:'王文博',id:9},
+          {name:'常怡广',id:10},
+          {name:'王俊威',id:''},
+          {name:'李鹏远',id:''},
+          {name:'梁迎春',id:''},
+          {name:'刘培斌',id:''},
+          {name:'刘松海',id:''},
+          {name:'孟君豪',id:''},
+          {name:'张旭',id:''},
+          {name:'孙朝帅',id:''},
         ],
         searchGroup:'',                 // 查询组别        
         searchGroupList:[
@@ -125,7 +128,8 @@ export default {
     },
     components: {
       nodefaultSearchtimeday,
-      loader
+      loader,
+      searchTimeday
     },
     computed: {
       ...mapGetters(["Loading"]),
@@ -292,11 +296,74 @@ export default {
         if(!$this.isClick){
           $this.isClick = !$this.isClick;
           $this.Information=[];
+          $this.checkUser();
           $this.TimePlug();
           $this.TimepolPlug();          
           $this.getInformationInfo(); 
         }
       },
+
+      // 名字与组合联动
+      // searchNameChange:function(res){
+      //   console.log(res)
+      //   var that = this;
+      //   if(res == '李伟东' || res == '刘燕永' || res == '王雷' || res == '王文博' || res == "常怡广"){
+      //     that.searchGroup = '组合三';
+      //   }else if(res == ''){
+      //     that.searchGroup = '';
+      //   }else{
+      //     that.searchGroup = '组合一';
+      //   }
+      // },
+      // 组合与名字联动
+      // searchGroupChange:function(res){
+      //   console.log(res);
+      //   var that = this;
+      //   if(that.searchName){
+      //     if(res == '组合一'){
+      //       var searchList = [
+      //         {name:'徐凌霄'},
+      //         {name:'王俊威'},
+      //         {name:'李鹏远'},
+      //         {name:'梁迎春'},
+      //         {name:'刘培斌'},
+      //         {name:'刘松海'},
+      //         {name:'孟君豪'},
+      //         {name:'张旭'}
+      //       ];
+      //       var find = 'name:'+that.searchName;
+      //       if(searchList.indexOf(find) < 0){
+      //         that.searchName = '';
+      //       }
+      //     }else if(res == '组合三'){
+      //       var searchList = [
+      //         {name:'李伟东'},
+      //         {name:'刘燕永'},
+      //         {name:'王雷'},
+      //         {name:'王文博'},
+      //         {name:'常怡广'}
+      //       ];
+      //       var find = 'name:'+that.searchName;
+      //       if(searchList.indexOf(find) < 0){
+      //         that.searchName = '';
+      //       }
+      //     }
+      //   }
+
+      // },
+
+      checkUser:function(){
+        var userEn = sessionStorage.getItem('zhanghu');
+        var that = this;
+        userEn = JSON.parse(userEn);
+        var userName = userEn.username;
+        var userId = userEn.id;
+        that.searchNameList.forEach(function(item){
+          if(item.id == userId){
+            that.searchName = item.name
+          }
+        })
+      }
     }
 }
 </script>
