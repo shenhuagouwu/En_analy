@@ -167,6 +167,7 @@ export default {
               {name:'刘松海'},
               {name:'孟君豪'},
               {name:'张旭'},
+              {name:'孙朝帅'},
             ],
             searchName:'',
             searchzuNameList:[
@@ -192,6 +193,7 @@ export default {
               {name:'刘松海'},
               {name:'孟君豪'},
               {name:'张旭'},
+              {name:'孙朝帅'},
             ],
             uploadName:'',
             uploadymid:'',
@@ -221,10 +223,30 @@ export default {
       searchTime,
     },
     mounted() {
-       var $this=this;
+       var $this=this;       
+       $this.uploadTime=$this.uploadonline_time=$this.currentTime();
+       $this.uploadExpiredTime=$this.dueTime();
        $this.handleSearchBtn();
     },
     methods: {
+      //默认当前时间
+      currentTime:function(){
+       var $this=this;
+       var start = new Date();
+       var year=start.getFullYear();  //取得4位数的年份
+       var month=start.getMonth()+1;  //取得日期中的月份，其中0表示1月，11表示12月
+       var date=start.getDate();      //返回日期月份中的天数（1到31）
+	     return year+'-'+month+'-'+date; 
+      },
+      //默认到期时间
+      dueTime:function(){
+       var $this=this;
+       var start = new Date();
+       var year=start.getFullYear()+1;  //取得4位数的年份
+       var month=start.getMonth()+1;  //取得日期中的月份，其中0表示1月，11表示12月
+       var date=start.getDate();      //返回日期月份中的天数（1到31
+	     return year+'-'+month+'-'+date; 
+      },
       //接收传递的时间
       listenTimeday:function(TDate){
         var $this=this;
@@ -397,8 +419,8 @@ export default {
         $this.uploadName='';        
         $this.uploadymid='';
         $this.uploadDomain='';
-        $this.uploadExpiredTime='';
-        $this.uploadonline_time='';
+        //$this.uploadExpiredTime='';
+        //$this.uploadonline_time='';
         $this.uploadMuban='';
         $this.uploadZhuti='';
         $this.uploadBeizhu='';  
@@ -420,7 +442,12 @@ export default {
           var $this=this;
           $this.uploadArr.name=$this.uploadName;               
           $this.uploadArr.ymid=$this.uploadymid;
-          $this.uploadArr.domain=$this.uploadDomain;
+          $this.uploadDomain=$this.uploadDomain.toLowerCase();
+          if($this.uploadDomain.indexOf("www.")>=0){            
+              $this.uploadArr.domain = $this.uploadDomain.substr($this.uploadDomain.indexOf(".")+1);
+          }else{
+              $this.uploadArr.domain=$this.uploadDomain;
+          }
           $this.uploadArr.time=$this.uploadTime;
           $this.uploadArr.online_time=$this.uploadonline_time;
           $this.uploadArr.domain_expired_time=$this.uploadExpiredTime;

@@ -53,7 +53,7 @@
           <el-col :span="24">
               <div class="grid-content bg-purple-light PersonallongBox">
                   <dl class="Personallong" v-for="(item,index) in teamNum" :key="index">
-                      <dt v-for="(items) in item">
+                      <dt v-for="(items,indexs) in item" :key="indexs">
                           <i class="el-icon-user-solid"></i>{{items.name}}<span>{{items.count}}</span>
                       </dt>
                   </dl>
@@ -139,6 +139,7 @@ export default {
           {name:'刘松海'},
           {name:'孟君豪'},
           {name:'张旭'},
+          {name:'孙朝帅'},
         ],
         searchSuffix:'',                // 查询后缀
       }
@@ -171,6 +172,7 @@ export default {
                     online_time:'',
                     host:'',
                     key:'',
+                    timeStamp:'',
                     mode:'',
                     remark1:'',
                     remark3:'',
@@ -187,6 +189,7 @@ export default {
                   }
                   arrObj.datetimeday=item.datetime.split(" ")[0];
                   arrObj.datetimedate=item.datetime.split(" ")[1];
+                  arrObj.timeStamp=new Date(item.datetime).getTime();//转为时间戳
                   arrObj.host=item.host;
                   arrObj.key=item.key;
                   arrObj.mode=item.mode;
@@ -197,6 +200,7 @@ export default {
               });
               arr02=$this.filterDate(arr01,$this.startDomaintime,$this.endDomaintime);
               $this.LongTail=$this.filtergroup(arr02,$this.searchGroup);
+              console.log($this.LongTail,'1');
               $this.getTeamNum();
               $this.$store.commit('loading/hideLoading');
             }
@@ -254,12 +258,22 @@ export default {
               arrObj.count=item.count;
               arrObj.team=item.team;
               arrList01.push(arrObj);
+              arrList01.sort(function(a, b) {
+                  var value1 = a.count;
+                  var value2 = b.count;
+                  return value2 - value1;
+              });
             }
             if(item.team=='组合三'){
               arrObj.name=item.name;
               arrObj.count=item.count;
               arrObj.team=item.team;
               arrList02.push(arrObj);
+              arrList02.sort(function(a, b) {
+                  var value1 = a.count;
+                  var value2 = b.count;
+                  return value2 - value1;
+              });
             }
         });
         var arrTotal01={
@@ -436,8 +450,8 @@ export default {
         var newArr = DateList;
         $this.LongTail=[];
         newArr.sort(function(a, b) {
-            var value1 = a.datetimeday.replace(/-/g,'/');
-            var value2 = b.datetimeday.replace(/-/g,'/');
+            var value1 = a.datetime.replace(/-/g,'/');
+            var value2 = b.datetime.replace(/-/g,'/');
             var aTime = new Date(value1).getTime();
             var bTime = new Date(value2).getTime();
             return aTime - bTime;
@@ -450,8 +464,8 @@ export default {
         var newArr = DateList;
         $this.LongTail=[];
         newArr.sort(function(a, b) {
-            var value1 = a.datetimeday.replace(/-/g,'/');
-            var value2 = b.datetimeday.replace(/-/g,'/');
+            var value1 = a.datetime.replace(/-/g,'/');
+            var value2 = b.datetime.replace(/-/g,'/');
             var aTime = new Date(value1).getTime();
             var bTime = new Date(value2).getTime();
             return bTime - aTime;

@@ -215,7 +215,7 @@
             </el-col>
           </el-row>
           <el-row :gutter="20" v-if="Submenu[6].isOn">
-              <el-col :span="8" v-for="(item,index) in pieSourcePageData">
+              <el-col :span="8" v-for="(item,index) in pieSourcePageData" :key="index">
                 <div class="grid-content bg-purple-light">
                     <p class="piecharttit">{{item[0].pinpai}}来源页面<font>(默认2020-02到现在)</font></p>
                     <ul class="sourcesPage">

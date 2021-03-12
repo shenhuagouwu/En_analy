@@ -17,12 +17,12 @@
                       <el-input placeholder="请选择域名" v-model="searchDomainNa" clearable></el-input>
                     </dd>
                     <dd>    
-                      <el-select v-model="searchName" clearable placeholder="请选择姓名" @change="searchNameChange">
+                      <el-select v-model="searchName" clearable placeholder="请选择姓名">
                         <el-option v-for="item in searchNameList" :key="item.name" :label="item.name" :value="item.name"></el-option>
                       </el-select>
                     </dd>
                     <dd>
-                      <el-select v-model="searchGroup" clearable placeholder="请选择小组" @change="searchGroupChange">
+                      <el-select v-model="searchGroup" clearable placeholder="请选择小组">
                         <el-option v-for="item in searchGroupList" :key="item.name" :label="item.name" :value="item.name"></el-option>
                       </el-select>
                     </dd>
@@ -144,9 +144,10 @@ export default {
         $this.$store.commit('loading/showLoading');
         $this.$api.get("/index/web_inquiries_statistics?ym_starttime=" + $this.starttime + "&ym_endtime=" + $this.endtime + "&starttime=" + $this.startpoltime + "&endtime=" + $this.endpoltime + "&domain=" + $this.searchDomainNa + "&name=" + $this.searchName + "&zu=" + $this.searchGroup,null,function(res) {
             if (res.data) {
-              console.log(res.data,'1');
               var OldArr=Object.keys(res.data).map(function (key) { return res.data[key]; });
               $this.Information=OldArr;
+              $this.checkUser();
+              console.log($this.Information,'$this.Information')
               $this.$store.commit('loading/hideLoading');
             }
             $this.isClick=!$this.isClick;
@@ -296,13 +297,11 @@ export default {
         if(!$this.isClick){
           $this.isClick = !$this.isClick;
           $this.Information=[];
-          $this.checkUser();
           $this.TimePlug();
           $this.TimepolPlug();          
           $this.getInformationInfo(); 
         }
       },
-
       // 名字与组合联动
       // searchNameChange:function(res){
       //   console.log(res)
@@ -351,16 +350,15 @@ export default {
       //   }
 
       // },
-
       checkUser:function(){
         var userEn = sessionStorage.getItem('zhanghu');
-        var that = this;
+        var $this = this;
         userEn = JSON.parse(userEn);
         var userName = userEn.username;
         var userId = userEn.id;
-        that.searchNameList.forEach(function(item){
+        $this.searchNameList.forEach(function(item){
           if(item.id == userId){
-            that.searchName = item.name
+            $this.searchName = item.name
           }
         })
       }
