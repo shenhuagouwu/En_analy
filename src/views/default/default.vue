@@ -4,7 +4,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <div class="grid-content row01 bg-purple-light">
-                 <p class="row_tit">组合一</p>
+                 <p class="row_tit">李伟东组</p>
                  <div class="row_box">
                       <p class="row_boxTop clearfix">
                          <span>姓名</span>
@@ -40,7 +40,7 @@
           </el-col>
           <el-col :span="12">
             <div class="grid-content row01 bg-purple-light">
-                 <p class="row_tit">组合三</p>
+                 <p class="row_tit">刘松海组</p>
                  <div class="row_box">
                       <p class="row_boxTop clearfix">
                          <span>姓名</span>

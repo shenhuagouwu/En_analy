@@ -139,8 +139,8 @@ export default {
             ],
             searchName:'',
             searchzuNameList:[
-              {name:'组合一'},
-              {name:'组合三'},
+              {name:'李伟东组'},
+              {name:'刘松海组'},
             ],
             searchzuName:'',
             searchParam:{

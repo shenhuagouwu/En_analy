@@ -121,8 +121,8 @@ export default {
         ],
         searchGroup:'',                 // 查询组别        
         searchGroupList:[
-          {name:'组合一'},
-          {name:'组合三'},
+          {name:'李伟东组'},
+          {name:'刘松海组'},
         ],
       }
     },
@@ -307,11 +307,11 @@ export default {
       //   console.log(res)
       //   var that = this;
       //   if(res == '李伟东' || res == '刘燕永' || res == '王雷' || res == '王文博' || res == "常怡广"){
-      //     that.searchGroup = '组合三';
+      //     that.searchGroup = '刘松海组';
       //   }else if(res == ''){
       //     that.searchGroup = '';
       //   }else{
-      //     that.searchGroup = '组合一';
+      //     that.searchGroup = '李伟东组';
       //   }
       // },
       // 组合与名字联动
@@ -319,7 +319,7 @@ export default {
       //   console.log(res);
       //   var that = this;
       //   if(that.searchName){
-      //     if(res == '组合一'){
+      //     if(res == '李伟东组'){
       //       var searchList = [
       //         {name:'徐凌霄'},
       //         {name:'王俊威'},
@@ -334,7 +334,7 @@ export default {
       //       if(searchList.indexOf(find) < 0){
       //         that.searchName = '';
       //       }
-      //     }else if(res == '组合三'){
+      //     }else if(res == '刘松海组'){
       //       var searchList = [
       //         {name:'李伟东'},
       //         {name:'刘燕永'},

@@ -120,8 +120,8 @@ export default {
         endDaytime:'',                  // 查询结束日期
         searchGroup:'',                 // 查询组别        
         searchGroupList:[
-          {name:'组合一'},
-          {name:'组合三'},
+          {name:'李伟东组'},
+          {name:'刘松海组'},
         ],
         searchDomainNa:'',              // 查询域名
         searchName:'',                  // 查询姓名        
@@ -253,7 +253,7 @@ export default {
                 count:0,
                 team:''
             }
-            if(item.team=='组合一'){
+            if(item.team=='李伟东组'){
               arrObj.name=item.name;
               arrObj.count=item.count;
               arrObj.team=item.team;
@@ -264,7 +264,7 @@ export default {
                   return value2 - value1;
               });
             }
-            if(item.team=='组合三'){
+            if(item.team=='刘松海组'){
               arrObj.name=item.name;
               arrObj.count=item.count;
               arrObj.team=item.team;
@@ -277,14 +277,14 @@ export default {
             }
         });
         var arrTotal01={
-            name:'组合一',
+            name:'李伟东组',
             count:0,
-            team:'组合一'
+            team:'李伟东组'
         }
         var arrTotal02={
-            name:'组合三',
+            name:'刘松海组',
             count:0,
-            team:'组合三'
+            team:'刘松海组'
         }
         arrList01.forEach(function(item,index){
             arrTotal01.count += item.count;
